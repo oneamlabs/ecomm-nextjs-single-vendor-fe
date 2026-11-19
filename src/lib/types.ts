@@ -54,3 +54,32 @@ export interface Photo {
   license: string;
   source: string;
 }
+
+export interface ProductReview {
+  name: string;
+  rating: number;
+  date: string;
+  text: string;
+  verified: boolean;
+}
+
+export interface ProductFeature {
+  title: string;
+  line: string;
+}
+
+export interface NutritionRow {
+  label: string;
+  value: string;
+}
+
+export interface ProductDetail {
+  soldCount?: number;
+  stockLeft?: number;
+  longDescription: string;
+  highlights: string[];
+  features: ProductFeature[];
+  nutrition: NutritionRow[];
+  ingredients: string;
+  howToUse: string[];
+}

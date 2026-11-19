@@ -10,6 +10,8 @@ export const DIETS = [
 
 export type DietId = (typeof DIETS)[number]["id"];
 
+export const DIET_IDS = DIETS.map((diet) => diet.id) as [DietId, ...DietId[]];
+
 export function dietLabel(id: string): string {
   return DIETS.find((diet) => diet.id === id)?.label ?? id;
 }

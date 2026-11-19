@@ -1,26 +1,15 @@
+import "server-only";
+
 import detailsJson from "@/data/product-details.json";
-import type { Product, Vendor } from "./types";
+import type {
+  NutritionRow,
+  Product,
+  ProductDetail,
+  ProductFeature,
+  Vendor,
+} from "./types";
 
-export interface ProductFeature {
-  title: string;
-  line: string;
-}
-
-export interface NutritionRow {
-  label: string;
-  value: string;
-}
-
-export interface ProductDetail {
-  soldCount?: number;
-  stockLeft?: number;
-  longDescription: string;
-  highlights: string[];
-  features: ProductFeature[];
-  nutrition: NutritionRow[];
-  ingredients: string;
-  howToUse: string[];
-}
+export type { NutritionRow, ProductDetail, ProductFeature } from "./types";
 
 const stored = detailsJson.details as Record<string, Partial<ProductDetail>>;
 

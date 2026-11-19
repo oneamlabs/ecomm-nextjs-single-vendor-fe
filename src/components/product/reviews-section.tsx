@@ -6,10 +6,8 @@ import {
   StarIcon,
 } from "@phosphor-icons/react";
 import { useId, useState } from "react";
-import {
-  ratingBreakdown,
-  type ProductReview,
-} from "@/lib/reviews";
+import { ratingBreakdown } from "@/lib/rating";
+import type { ProductReview } from "@/lib/types";
 
 interface ReviewsSectionProps {
   productName: string;

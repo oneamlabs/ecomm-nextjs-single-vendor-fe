@@ -10,6 +10,7 @@
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "typecheck": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types \"tests/*.test.ts\"",
     "check:data": "node scripts/check-data.mjs",
     "check:ui": "node scripts/inspect.mjs",
     "smoke": "node scripts/smoke.mjs",
@@ -17,9 +18,12 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
+    "axios": "^1.21.1",
     "next": "16.4.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",

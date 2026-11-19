@@ -1,18 +1,11 @@
+import "server-only";
+
 import reviewsJson from "@/data/reviews.json";
+import type { ProductReview } from "./types";
 
-export interface ProductReview {
-  name: string;
-  rating: number;
-  date: string;
-  text: string;
-  verified: boolean;
-}
-
-export interface RatingBucket {
-  stars: number;
-  percent: number;
-  count: number;
-}
+export type { ProductReview } from "./types";
+export type { RatingBucket } from "./rating";
+export { ratingBreakdown } from "./rating";
 
 const stored = reviewsJson.reviews as Record<string, ProductReview[]>;
 
@@ -35,21 +28,4 @@ const FALLBACK: ProductReview[] = [
 
 export function getReviews(productId: string): ProductReview[] {
   return stored[productId] ?? FALLBACK;
-}
-
-export function ratingBreakdown(rating: number, reviewCount: number): RatingBucket[] {
-  const percents =
-    rating >= 4.8
-      ? [76, 18, 4, 1, 1]
-      : rating >= 4.6
-        ? [68, 22, 7, 2, 1]
-        : rating >= 4.4
-          ? [60, 25, 10, 3, 2]
-          : [52, 28, 12, 5, 3];
-
-  return percents.map((percent, index) => ({
-    stars: 5 - index,
-    percent,
-    count: Math.round((reviewCount * percent) / 100),
-  }));
 }

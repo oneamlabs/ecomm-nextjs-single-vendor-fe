@@ -8,7 +8,12 @@ import { OrderSummaryRows } from "@/components/cart/order-summary-rows";
 import { EmptyState } from "@/components/ui/empty-state";
 import { formatPrice } from "@/lib/money";
 import { orderTotals } from "@/lib/order";
-import { checkoutFields, firstInvalidField, validateCheckout } from "@/lib/checkout";
+import {
+  checkoutFields,
+  firstInvalidField,
+  validateCheckout,
+  type CheckoutDraft,
+} from "@/lib/checkout";
 import { DELIVERY_SLOTS } from "@/lib/order";
 import type { Product } from "@/lib/types";
 
@@ -21,7 +26,7 @@ export function CheckoutForm({ products }: { products: Product[] }) {
       ?.variants.find((item) => item.id === line.variantId);
     return variant ? sum + variant.priceCents * line.quantity : sum;
   }, 0);
-  const [values, setValues] = useState(checkoutFields);
+  const [values, setValues] = useState<CheckoutDraft>(checkoutFields);
   const [errors, setErrors] = useState<ReturnType<typeof validateCheckout>>({});
   const [submitted, setSubmitted] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -29,7 +34,7 @@ export function CheckoutForm({ products }: { products: Product[] }) {
 
   const totals = orderTotals(subtotalCents);
 
-  function update(key: keyof typeof values, value: string) {
+  function update(key: keyof CheckoutDraft, value: string) {
     setValues((current) => ({ ...current, [key]: value }));
   }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { defaultVariant, discountPercent, getVendor } from "@/lib/catalogue";
+import { defaultVariant, discountPercent } from "@/lib/variant";
+import { getVendor } from "@/lib/vendors";
 import { formatPrice } from "@/lib/money";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "@/components/wishlist/wishlist-button";

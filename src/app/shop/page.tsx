@@ -14,13 +14,12 @@ import {
   getProducts,
   getVendors,
   sortProducts,
-  toProductSort,
 } from "@/lib/catalogue";
 import { DIETS } from "@/lib/diets";
 import {
+  DISCOUNT_THRESHOLDS,
   PAGE_SIZE,
-  PRICE_MAX_RUPEES,
-  PRICE_MIN_RUPEES,
+  parseShopParams,
   type ShopQuery,
 } from "@/lib/shop-query";
 import { SITE_URL } from "@/lib/site";
@@ -53,25 +52,24 @@ export const metadata: Metadata = {
  */
 export const instant = false;
 
-const DISCOUNTS = [10, 20, 30, 40];
+const DISCOUNTS = [...DISCOUNT_THRESHOLDS];
 
 export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
-  const params = await searchParams;
+  const raw = await searchParams;
+  const params = parseShopParams(raw);
 
-  const categoryId = first(params.category);
-  const selectedTags = toArray(params.tag);
-  const selectedDiets = toArray(params.diet);
-  const selectedVendors = toArray(params.vendor);
-  const selectedCertifications = toArray(params.certification);
-  const q = first(params.q);
-  const sort = toProductSort(first(params.sort));
-  const discount = toDiscount(params.discount);
-  const stock = toStock(params.stock);
+  const categoryId = params.category;
+  const selectedTags = params.tag;
+  const selectedDiets = params.diet;
+  const selectedVendors = params.vendor;
+  const selectedCertifications = params.certification;
+  const q = params.q;
+  const sort = params.sort;
+  const discount = params.discount;
+  const stock = params.stock;
 
-  const rawMin = toNumber(params.min) ?? PRICE_MIN_RUPEES;
-  const rawMax = toNumber(params.max) ?? PRICE_MAX_RUPEES;
-  const minPrice = Math.max(PRICE_MIN_RUPEES, Math.min(rawMin, rawMax));
-  const maxPrice = Math.max(minPrice, Math.min(rawMax, PRICE_MAX_RUPEES));
+  const minPrice = params.min;
+  const maxPrice = params.max;
 
   const sorted = sortProducts(
     getProducts({
@@ -91,8 +89,7 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
 
   const total = sorted.length;
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const requestedPage = Math.max(1, Number(first(params.page)) || 1);
-  const page = Math.min(requestedPage, pageCount);
+  const page = Math.min(params.page, pageCount);
   const pageProducts = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const allProducts = getProducts();
@@ -234,27 +231,3 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
   );
 }
 
-function first(value: string | string[] | undefined): string | undefined {
-  if (Array.isArray(value)) return value[0];
-  return value || undefined;
-}
-
-function toArray(value: string | string[] | undefined): string[] {
-  if (!value) return [];
-  return Array.isArray(value) ? value : [value];
-}
-
-function toNumber(value: string | string[] | undefined): number | undefined {
-  const raw = Number(first(value));
-  return Number.isFinite(raw) ? raw : undefined;
-}
-
-function toDiscount(value: string | string[] | undefined): number | undefined {
-  const raw = Number(first(value));
-  return DISCOUNTS.includes(raw) ? raw : undefined;
-}
-
-function toStock(value: string | string[] | undefined): "in" | "out" | undefined {
-  const raw = first(value);
-  return raw === "in" || raw === "out" ? raw : undefined;
-}

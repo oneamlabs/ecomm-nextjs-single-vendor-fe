@@ -36,6 +36,34 @@ sitemap URLs are absolute. It defaults to `http://localhost:3000`.
 | `/account` | Honest account placeholder for the demo |
 | `/shop/does-not-exist` | 404 |
 
+## API
+
+The catalogue is also served over HTTP, so the storefront is not coupled to the JSON
+files. Route handlers wrap the same server-only data layer; there is no second copy of the
+query logic.
+
+| Endpoint | Returns |
+| --- | --- |
+| `GET /api/products` | `{ items, total, page, pageSize, pageCount }`. Accepts `category`, `q`, `tag[]`, `diet[]`, `vendor[]`, `certification[]`, `min`, `max`, `discount`, `stock`, `sort`, `page`, `pageSize` |
+| `GET /api/products/[id]` | One product, or `404` |
+| `GET /api/categories` | `{ items }` |
+| `GET /api/vendors` | `{ items }` |
+
+Invalid input is rejected with a `400`, not silently corrected, so a typo is visible:
+unknown `sort`, non-integer or negative numerics, `min` above `max`, and `stock` outside
+`in`/`out` all fail. Every error uses one shape:
+
+```json
+{ "error": { "code": "bad_request", "message": "sort must be one of: popular, price, price-desc, name." } }
+```
+
+`src/lib/api/endpoints.ts` is the single source of paths. `createApi` in
+`src/lib/api/client.ts` is the typed client over axios; it normalises every failure to an
+`ApiError`. There are two instances: `browser.ts` makes real same-origin requests, and
+`server.ts` answers in-process so Server Components and `next build` never fetch their own
+HTTP server. Point `server.ts` at a real base URL and delete the adapter when a backend
+exists.
+
 ## Data
 
 `src/data/*.json` is shaped like an API response and read through `src/lib/catalogue.ts`.
@@ -69,6 +97,16 @@ holds sample reviews. Server pages call `getProducts`, `getProduct`, `getCategor
 stores hold only shape-validated lines and ids. `src/lib/photos.ts` holds the small photo
 metadata used by `next/image`.
 
+The catalogue module is server-only. `src/lib/catalogue.ts`, `src/lib/reviews.ts` and
+`src/lib/product-details.ts` begin with `import "server-only"`, so importing them from a
+client component fails the build instead of leaking the product JSON into a browser bundle.
+Client components import the pure helpers from `src/lib/variant.ts`, `src/lib/vendors.ts`
+and `src/lib/rating.ts`, and take product records as props.
+
+`/shop` query state is parsed once by a zod schema in `src/lib/shop-query.ts`. Unknown
+sorts, discounts, stock values, diet ids and overlong queries are dropped; the price range is
+clamped and ordered; the page is bounded by the real page count.
+
 `npm run check:data` validates the catalogue before every build: unique ids, known
 categories, vendors and photos, valid ratings and MRP, positive integer prices and weights,
 a supported unit, and at least one in-stock variant.
@@ -76,13 +114,26 @@ a supported unit, and at least one in-stock variant.
 ## Structure
 
 ```
-src/app/            routes, tokens, base styles
+src/app/            routes, tokens, base styles, error and loading boundaries
 src/components/     chrome, layout shells, home sections, product, cart, checkout, shop, ui
-src/lib/            catalogue, photos, money, diets, cart store, checkout validation, order totals
+src/lib/            catalogue (server-only), variant, vendors, rating, money, diets,
+                    cart store, checkout schema, shop-query schema, order totals
 src/data/           products, categories, vendors, photo credits
 public/photos/      local library photographs
 scripts/            data check, photo fetch, smoke and layout inspection
+tests/              node:test unit tests for stores, schemas and helpers
 ```
+
+## Tests
+
+```
+npm test
+```
+
+`node --test` with native TypeScript stripping runs the suite; no extra runtime is added.
+Coverage is the logic that protects the shop: cart-store validation, bounds, dedupe and
+legacy migration, the `/shop` URL parser, the checkout zod schema, and the pack/price and
+rating helpers.
 
 ## Design system
 
@@ -117,6 +168,7 @@ wishlist and account are `noindex`.
 ```bash
 npm run lint        # oxlint
 npm run typecheck   # tsc --noEmit
+npm test            # node:test unit suite
 npm run build       # data check + next build
 npm run smoke       # route status and h1s, against a running server
 npm run check:ui    # layout facts and screenshots (puppeteer-core)

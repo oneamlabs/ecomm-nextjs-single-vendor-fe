@@ -15,10 +15,9 @@ import { announce } from "@/lib/announce";
 import {
   defaultVariant,
   variantMrpCents,
-} from "@/lib/catalogue";
+} from "@/lib/variant";
 import { formatCount, formatPrice } from "@/lib/money";
-import type { ProductDetail } from "@/lib/product-details";
-import type { Product } from "@/lib/types";
+import type { Product, ProductDetail } from "@/lib/types";
 import { Rating } from "./rating";
 
 interface ProductBuyBoxProps {

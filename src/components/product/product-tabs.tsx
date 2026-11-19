@@ -11,9 +11,7 @@ import { useState } from "react";
 import { ProductPhoto } from "@/components/product/product-photo";
 import { Rating } from "@/components/product/rating";
 import { ReviewsSection } from "@/components/product/reviews-section";
-import type { ProductDetail } from "@/lib/product-details";
-import type { ProductReview } from "@/lib/reviews";
-import type { Product, Vendor } from "@/lib/types";
+import type { Product, ProductDetail, ProductReview, Vendor } from "@/lib/types";
 
 const FEATURE_ICONS = [LeafIcon, HeartbeatIcon, GrainsIcon, CookingPotIcon];
 

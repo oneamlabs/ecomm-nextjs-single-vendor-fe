@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/chrome/page-header";
 import { VendorCard } from "@/components/home/vendor-card";
 import { PageShell } from "@/components/layout/page-shell";
-import { getVendors } from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Vendors - Kraya",
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/vendors" },
 };
 
-export default function VendorsPage() {
-  const vendors = getVendors();
+export default async function VendorsPage() {
+  const { items: vendors } = await serverApi.getVendors();
 
   return (
     <PageShell>

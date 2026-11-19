@@ -1,13 +1,28 @@
+import "server-only";
+
 import categoriesJson from "@/data/categories.json";
 import productsJson from "@/data/products.json";
-import vendorsJson from "@/data/vendors.json";
-import type { Category, Product, Variant, Vendor } from "./types";
+import type { Category, Product, Variant } from "./types";
+import { discountPercent, lowestPriceCents } from "./variant";
+
+/**
+ * The data access layer for the catalogue. This module is server-only: it holds
+ * the product JSON, which must never be bundled into a client chunk.
+ * Client components import the pure helpers from `variant.ts`, `vendors.ts`,
+ * `money.ts` and `types.ts` instead, and receive product records as props.
+ */
 
 const products = productsJson.products as Product[];
 const categories = categoriesJson.categories as Category[];
-const vendors = vendorsJson.vendors as Vendor[];
 
+export { getVendor, getVendors } from "./vendors";
 export { getPhoto, hasPhoto } from "./photos";
+export {
+  defaultVariant,
+  discountPercent,
+  lowestPriceCents,
+  variantMrpCents,
+} from "./variant";
 
 export const CERTIFICATIONS = [
   { id: "organic-india", label: "Organic India" },
@@ -100,49 +115,12 @@ export function getCategory(id: string): Category | undefined {
   return categories.find((category) => category.id === id);
 }
 
-export function getVendors(): Vendor[] {
-  return vendors;
-}
-
-export function getVendor(id: string | undefined): Vendor | undefined {
-  return vendors.find((vendor) => vendor.id === id);
-}
-
 export function getVariants(): Variant[] {
   return products.flatMap((product) => product.variants);
 }
 
 export function findVariant(productId: string, variantId: string): Variant | undefined {
   return getProduct(productId)?.variants.find((variant) => variant.id === variantId);
-}
-
-export function lowestPriceCents(product: Product): number {
-  return Math.min(...product.variants.map((variant) => variant.priceCents));
-}
-
-export function defaultVariant(product: Product): Variant {
-  return product.variants.find((variant) => variant.inStock) ?? product.variants[0];
-}
-
-export function variantMrpCents(
-  product: Product,
-  variant: Variant,
-): number | undefined {
-  if (variant.mrpCents !== undefined) return variant.mrpCents;
-
-  if (product.mrpCents === undefined) return undefined;
-
-  const base = defaultVariant(product);
-  if (variant.id === base.id) return product.mrpCents;
-
-  return Math.round((product.mrpCents * variant.priceCents) / base.priceCents / 100) * 100;
-}
-
-export function discountPercent(product: Product): number | undefined {
-  if (!product.mrpCents) return undefined;
-  const price = defaultVariant(product).priceCents;
-  if (product.mrpCents <= price) return undefined;
-  return Math.round(((product.mrpCents - price) / product.mrpCents) * 100);
 }
 
 /**

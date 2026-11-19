@@ -7,3 +7,4 @@
 - Wants guard clauses instead of nesting, precise/disambiguated names, and no premature abstraction. Confidence: 0.55
 - Wants page chrome (header, footer) as flat full-bleed bands running edge to edge — no rounded panel container or shadow floating above the page edge. Confidence: 0.7
 - Judges UI work against fidelity to the reference image/design he supplied — a passing gate run does not count as success if the result doesn't visibly match the reference. Confidence: 0.6
+- Wants multi-step implementation work tracked in a persistent, actionable checklist-style markdown doc (ticked off as items land) rather than progress living only in chat. Confidence: 0.7

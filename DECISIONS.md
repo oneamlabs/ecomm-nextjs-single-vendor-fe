@@ -11,7 +11,31 @@ variant picker, cart, newsletter and wishlist. `params` and `searchParams` are a
 
 **JSON dressed as an API.** `src/data/*.json` is typed and read through
 `src/lib/catalogue.ts`. Components never import JSON directly; replacing the module with
-`fetch()` is the swap point.
+`fetch()` is the swap point. The catalogue module is **server-only**: it holds the product
+records, and marking it `import "server-only"` makes any accidental client import a build
+error. Client components receive product records as props and import only the pure helpers
+in `src/lib/variant.ts`, `src/lib/vendors.ts`, `src/lib/rating.ts`, `src/lib/money.ts` and
+`src/lib/types.ts`. This keeps the 11.7 KB catalogue out of the browser bundle; before this
+split the whole `products.json` was shipped in a client chunk.
+
+**A real HTTP surface over the mock data.** Route handlers under `/api` (`products`,
+`products/[id]`, `categories`, `vendors`) expose the catalogue as JSON with pagination,
+filtering and sorting. They wrap the same server-only data layer, so there is one source of
+truth and no duplicated query logic. Requests are typed and made through axios via
+`createApi`, with every failure normalised to one `ApiError` and one
+`{error: {code, message}}` body. Paths live only in `src/lib/api/endpoints.ts`.
+
+Two axios instances share that client. In the browser, same-origin calls go over real HTTP.
+On the server, an in-process adapter resolves the same paths against the same functions,
+because a Server Component fetching its own route handler needs an absolute origin that
+does not exist during `next build`, and a wrong base URL silently calls whatever else is on
+that port. Swapping to a real backend means deleting that adapter and setting a base URL.
+
+**One validated parser for URL state.** `/shop` filters, sort and page stay in the URL and
+are parsed by a single zod schema in `src/lib/shop-query.ts`. Every value is bounded and
+defaulted: an unknown sort falls back to popular, a bad discount or stock value is dropped,
+an overlong query is discarded, an inverted price range is swapped, and the page is clamped
+to the real page count. The page no longer carries its own `toArray`/`toNumber` helpers.
 
 **Multi-vendor sample data.** Four vendors and eighteen products across nine categories.
 Each product carries a vendor id, rating, review count, optional MRP, diet tags and packs.
@@ -22,11 +46,23 @@ render as INR with no decimals. No floating-point money.
 
 **Client stores hold minimal data.** The cart and saved list persist in `localStorage`
 through external stores. They keep shape-validated lines and ids, not catalogue records;
-server routes pass products in. Legacy storage keys are migrated on first read.
+server routes pass products in. Both are untrusted input: the cart is validated with zod on
+every restore, quantities are bounded at ten, duplicate lines are merged, and storage is a
+versioned envelope (`{version: 2, lines}`) that still reads the old bare-array shape. Legacy
+storage keys are migrated on first read.
+
+**One schema per form.** Checkout validation lives in a zod schema in `src/lib/checkout.ts`;
+`CheckoutValues` and `CheckoutDraft` are inferred from it and the form keeps its existing
+copy and focus-first-invalid behavior.
 
 **No backend.** Checkout validates like a real form and then states plainly that no order
 was placed. No fake success states, no invented reviews or metrics beyond the sample
-ratings and counts in the catalogue.
+ratings and counts in the catalogue. Because there is no server, the JSON catalogue stands
+in for the backend contract, and no client-computed total is treated as authoritative.
+
+**Error and loading boundaries.** `src/app/error.tsx` states a failure plainly and offers
+one retry through Next 16's `retry()`; `/shop` and `/shop/[id]` each have a `loading.tsx`
+skeleton that reserves layout rather than flashing empty.
 
 ## Design
 
