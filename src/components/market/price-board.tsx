@@ -17,7 +17,7 @@ export function PriceBoard({ product }: { product: Product }) {
       </div>
       <Link
         href={`/shop/${product.id}`}
-        className="link-quiet mt-4 font-body text-lg font-semibold"
+        className="link-quiet mt-4 inline-flex min-h-11 items-center font-body text-lg font-semibold"
       >
         {product.name}
       </Link>
@@ -25,17 +25,21 @@ export function PriceBoard({ product }: { product: Product }) {
 
       <fieldset className="mt-4">
         <legend className="sr-only">Pack size</legend>
-        <div className="flex flex-wrap gap-2">
+        <div className="seg flex flex-wrap gap-2">
           {product.variants.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={item.id === variant.id}
-              onClick={() => setVariantId(item.id)}
-              className="chip"
-            >
-              {item.label}
-            </button>
+            <div key={item.id} className="flex">
+              <input
+                type="radio"
+                name="price-board-pack"
+                id={`price-board-${item.id}`}
+                value={item.id}
+                checked={item.id === variant.id}
+                onChange={() => setVariantId(item.id)}
+              />
+              <label htmlFor={`price-board-${item.id}`} className="text-sm">
+                {item.label}
+              </label>
+            </div>
           ))}
         </div>
       </fieldset>
@@ -46,10 +50,6 @@ export function PriceBoard({ product }: { product: Product }) {
         </p>
         <p className="num mt-1 text-sm text-ink-2">{formatUnitRate(variant)}</p>
       </div>
-
-      <p aria-live="polite" className="sr-only">
-        {`${variant.label}: ${formatPrice(variant.priceCents)}, ${formatUnitRate(variant)}`}
-      </p>
     </div>
   );
 }

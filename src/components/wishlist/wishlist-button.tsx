@@ -1,5 +1,6 @@
 "use client";
 
+import { HeartIcon } from "@phosphor-icons/react";
 import { useSyncExternalStore } from "react";
 import {
   getServerWishlistSnapshot,
@@ -11,13 +12,11 @@ import {
 interface WishlistButtonProps {
   productId: string;
   name: string;
-  compact?: boolean;
 }
 
 export function WishlistButton({
   productId,
   name,
-  compact = false,
 }: WishlistButtonProps) {
   const ids = useSyncExternalStore(
     subscribeToWishlist,
@@ -34,22 +33,15 @@ export function WishlistButton({
         saved ? "from" : "to"
       } the saved list`}
       onClick={() => toggleWishlist(productId)}
-      className={`btn grid place-items-center p-0 ${
-        compact ? "min-h-11 w-11 md:min-h-9 md:w-9" : "min-h-11 w-11"
-      } ${saved ? "text-accent" : ""}`}
+      className={`btn grid min-h-11 w-11 place-items-center p-0 ${
+        saved ? "text-accent" : ""
+      }`}
     >
-      <svg
-        viewBox="0 0 24 24"
+      <HeartIcon
         aria-hidden="true"
-        className="size-5"
-        fill={saved ? "currentColor" : "none"}
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l8.84 8.84 8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
-      </svg>
+        size={20}
+        weight={saved ? "fill" : "regular"}
+      />
     </button>
   );
 }

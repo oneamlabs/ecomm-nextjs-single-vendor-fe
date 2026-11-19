@@ -29,3 +29,15 @@ Current engineering and design decisions for Kraya. Superseded decisions are rem
 **Photography.** Local library photographs in full colour, credited on `/credits`. No AI or invented imagery.
 
 **Motion.** CSS-only, transform and opacity, disabled under reduced motion. The highlights banner is manual and never autoplays.
+
+**Search is deferred by measurement, not by omission.** The catalogue is 12 items,
+`/shop` is 2.6 screens at 1440, every product is reachable in two clicks, and the home
+page names all of them. Add search when the catalogue passes roughly **40 SKUs**, or when
+`/shop` exceeds about **four screens** at 1440. When that happens, the entry point belongs
+in the shop toolbar (an `/shop?q=` filter), not the header, so it does not compete with
+Basket and Menu on small screens.
+
+**One merchandising home per product.** The home page may not show the same product as a
+card twice. The featured rail carries four pantry and drinks items at full size; the shelf
+index carries only the rest. Olive oil is the one exception: the hero price ticket is a
+readout of a live pack price, not a product card, so it also appears in the index.

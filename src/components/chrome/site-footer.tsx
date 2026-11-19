@@ -18,8 +18,8 @@ export function SiteFooter() {
               </Link>
             </div>
 
-            <nav aria-label="Footer" className="md:col-span-3">
-              <h2 className="font-body text-sm font-semibold text-ink tracking-normal leading-normal">Shop</h2>
+            <nav aria-labelledby="footer-shop" className="md:col-span-3">
+              <p id="footer-shop" className="text-sm font-semibold text-ink">Shop</p>
               <ul className="mt-4 space-y-2.5 text-sm text-ink-2">
                 <li>
                   <Link href="/shop" className="link-quiet inline-flex min-h-11 items-center">
@@ -54,8 +54,8 @@ export function SiteFooter() {
             </nav>
 
             <div className="md:col-span-3">
-              <h2 className="font-body text-sm font-semibold text-ink tracking-normal leading-normal">Visiting</h2>
-              <dl className="mt-4 space-y-2.5 text-sm text-ink-2">
+              <p id="footer-visiting" className="text-sm font-semibold text-ink">Visiting</p>
+              <dl aria-labelledby="footer-visiting" className="mt-4 space-y-2.5 text-sm text-ink-2">
                 <div>
                   <dt className="inline font-semibold text-ink">Address: </dt>
                   <dd className="inline">14 Row Street, Bristol BS1 4QA</dd>
@@ -79,7 +79,7 @@ export function SiteFooter() {
             >
               Photographs and credits
             </Link>
-            <p className="text-xs text-muted">
+            <p className="text-sm text-muted">
               A demo storefront. Prices are sample data, and no order is placed.
             </p>
           </div>

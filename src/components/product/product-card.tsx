@@ -68,11 +68,7 @@ export function ProductCard({
         )}
 
         <div className="absolute right-3 top-3">
-          <WishlistButton
-            productId={product.id}
-            name={product.name}
-            compact={compact}
-          />
+          <WishlistButton productId={product.id} name={product.name} />
         </div>
       </div>
 
@@ -108,6 +104,7 @@ export function ProductCard({
           variantId={defaultVariant.id}
           name={product.name}
           label={defaultVariant.label}
+          priceCents={defaultVariant.priceCents}
           soldOut={soldOut}
           compact={compact}
         />

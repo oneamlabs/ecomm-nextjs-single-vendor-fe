@@ -1,6 +1,12 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 interface CarouselProps {
   label: string;
@@ -10,7 +16,8 @@ interface CarouselProps {
 
 /**
  * A scroll-snap rail with two text controls. It scrolls horizontally by touch,
- * trackpad or keyboard, and the buttons move it one page at a time.
+ * trackpad or keyboard, and the buttons move it one page at a time. The
+ * controls disable at each end so the rail never pretends there is more.
  */
 export function Carousel({
   label,
@@ -18,6 +25,33 @@ export function Carousel({
   controlsClassName = "",
 }: CarouselProps) {
   const rail = useRef<HTMLElement>(null);
+  const [bounds, setBounds] = useState({ start: false, end: false });
+
+  const measure = useCallback(() => {
+    const element = rail.current;
+    if (!element) return;
+    const max = element.scrollWidth - element.clientWidth;
+    setBounds({
+      start: element.scrollLeft <= 1,
+      end: element.scrollLeft >= max - 1,
+    });
+  }, []);
+
+  useEffect(() => {
+    const element = rail.current;
+    if (!element) return;
+
+    measure();
+    element.addEventListener("scroll", measure, { passive: true });
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+
+    return () => {
+      element.removeEventListener("scroll", measure);
+      observer.disconnect();
+    };
+  }, [measure]);
 
   function step(direction: -1 | 1) {
     const element = rail.current;
@@ -37,6 +71,7 @@ export function Carousel({
           className="btn min-h-11 px-5 text-sm"
           onClick={() => step(-1)}
           aria-label="Previous items"
+          disabled={bounds.start}
         >
           Previous
         </button>
@@ -45,6 +80,7 @@ export function Carousel({
           className="btn min-h-11 px-5 text-sm"
           onClick={() => step(1)}
           aria-label="Next items"
+          disabled={bounds.end}
         >
           Next
         </button>

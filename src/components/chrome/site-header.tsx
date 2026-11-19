@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { CartCount } from "@/components/cart/cart-count";
-import { WishlistCount } from "@/components/wishlist/wishlist-count";
+import { NavLinks, NavList, type NavLinkItem } from "./nav-links";
 
-const links = [
+const links: NavLinkItem[] = [
   { href: "/shop", label: "Shop" },
   { href: "/shop?category=drinks", label: "Drinks" },
   { href: "/shop?category=fresh", label: "Fresh" },
@@ -14,10 +14,38 @@ const links = [
   { href: "/wishlist", label: "Saved" },
 ];
 
+/**
+ * The fallback renders the same list without a current item, so the header is
+ * complete in the server HTML and nothing shifts when the query resolves.
+ */
+function NavFallback({ mobile = false }: { mobile?: boolean }) {
+  return <NavList links={links} activeHref={null} mobile={mobile} />;
+}
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [menuOpenFor, setMenuOpenFor] = useState<string | null>(null);
   const menuOpen = menuOpenFor === pathname;
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Escape") return;
+      setMenuOpenFor(null);
+      toggleRef.current?.focus();
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    menuRef.current?.querySelector<HTMLElement>("a")?.focus();
+  }, [menuOpen]);
 
   return (
     <>
@@ -35,30 +63,16 @@ export function SiteHeader() {
               href="/"
               aria-label="Kraya, home"
               onClick={() => setMenuOpenFor(null)}
-              className="font-display text-base font-bold tracking-[-0.03em] md:text-lg"
+              className="inline-flex min-h-11 items-center font-display text-base font-bold tracking-[-0.03em] md:text-lg"
             >
               Kraya
             </Link>
 
             <nav aria-label="Main" className="hidden md:block">
               <ul className="flex items-center gap-1 text-sm">
-                {links.map((link) => {
-                  const active = pathname === link.href;
-                  return (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        aria-current={active ? "page" : undefined}
-                        className={`inline-flex items-center gap-1.5 rounded-[var(--radius-pill)] px-3.5 py-2 transition-colors duration-200 hover:bg-paper-2 ${
-                          active ? "bg-paper-2 text-ink" : "text-ink-2"
-                        }`}
-                      >
-                        {link.label}
-                        {link.href === "/wishlist" && <WishlistCount />}
-                      </Link>
-                    </li>
-                  );
-                })}
+                <Suspense fallback={<NavFallback />}>
+                  <NavLinks links={links} />
+                </Suspense>
               </ul>
             </nav>
 
@@ -72,6 +86,7 @@ export function SiteHeader() {
                 <CartCount />
               </Link>
               <button
+                ref={toggleRef}
                 type="button"
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
@@ -84,30 +99,20 @@ export function SiteHeader() {
           </div>
 
           <nav
+            ref={menuRef}
             id="mobile-menu"
             aria-label="Main, compact"
             hidden={!menuOpen}
             className="border-t border-rule py-3 md:hidden"
           >
             <ul className="grid gap-1 text-sm">
-              {links.map((link) => {
-                const active = pathname === link.href;
-                return (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      onClick={() => setMenuOpenFor(null)}
-                      aria-current={active ? "page" : undefined}
-                      className={`flex min-h-11 items-center justify-between rounded-[var(--radius-pill)] px-3 py-2.5 ${
-                        active ? "bg-paper-2 text-ink" : "text-ink-2 hover:bg-paper-2"
-                      }`}
-                    >
-                      <span>{link.label}</span>
-                      {link.href === "/wishlist" && <WishlistCount />}
-                    </Link>
-                  </li>
-                );
-              })}
+              <Suspense fallback={<NavFallback mobile />}>
+                <NavLinks
+                  links={links}
+                  mobile
+                  onNavigate={() => setMenuOpenFor(null)}
+                />
+              </Suspense>
             </ul>
           </nav>
         </div>

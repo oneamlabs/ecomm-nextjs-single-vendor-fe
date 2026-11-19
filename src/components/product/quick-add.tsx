@@ -2,21 +2,29 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
+import { announce } from "@/lib/announce";
+import { formatPrice } from "@/lib/money";
 
 interface QuickAddProps {
   productId: string;
   variantId: string;
   name: string;
   label: string;
+  priceCents: number;
   soldOut: boolean;
   compact?: boolean;
 }
 
+/**
+ * The button keeps a stable accessible name; the confirmation is announced once
+ * through the layout's single status region rather than a live region per card.
+ */
 export function QuickAdd({
   productId,
   variantId,
   name,
   label,
+  priceCents,
   soldOut,
   compact = false,
 }: QuickAddProps) {
@@ -34,32 +42,26 @@ export function QuickAdd({
   function add() {
     addLine(productId, variantId, 1);
     setAdded(true);
+    announce(
+      `${name}, ${label}, added to basket. ${formatPrice(priceCents)}.`,
+    );
     if (reset.current) window.clearTimeout(reset.current);
     reset.current = window.setTimeout(() => setAdded(false), 2000);
   }
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={add}
-        disabled={soldOut}
-        aria-label={
-          soldOut
-            ? `${name} is sold out`
-            : added
-              ? `Added ${name}, ${label} to cart`
-              : `Add ${name}, ${label} to cart`
-        }
-        className={`btn btn--primary flex-1 ${
-          compact ? "min-h-11 px-3 text-sm md:min-h-9" : "min-h-11 px-4 text-sm"
-        }`}
-      >
-        {soldOut ? "Sold out" : added ? "Added" : "Add to cart"}
-      </button>
-      <span aria-live="polite" className="sr-only">
-        {added ? `${name}, ${label} added to cart.` : ""}
-      </span>
-    </>
+    <button
+      type="button"
+      onClick={add}
+      disabled={soldOut}
+      aria-label={
+        soldOut ? `${name} is sold out` : `Add ${name}, ${label} to basket`
+      }
+      className={`btn btn--primary min-h-11 flex-1 ${
+        compact ? "px-3 text-sm" : "px-4 text-sm"
+      }`}
+    >
+      {soldOut ? "Sold out" : added ? "Added" : "Add to cart"}
+    </button>
   );
 }

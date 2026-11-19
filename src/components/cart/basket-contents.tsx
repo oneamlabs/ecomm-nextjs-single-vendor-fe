@@ -1,5 +1,6 @@
 "use client";
 
+import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useCart } from "@/components/cart/cart-provider";
 import { OrderSummaryRows } from "@/components/cart/order-summary-rows";
@@ -79,7 +80,7 @@ export function BasketContents({ products }: { products: Product[] }) {
                       aria-label={`One fewer ${product.name}, ${variant.label}`}
                       className="btn min-h-11 w-11 px-0"
                     >
-                      −
+                      <MinusIcon aria-hidden="true" size={16} />
                     </button>
                     <span className="num w-8 text-center">{line.quantity}</span>
                     <button
@@ -88,7 +89,7 @@ export function BasketContents({ products }: { products: Product[] }) {
                       aria-label={`One more ${product.name}, ${variant.label}`}
                       className="btn min-h-11 w-11 px-0"
                     >
-                      +
+                      <PlusIcon aria-hidden="true" size={16} />
                     </button>
                   </div>
 

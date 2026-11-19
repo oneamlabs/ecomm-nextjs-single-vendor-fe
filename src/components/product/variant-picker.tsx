@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { MinusIcon, PlusIcon } from "@phosphor-icons/react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { WishlistButton } from "@/components/wishlist/wishlist-button";
+import { announce } from "@/lib/announce";
 import { formatPrice, formatUnitRate } from "@/lib/money";
 import type { Product, Variant } from "@/lib/types";
 
@@ -17,6 +19,14 @@ export function VariantPicker({ product }: VariantPickerProps) {
   );
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const reset = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (reset.current) window.clearTimeout(reset.current);
+    },
+    [],
+  );
 
   const selected =
     product.variants.find((variant) => variant.id === selectedId) ?? product.variants[0];
@@ -30,6 +40,13 @@ export function VariantPicker({ product }: VariantPickerProps) {
   function add() {
     addLine(product.id, selected.id, quantity);
     setAdded(true);
+    announce(
+      `${quantity} × ${selected.label} of ${product.name} added to basket. ${formatPrice(
+        selected.priceCents * quantity,
+      )}.`,
+    );
+    if (reset.current) window.clearTimeout(reset.current);
+    reset.current = window.setTimeout(() => setAdded(false), 2500);
   }
 
   return (
@@ -69,10 +86,6 @@ export function VariantPicker({ product }: VariantPickerProps) {
         </p>
       </div>
 
-      <p aria-live="polite" className="sr-only">
-        {`${selected.label}: ${formatPrice(selected.priceCents)}, ${formatUnitRate(selected)}`}
-      </p>
-
       <div className="mt-5 flex flex-wrap items-end gap-3">
         <div>
           <p className="text-sm font-semibold text-muted">Quantity</p>
@@ -84,7 +97,7 @@ export function VariantPicker({ product }: VariantPickerProps) {
               aria-label="Decrease quantity"
               className="grid h-11 w-11 place-items-center text-lg disabled:opacity-40"
             >
-              −
+              <MinusIcon aria-hidden="true" size={16} />
             </button>
             <span className="num min-w-9 text-center text-sm">{quantity}</span>
             <button
@@ -94,7 +107,7 @@ export function VariantPicker({ product }: VariantPickerProps) {
               aria-label="Increase quantity"
               className="grid h-11 w-11 place-items-center text-lg disabled:opacity-40"
             >
-              +
+              <PlusIcon aria-hidden="true" size={16} />
             </button>
           </div>
         </div>
@@ -110,7 +123,7 @@ export function VariantPicker({ product }: VariantPickerProps) {
         <WishlistButton productId={product.id} name={product.name} />
       </div>
 
-      <p aria-live="polite" className="mt-3 min-h-[1lh] text-sm text-muted">
+      <p aria-live="off" className="mt-3 min-h-[1lh] text-sm text-muted">
         {added
           ? `Added ${quantity} × ${selected.label} to the basket.`
           : ""}

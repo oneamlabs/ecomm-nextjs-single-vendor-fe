@@ -3,6 +3,7 @@ import { Syne, DM_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/chrome/site-header";
 import { SiteFooter } from "@/components/chrome/site-footer";
+import { LiveStatus } from "@/components/ui/live-status";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 const display = Syne({
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <SiteFooter />
+        <LiveStatus />
       </body>
     </html>
   );

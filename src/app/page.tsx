@@ -12,33 +12,33 @@ import { formatPrice } from "@/lib/money";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import type { Product } from "@/lib/types";
 
-const HOME_PRODUCTS = [
-  "olive-oil",
+/**
+ * The large cards in "The range in packs". These four pantry and drinks
+ * provisions appear at full size here; the shelf index below carries only the
+ * ones this rail does not, so nothing is merchandised twice.
+ */
+const FEATURED_PRODUCTS = [
   "wildflower-honey",
   "medium-roast-coffee",
   "lemon-cordial",
-  "sourdough-loaf",
-  "beaufort-cheese",
+  "dark-chocolate",
 ];
 
-const CATEGORY_META: Record<string, { photo: string; alt: string; tone: string; dark: boolean }> = {
+const CATEGORY_META: Record<string, { photo: string; alt: string; tone: string }> = {
   pantry: {
     photo: "cacao-pod",
     alt: "A yellow cacao pod hanging from a tree trunk",
     tone: "shelf-pantry",
-    dark: false,
   },
   drinks: {
     photo: "coffee-roasted",
     alt: "Roasted coffee beans spread across a dark surface",
     tone: "shelf-drinks",
-    dark: false,
   },
   fresh: {
     photo: "sourdough-loaf",
     alt: "A round sourdough loaf with a scored crust",
     tone: "shelf-fresh",
-    dark: false,
   },
 };
 
@@ -47,25 +47,21 @@ const SHOP_FACTS = [
     title: "Weighing",
     line: "Weighed and labelled here.",
     tone: "shelf-pantry",
-    dark: false,
   },
   {
     title: "Cut-off",
     line: "Same day before 11:00, within eight miles.",
     tone: "shelf-drinks",
-    dark: false,
   },
   {
     title: "Delivery",
     line: "£3.50 under £40.",
     tone: "shelf-fresh",
-    dark: false,
   },
   {
     title: "Returns",
     line: "Replaced if it arrives wrong.",
     tone: "bg-paper-2",
-    dark: false,
   },
 ];
 
@@ -127,12 +123,20 @@ function lowestPrice(product: Product) {
 }
 
 export default function HomePage() {
-  const featured = HOME_PRODUCTS.map(getProduct).filter((product) => product !== undefined);
+  const featured = FEATURED_PRODUCTS.map(getProduct).filter(
+    (product) => product !== undefined,
+  );
+  const featuredIds = new Set(FEATURED_PRODUCTS);
   const oliveOil = getProduct("olive-oil")!;
   const categories = getCategories();
+  // The index carries only what the featured rail does not already show, so no
+  // product is merchandised twice. Olive oil stays here as well as in the hero
+  // ticket, which is a price readout rather than a product card.
   const shelves = categories.map((category) => ({
     category,
-    products: getProducts({ categoryId: category.id }),
+    products: getProducts({ categoryId: category.id }).filter(
+      (product) => !featuredIds.has(product.id),
+    ),
   }));
   const fresh = getProducts({ categoryId: "fresh" });
   const [freshLead, ...freshRest] = fresh;
@@ -190,15 +194,14 @@ export default function HomePage() {
             {categories.map((category) => {
               const meta = CATEGORY_META[category.id];
               const count = getProducts({ categoryId: category.id }).length;
-              const dark = meta?.dark ?? false;
 
               return (
                 <Link
                   key={category.id}
                   href={`/shop?category=${category.id}`}
-                  className={`group lift flex w-[82%] flex-col overflow-hidden rounded-[var(--radius-lg)] sm:w-[52%] lg:w-[31.5%] ${
+                  className={`group lift flex w-[82%] flex-col overflow-hidden rounded-[var(--radius-lg)] text-ink sm:w-[52%] lg:w-[31.5%] ${
                     meta?.tone ?? "bg-paper-2"
-                  } ${dark ? "text-paper" : "text-ink"}`}
+                  }`}
                 >
                   {meta && (
                     <ProductPhoto
@@ -212,17 +215,11 @@ export default function HomePage() {
                   <div className="flex flex-1 flex-col p-5">
                     <div className="flex items-start justify-between gap-4">
                       <h3 className="text-[length:var(--text-title)] font-bold">{category.name}</h3>
-                      <span
-                        className={`num text-sm font-semibold ${
-                          dark ? "text-paper" : "text-ink-2"
-                        }`}
-                      >
+                      <span className="num text-sm font-semibold text-ink-2">
                         {count} {count === 1 ? "item" : "items"}
                       </span>
                     </div>
-                    <p
-                      className={`mt-2 max-w-[34ch] text-sm ${dark ? "text-paper" : "text-ink-2"}`}
-                    >
+                    <p className="mt-2 max-w-[34ch] text-sm text-ink-2">
                       {category.summary}
                     </p>
                     <span className="mt-auto pt-5 text-sm font-semibold">
@@ -246,7 +243,10 @@ export default function HomePage() {
         <div className="mt-8">
           <Carousel label="Featured provisions">
             {featured.map((product) => (
-              <div key={product.id} className="w-[72%] sm:w-[42%] lg:w-[23.5%]">
+              <div
+                key={product.id}
+                className="w-[72%] sm:w-[42%] lg:w-[calc((100%-3*var(--space-md))/4)]"
+              >
                 <ProductCard product={product} />
               </div>
             ))}
@@ -261,14 +261,10 @@ export default function HomePage() {
           {SHOP_FACTS.map((fact) => (
             <div
               key={fact.title}
-              className={`rounded-[var(--radius-lg)] p-7 md:p-9 ${
-                fact.tone
-              } ${fact.dark ? "text-paper" : "text-ink"}`}
+              className={`rounded-[var(--radius-lg)] p-7 text-ink md:p-9 ${fact.tone}`}
             >
               <h3 className="text-[length:var(--text-title)] font-bold">{fact.title}</h3>
-              <p className={`mt-3 max-w-[40ch] ${fact.dark ? "text-paper" : "text-ink-2"}`}>
-                {fact.line}
-              </p>
+              <p className="mt-3 max-w-[40ch] text-ink-2">{fact.line}</p>
             </div>
           ))}
         </div>
@@ -326,7 +322,7 @@ export default function HomePage() {
       <Section>
         <SectionHeader
           title="The pantry and drinks shelves"
-          lede="Nine provisions here; the fresh counter is just above."
+          lede="The rest of both shelves; four more are on the rail above."
         />
 
         <div className="mt-8 grid gap-10 md:grid-cols-2">
@@ -341,7 +337,7 @@ export default function HomePage() {
                 <Link
                   href={`/shop?category=${category.id}`}
                   aria-label={`Browse ${category.name.toLowerCase()}`}
-                  className="link-quiet inline-flex min-h-11 items-center text-sm font-semibold"
+                  className="link-quiet inline-flex min-h-11 min-w-11 items-center justify-end text-sm font-semibold"
                 >
                   Browse
                 </Link>

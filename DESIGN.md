@@ -10,7 +10,6 @@ Colour and type live in `src/app/tokens.css`. Components read tokens; no literal
 | --- | --- |
 | `--color-paper` | cool white page |
 | `--color-paper-2` | quiet panels and footer |
-| `--color-paper-3` | pressed and hovered surfaces |
 | `--color-ink` | near-black navy for type |
 | `--color-ink-2` | secondary type |
 | `--color-muted` | metadata and captions |
@@ -78,6 +77,8 @@ The home highlight banner may use 36-60. The footer wordmark may use 40-72. Noth
 
 ### Home
 Banner strip, split photo-led hero with the live price ticket, facts ticker, three shelf cards, highlights banner, range rail, weighing tiles, fresh feature, and the pantry/drinks shelf index. The fresh counter above is the only place the three fresh items appear in the index. Cards use Add to cart and the heart.
+
+Each product has one merchandising home. The range rail carries four pantry and drinks provisions at full size; the shelf index carries only the ones the rail does not, so nothing is shown as a card twice. Olive oil appears in both the hero ticket and the index: the ticket is a live price readout, not a product card.
 
 ### Shop
 `PageHeader` at 40. A sticky sidebar: shelf radios with counts, diet checkboxes with counts (multi-select), and a short service note. The results toolbar carries the count, removable filter chips, Clear all and the sort select. The grid is four cards at xl, three at lg, two at sm. Cards show the shelf label, heart, origin, full title, from-price, unit price, full pack list and diet line.

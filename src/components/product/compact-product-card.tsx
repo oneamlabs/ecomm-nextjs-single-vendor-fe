@@ -54,10 +54,11 @@ export function CompactProductCard({ product }: CompactProductCardProps) {
           variantId={defaultVariant.id}
           name={product.name}
           label={defaultVariant.label}
+          priceCents={defaultVariant.priceCents}
           soldOut={soldOut}
           compact
         />
-        <WishlistButton productId={product.id} name={product.name} compact />
+        <WishlistButton productId={product.id} name={product.name} />
       </div>
     </article>
   );
