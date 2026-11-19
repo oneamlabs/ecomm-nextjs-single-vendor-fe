@@ -1,134 +1,129 @@
 import Link from "next/link";
+import { defaultVariant, discountPercent, getVendor } from "@/lib/catalogue";
 import { formatPrice } from "@/lib/money";
 import type { Product } from "@/lib/types";
 import { WishlistButton } from "@/components/wishlist/wishlist-button";
 import { ProductPhoto } from "./product-photo";
 import { QuickAdd } from "./quick-add";
-
-const shelfTone: Record<string, string> = {
-  pantry: "shelf-pantry",
-  drinks: "shelf-drinks",
-  fresh: "shelf-fresh",
-};
-
-const shelfLabel: Record<string, string> = {
-  pantry: "Pantry",
-  drinks: "Drinks",
-  fresh: "Fresh",
-};
+import { Rating } from "./rating";
 
 interface ProductCardProps {
   product: Product;
   priority?: boolean;
   compact?: boolean;
+  /** The catalogue card carries the default pack size. */
+  showPack?: boolean;
+  /** The catalogue card names the seller. */
+  showVendor?: boolean;
 }
 
 /**
- * A card rather than a flat block: the photograph sits in a tinted well and the
- * card carries its own surface and hairline, so a grid of these reads as objects
- * on the page instead of photos dropped onto it.
+ * The marketplace card: a white framed surface, a square packshot, a discount
+ * badge, a heart, the rating and a full-width Add to Cart.
  */
 export function ProductCard({
   product,
   priority = false,
   compact = false,
+  showPack = false,
+  showVendor = false,
 }: ProductCardProps) {
-  const prices = product.variants.map((variant) => variant.priceCents);
-  const lowest = Math.min(...prices);
-  const soldOut = product.variants.every((variant) => !variant.inStock);
-  const defaultVariant =
-    product.variants.find((variant) => variant.inStock) ?? product.variants[0];
-  const tone = shelfTone[product.categoryId] ?? "bg-paper-2";
-  const packs = product.variants.map((variant) => variant.label).join(" · ");
-  const per100 = Math.round(
-    (defaultVariant.priceCents / defaultVariant.netAmount) * 100,
-  );
-  const labels = [
-    ...(product.organic ? ["Organic"] : []),
-    ...product.tags.map(tagLabel),
-  ];
-  const categoryName = shelfLabel[product.categoryId];
+  const variant = defaultVariant(product);
+  const soldOut = product.variants.every((item) => !item.inStock);
+  const discount = discountPercent(product);
+  const vendor = getVendor(product.vendorId);
 
   return (
-    <article className="group lift flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] bg-paper shadow-card ring-1 ring-rule">
-      <div className={`relative ${tone}`}>
-        <Link href={`/shop/${product.id}`} className="block">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[var(--radius-md)] border border-rule bg-paper transition duration-300 hover:border-accent-line hover:shadow-lift">
+      <div className={`relative bg-paper-2 ${compact ? "p-2.5" : "p-3"}`}>
+        <Link href={`/shop/${product.id}`} aria-label={product.name}>
           <ProductPhoto
             photoKey={product.photo}
             alt={product.photoAlt}
             sizes={
               compact
-                ? "(min-width: 80rem) 16vw, (min-width: 64rem) 20vw, (min-width: 40rem) 42vw, 72vw"
-                : "(min-width: 64rem) 23vw, (min-width: 40rem) 42vw, 72vw"
+                ? "(min-width: 96rem) 15vw, (min-width: 80rem) 16vw, (min-width: 64rem) 20vw, (min-width: 40rem) 42vw, 45vw"
+                : "(min-width: 80rem) 18vw, (min-width: 64rem) 20vw, (min-width: 40rem) 30vw, 45vw"
             }
             priority={priority}
-            className={`rounded-none shadow-none transition-transform duration-500 group-hover:scale-[1.03] ${
-              compact ? "aspect-[16/10]" : "aspect-[4/3]"
-            }`}
+            className="aspect-square rounded-[var(--radius-sm)] shadow-none transition-transform duration-500 group-hover:scale-[1.03]"
           />
         </Link>
 
-        {categoryName && (
-          <span className="tag absolute left-3 top-3 shadow-card">{categoryName}</span>
+        {discount !== undefined && (
+          <span className="absolute left-2.5 top-2.5 rounded-[var(--radius-sm)] bg-accent px-1.5 py-0.5 text-[11px] font-bold leading-tight text-accent-ink">
+            -{discount}%
+          </span>
         )}
 
-        <div className="absolute right-3 top-3">
+        <div className="absolute right-2.5 top-2.5">
           <WishlistButton productId={product.id} name={product.name} />
         </div>
 
         {soldOut && (
-          <span className="absolute inset-x-0 bottom-0 bg-ink/85 py-1.5 text-center text-sm font-semibold text-paper">
+          <span className="absolute inset-x-0 bottom-0 bg-ink/80 py-1 text-center text-xs font-semibold text-paper">
             Sold out
           </span>
         )}
       </div>
 
-      <Link
-        href={`/shop/${product.id}`}
-        className={`flex flex-1 flex-col pt-3 ${compact ? "px-3" : "px-4"}`}
-      >
-        <p className="text-sm text-muted">{product.origin}</p>
-        <h3
-          className={`mt-1 min-h-[2.1em] leading-snug ${compact ? "text-lg" : "text-[length:var(--text-title)]"}`}
+      <div className={`flex flex-1 flex-col ${compact ? "p-2.5 pt-2" : "p-3 pt-2.5"}`}>
+        <Link
+          href={`/shop/${product.id}`}
+          className={`line-clamp-2 min-h-[2.6em] font-semibold leading-snug text-ink transition-colors hover:text-accent ${
+            compact ? "text-sm" : "text-[0.9375rem]"
+          }`}
         >
           {product.name}
-        </h3>
+        </Link>
 
-        <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2">
-          <p className={`num font-semibold text-ink ${compact ? "text-md" : "text-lg"}`}>
-            from {formatPrice(lowest)}
-          </p>
-          <p className="num text-sm text-muted">
-            {formatPrice(per100)} / 100 {defaultVariant.netUnit}
-          </p>
+        {showPack && (
+          <p className="mt-1 text-xs text-muted">{variant.label}</p>
+        )}
+
+        <Rating
+          rating={product.rating}
+          reviewCount={product.reviewCount}
+          className="mt-1"
+        />
+
+        <div className="mt-1.5 flex flex-wrap items-baseline gap-x-1.5">
+          <span className="text-base font-bold text-ink">
+            {formatPrice(variant.priceCents)}
+          </span>
+          {product.mrpCents !== undefined && product.mrpCents > variant.priceCents && (
+            <span className="text-xs text-muted line-through">
+              {formatPrice(product.mrpCents)}
+            </span>
+          )}
         </div>
 
-        {/* The rail needs the pack list to price-scan; a related-product
-            carousel on a product page does not, and the extra lines are what
-            make a compact card stop being compact. */}
-        {!compact && (
-          <>
-            <p className="mt-1.5 line-clamp-2 text-sm text-ink-2">{packs}</p>
-            <p className="mt-1 text-sm text-muted">{labels.join(" · ")}</p>
-          </>
+        {showVendor && vendor && (
+          <p className="mt-2 flex items-center gap-1 text-xs font-medium text-accent">
+            <svg
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+              className="size-3.5 shrink-0"
+            >
+              <path d="M10 2c3.5 2.2 5.6 5.3 5.6 9.1 0 3-2.4 5.4-5.6 6.9-3.2-1.5-5.6-3.9-5.6-6.9C4.4 7.3 6.5 4.2 10 2zm0 3.2c-1.9 1.5-3 3.5-3 5.9 0 1.7 1.2 3.1 3 4.1 1.8-1 3-2.4 3-4.1 0-2.4-1.1-4.4-3-5.9z" />
+            </svg>
+            {vendor.name}
+          </p>
         )}
-      </Link>
 
-      <div className={`mt-auto flex pt-3 ${compact ? "px-3 pb-3" : "px-4 pb-4"}`}>
-        <QuickAdd
-          productId={product.id}
-          variantId={defaultVariant.id}
-          name={product.name}
-          label={defaultVariant.label}
-          priceCents={defaultVariant.priceCents}
-          soldOut={soldOut}
-          compact={compact}
-        />
+        <div className="mt-auto pt-3">
+          <QuickAdd
+            productId={product.id}
+            variantId={variant.id}
+            name={product.name}
+            label={variant.label}
+            priceCents={variant.priceCents}
+            soldOut={soldOut}
+            compact={compact}
+          />
+        </div>
       </div>
     </article>
   );
-}
-
-function tagLabel(tag: string) {
-  return tag === "gluten-free" ? "Gluten-free" : tag.charAt(0).toUpperCase() + tag.slice(1);
 }

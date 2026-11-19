@@ -3,10 +3,20 @@ const BASE = process.env.SMOKE_URL ?? "http://localhost:3100";
 const ROUTES = [
   "/",
   "/shop",
-  "/shop?category=drinks",
+  "/shop?category=beverages",
   "/shop?tag=vegan&sort=price",
-  "/shop/olive-oil",
-  "/shop/beaufort-cheese",
+  "/shop?vendor=pahadi-organics",
+  "/shop?q=oats",
+  "/shop?diet=vegan",
+  "/shop?certification=usda-organic",
+  "/shop?discount=20&sort=price",
+  "/shop?min=200&max=500",
+  "/shop?page=2",
+  "/shop/organic-red-quinoa",
+  "/shop/a2-desi-ghee",
+  "/vendors",
+  "/sell",
+  "/policies",
   "/basket",
   "/checkout",
   "/shop/does-not-exist",
@@ -40,7 +50,7 @@ const results = await Promise.all(
 for (const result of results) {
   console.log(
     String(result.status).padEnd(4),
-    result.route.padEnd(30),
+    result.route.padEnd(34),
     `${result.ms}ms`.padEnd(7),
     result.h1,
   );

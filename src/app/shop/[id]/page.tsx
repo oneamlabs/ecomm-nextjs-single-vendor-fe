@@ -4,8 +4,16 @@ import { notFound } from "next/navigation";
 import { PageShell } from "@/components/layout/page-shell";
 import { ProductGrid } from "@/components/product/product-grid";
 import { ProductGallery } from "@/components/product/product-gallery";
+import { Rating } from "@/components/product/rating";
 import { VariantPicker } from "@/components/product/variant-picker";
-import { getCategory, getPhoto, getProduct, getProducts } from "@/lib/catalogue";
+import {
+  getCategory,
+  getPhoto,
+  getProduct,
+  getProducts,
+  getVendor,
+} from "@/lib/catalogue";
+import { dietLabel } from "@/lib/diets";
 import { formatPrice } from "@/lib/money";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -60,6 +68,7 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
   if (!product) notFound();
 
   const category = getCategory(product.categoryId);
+  const vendor = getVendor(product.vendorId);
   const related = getProducts({ categoryId: product.categoryId })
     .filter((item) => item.id !== product.id)
     .slice(0, 3);
@@ -80,15 +89,16 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
           }
         : {
             key: "market-stall",
-            alt: "A sunlit market stall under green canopies, with crates of tomatoes, lemons and greens",
+            alt: "A sunlit market stall under green canopies, with crates of produce",
             label: "In context",
           },
   ];
   const prices = product.variants.map((variant) => variant.priceCents / 100);
-  const labels = [
+  const labels = uniqueLabels([
     ...(product.organic ? ["Organic"] : []),
     ...product.tags.map(tagLabel),
-  ];
+    ...(product.diets ?? []).map(dietLabel),
+  ]);
   const productJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -105,9 +115,9 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
           : undefined,
         offers: {
           "@type": "AggregateOffer",
-          priceCurrency: "GBP",
-          lowPrice: Math.min(...prices).toFixed(2),
-          highPrice: Math.max(...prices).toFixed(2),
+          priceCurrency: "INR",
+          lowPrice: Math.min(...prices).toFixed(0),
+          highPrice: Math.max(...prices).toFixed(0),
           offerCount: product.variants.length,
           availability: product.variants.some((variant) => variant.inStock)
             ? "https://schema.org/InStock"
@@ -179,6 +189,17 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
           {category && <p className="tag">{category.name}</p>}
           <p className="mt-3 text-sm text-muted">{product.origin}</p>
           <h1 className="mt-2 text-[length:var(--text-page-title)]">{product.name}</h1>
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <Rating rating={product.rating} reviewCount={product.reviewCount} />
+            {vendor && (
+              <Link
+                href={`/shop?vendor=${vendor.id}`}
+                className="link-quiet text-xs font-semibold text-accent"
+              >
+                Sold by {vendor.name}
+              </Link>
+            )}
+          </div>
           <p className="lead mt-4 max-w-[44ch] text-ink-2">{product.summary}</p>
           <p className="mt-3 text-sm text-muted">{labels.join(" · ")}</p>
 
@@ -226,8 +247,8 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
           <div className="panel-quiet p-6 md:col-span-4">
             <h2 className="text-sm font-semibold text-ink">Delivery and returns</h2>
             <ul className="mt-3 space-y-2 text-sm leading-relaxed text-ink-2">
-              <li>Free delivery over £40; £3.50 under £40.</li>
-              <li>Order by 11:00 for same-day within eight miles.</li>
+              <li>Free delivery over ₹999; ₹49 under ₹999.</li>
+              <li>Delivered in 3 to 5 days across India.</li>
               <li>Replaced if it arrives wrong.</li>
             </ul>
           </div>
@@ -247,5 +268,16 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
 }
 
 function tagLabel(tag: string) {
-  return tag === "gluten-free" ? "Gluten-free" : tag.charAt(0).toUpperCase() + tag.slice(1);
+  return dietLabel(tag);
+}
+
+function uniqueLabels(values: string[]) {
+  const seen = new Set<string>();
+
+  return values.filter((value) => {
+    const key = value.toLowerCase().replace(/[^a-z]/g, "");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }

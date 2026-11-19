@@ -1,0 +1,44 @@
+{
+  "vendors": [
+    {
+      "id": "pahadi-organics",
+      "name": "Pahadi Organics",
+      "location": "Uttarakhand",
+      "rating": 4.8,
+      "reviewCount": 2400,
+      "summary": "Hill-grown grains, honey and spices from smallholder farms.",
+      "bannerPhoto": "lavender-field",
+      "logoPhoto": "apples-crate"
+    },
+    {
+      "id": "vindhya-naturals",
+      "name": "Vindhya Naturals",
+      "location": "Madhya Pradesh",
+      "rating": 4.7,
+      "reviewCount": 1900,
+      "summary": "Pulses, cold-pressed oils and jaggery from the Vindhya belt.",
+      "bannerPhoto": "market-stall",
+      "logoPhoto": "spices-dark"
+    },
+    {
+      "id": "desiroots",
+      "name": "DesiRoots",
+      "location": "Rajasthan",
+      "rating": 4.8,
+      "reviewCount": 3100,
+      "summary": "Traditional ghee, oils and pantry staples made the slow way.",
+      "bannerPhoto": "apples-crate",
+      "logoPhoto": "honeycomb-frame"
+    },
+    {
+      "id": "greenharvest",
+      "name": "GreenHarvest",
+      "location": "Karnataka",
+      "rating": 4.6,
+      "reviewCount": 1500,
+      "summary": "Breakfast staples, coffees and snack mixes packed fresh.",
+      "bannerPhoto": "lavender-field",
+      "logoPhoto": "sourdough-loaf"
+    }
+  ]
+}

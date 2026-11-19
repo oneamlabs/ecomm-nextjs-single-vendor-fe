@@ -9,7 +9,8 @@ const OUT = "screenshots";
 const ROUTES = [
   { path: "/", name: "home" },
   { path: "/shop", name: "shop" },
-  { path: "/shop/olive-oil", name: "product" },
+  { path: "/shop/organic-red-quinoa", name: "product" },
+  { path: "/vendors", name: "vendors" },
   { path: "/basket", name: "basket" },
   { path: "/checkout", name: "checkout" },
 ];

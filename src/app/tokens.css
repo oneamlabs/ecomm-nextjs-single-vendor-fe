@@ -1,61 +1,65 @@
 @theme static {
-  --text-xs: 0.8125rem;
-  --text-sm: 0.9375rem;
-  --text-md: 1.0625rem;
-  --text-lg: 1.25rem;
-  --text-xl: 1.5rem;
-  --text-2xl: 1.875rem;
-  --text-3xl: 2.25rem;
-  --text-display-s: clamp(2.5rem, 4vw + 1rem, 4.25rem);
-  --text-display: clamp(3rem, 6vw + 1rem, 5.75rem);
-  --text-display-xl: clamp(3.75rem, 9vw + 1rem, 9rem);
-  --text-section: clamp(2.25rem, 3vw + 1rem, 3.75rem);
-  --text-section-s: clamp(1.25rem, 0.8vw + 1rem, 1.5rem);
-  --text-page-title: clamp(2rem, 2vw + 1rem, 2.5rem);
-  --text-price: clamp(1.5rem, 1vw + 1rem, 1.75rem);
-  --text-title: clamp(1.25rem, 0.6vw + 1rem, 1.5rem);
-  --text-lead: clamp(1.125rem, 0.4vw + 1rem, 1.25rem);
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-display-s: clamp(2rem, 3vw + 1rem, 3rem);
+  --text-display: clamp(2.5rem, 4vw + 1rem, 3.75rem);
+  --text-display-xl: clamp(3rem, 7vw + 1rem, 6rem);
+  --text-section: clamp(1.5rem, 1.5vw + 1rem, 2rem);
+  --text-section-s: clamp(1.125rem, 0.6vw + 1rem, 1.25rem);
+  --text-page-title: clamp(1.75rem, 1.2vw + 1rem, 2.25rem);
+  --text-price: clamp(1.125rem, 0.6vw + 1rem, 1.25rem);
+  --text-title: 1rem;
+  --text-lead: clamp(1rem, 0.35vw + 1rem, 1.0625rem);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
-  --color-paper: oklch(99% 0.003 250);
-  --color-paper-2: oklch(96% 0.008 250);
-  --color-ink: oklch(20% 0.045 265);
-  --color-ink-2: oklch(35% 0.04 265);
-  --color-muted: oklch(48% 0.02 265);
-  --color-rule: oklch(20% 0.045 265 / 0.12);
-  --color-rule-2: oklch(20% 0.045 265 / 0.07);
-  --color-rule-strong: oklch(20% 0.045 265 / 0.5);
+  --color-paper: oklch(100% 0 0);
+  --color-paper-2: oklch(97.2% 0.012 95);
+  --color-cream: oklch(98% 0.016 92);
+  --color-ink: oklch(25% 0.035 155);
+  --color-ink-2: oklch(38% 0.03 155);
+  --color-muted: oklch(52% 0.025 155);
+  --color-rule: oklch(25% 0.035 155 / 0.12);
+  --color-rule-2: oklch(25% 0.035 155 / 0.07);
+  --color-rule-strong: oklch(25% 0.035 155 / 0.45);
 
-  --color-accent: oklch(55% 0.19 30);
-  --color-accent-hover: oklch(50% 0.19 30);
-  --color-accent-ink: oklch(99% 0.003 80);
-  --color-accent-soft: oklch(96% 0.015 30);
-  --color-accent-line: oklch(55% 0.19 30 / 0.24);
+  --color-accent: oklch(47% 0.12 150);
+  --color-accent-hover: oklch(41% 0.12 150);
+  --color-accent-ink: oklch(100% 0 0);
+  --color-accent-soft: oklch(96% 0.028 145);
+  --color-accent-line: oklch(47% 0.12 150 / 0.22);
+  --color-forest: oklch(32% 0.07 155);
+  --color-forest-2: oklch(27% 0.06 155);
+  --color-tint: oklch(96.5% 0.024 140);
+  --color-star: oklch(76% 0.14 78);
+  --color-sale: oklch(54% 0.17 28);
+  --color-sale-soft: oklch(95% 0.03 28);
 
-  --color-shelf-pantry: oklch(94% 0.045 95);
-  --color-shelf-drinks: oklch(93% 0.04 260);
-  --color-shelf-fresh: oklch(94% 0.035 30);
-
-  --color-focus: oklch(20% 0.045 265);
+  --color-focus: oklch(32% 0.07 155);
   --color-error: oklch(52% 0.2 27);
   --color-error-soft: oklch(52% 0.2 27 / 0.12);
 
-  --font-display: var(--font-syne), ui-sans-serif, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-body: var(--font-dm-sans), ui-sans-serif, sans-serif;
-  --font-outlier: var(--font-plex-mono), ui-monospace, monospace;
+  --font-outlier: var(--font-dm-sans), ui-sans-serif, sans-serif;
 
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 18px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --radius-pill: 999px;
 
-  --shadow-card: 0 1px 2px oklch(21% 0.035 165 / 0.05), 0 10px 24px -18px oklch(21% 0.035 165 / 0.2);
-  --shadow-lift: 0 30px 80px oklch(21% 0.035 165 / 0.16);
+  --shadow-card: 0 1px 2px oklch(25% 0.035 155 / 0.04), 0 8px 22px -16px oklch(25% 0.035 155 / 0.18);
+  --shadow-lift: 0 26px 60px -24px oklch(25% 0.035 155 / 0.22);
+  --shadow-sale: 0 8px 22px -12px oklch(47% 0.12 150 / 0.45);
 
-  --tracking-display: -0.035em;
+  --tracking-display: -0.02em;
 }
 
 :root {
@@ -73,12 +77,12 @@
   --dur-micro: 140ms;
   --dur-short: 260ms;
   --dur-long: 520ms;
-  --container: 1440px;
-  --gutter: 48px;
-  --gap-columns: 32px;
-  --section-gap-s: clamp(2rem, 2.5vw, 2.5rem);
-  --section-gap: clamp(2.5rem, 3vw, 3rem);
-  --section-gap-l: clamp(3.5rem, 4.5vw, 4.5rem);
+  --container: 1400px;
+  --gutter: 40px;
+  --gap-columns: 24px;
+  --section-gap-s: clamp(1.75rem, 2vw, 2.25rem);
+  --section-gap: clamp(2.25rem, 2.5vw, 2.75rem);
+  --section-gap-l: clamp(3rem, 3.5vw, 3.75rem);
   --z-base: 1;
   --z-raised: 10;
   --z-dropdown: 100;
@@ -89,19 +93,19 @@
   --z-tooltip: 600;
   --rule-hair: 1px;
   --rule-heavy: 2px;
-  --display-weight: 700;
-  --nav-height: 76px;
+  --display-weight: 600;
+  --nav-height: 68px;
 }
 
 @media (max-width: 60rem) {
   :root {
-    --gutter: 24px;
+    --gutter: 20px;
   }
 }
 
 @media (max-width: 40rem) {
   :root {
-    --gutter: 20px;
-    --gap-columns: 16px;
+    --gutter: 16px;
+    --gap-columns: 12px;
   }
 }

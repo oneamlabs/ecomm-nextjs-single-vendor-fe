@@ -31,6 +31,10 @@ export function VariantPicker({ product }: VariantPickerProps) {
   const selected =
     product.variants.find((variant) => variant.id === selectedId) ?? product.variants[0];
   const soldOut = !selected.inStock;
+  const showMrp =
+    product.mrpCents !== undefined &&
+    product.mrpCents > selected.priceCents &&
+    selected.id === product.variants[0].id;
 
   function select(variant: Variant) {
     setSelectedId(variant.id);
@@ -41,7 +45,7 @@ export function VariantPicker({ product }: VariantPickerProps) {
     addLine(product.id, selected.id, quantity);
     setAdded(true);
     announce(
-      `${quantity} × ${selected.label} of ${product.name} added to basket. ${formatPrice(
+      `${quantity} × ${selected.label} of ${product.name} added to cart. ${formatPrice(
         selected.priceCents * quantity,
       )}.`,
     );
@@ -78,7 +82,16 @@ export function VariantPicker({ product }: VariantPickerProps) {
 
       <div className="mt-5 flex flex-wrap items-end justify-between gap-4 border-y border-rule py-5">
         <div>
-          <p className="num text-[length:var(--text-price)] font-semibold">{formatPrice(selected.priceCents)}</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-[length:var(--text-price)] font-bold text-ink">
+              {formatPrice(selected.priceCents)}
+            </p>
+            {showMrp && (
+              <p className="text-sm text-muted line-through">
+                {formatPrice(product.mrpCents!)}
+              </p>
+            )}
+          </div>
           <p className="num mt-1 text-sm text-muted">{formatUnitRate(selected)}</p>
         </div>
         <p className="text-sm text-muted">
@@ -89,7 +102,7 @@ export function VariantPicker({ product }: VariantPickerProps) {
       <div className="mt-5 flex flex-wrap items-end gap-3">
         <div>
           <p className="text-sm font-semibold text-muted">Quantity</p>
-          <div className="mt-2 flex h-11 items-center rounded-[var(--radius-md)] border border-rule">
+          <div className="mt-2 flex h-11 items-center rounded-[var(--radius-sm)] border border-rule">
             <button
               type="button"
               onClick={() => setQuantity((value) => Math.max(1, value - 1))}
@@ -118,20 +131,20 @@ export function VariantPicker({ product }: VariantPickerProps) {
           disabled={soldOut}
           className="btn btn--primary min-h-11 flex-1"
         >
-          {soldOut ? "Out of stock" : "Add to basket"}
+          {soldOut ? "Out of stock" : "Add to Cart"}
         </button>
         <WishlistButton productId={product.id} name={product.name} />
       </div>
 
       <p aria-live="off" className="mt-3 min-h-[1lh] text-sm text-muted">
         {added
-          ? `Added ${quantity} × ${selected.label} to the basket.`
+          ? `Added ${quantity} × ${selected.label} to the cart.`
           : ""}
       </p>
 
       <p className="mt-4 text-sm leading-relaxed text-muted">
-        Free delivery over £40; £3.50 under. Order by 11:00 for same-day within
-        eight miles. Replaced if it arrives wrong.
+        Free delivery over ₹999; ₹49 under. Delivered in 3 to 5 days across
+        India. Replaced if it arrives wrong.
       </p>
     </div>
   );

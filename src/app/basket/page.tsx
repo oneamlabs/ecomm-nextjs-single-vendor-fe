@@ -5,8 +5,8 @@ import { BasketContents } from "@/components/cart/basket-contents";
 import { getProducts } from "@/lib/catalogue";
 
 export const metadata: Metadata = {
-  title: "Basket - Kraya",
-  description: "The items in your basket, with delivery and the total.",
+  title: "Cart - Kraya",
+  description: "The items in your cart, with delivery and the total.",
   alternates: { canonical: "/basket" },
   robots: { index: false, follow: true },
 };
@@ -15,7 +15,7 @@ export default function BasketPage() {
   return (
     <PageShell>
       <PageHeader
-        title="Basket"
+        title="Cart"
         lede="Check the packs and quantities before you go through to checkout."
       />
       <BasketContents products={getProducts()} />

@@ -52,7 +52,7 @@ export function CheckoutForm({ products }: { products: Product[] }) {
       <div className="mt-10">
         <EmptyState
           title="Nothing to check out"
-          body="The basket is empty, so there is nothing to send."
+          body="Your cart is empty, so there is nothing to send."
           action={{ href: "/shop", label: "Shop the range" }}
         />
       </div>
@@ -92,7 +92,7 @@ export function CheckoutForm({ products }: { products: Product[] }) {
               setSubmitted(false);
             }}
           >
-            Empty the basket
+            Empty the cart
           </button>
         </div>
       </div>
@@ -143,8 +143,9 @@ export function CheckoutForm({ products }: { products: Product[] }) {
               />
             </div>
             <TextField
-              label="Postcode"
+              label="PIN code"
               name="postcode"
+              inputMode="numeric"
               autoComplete="postal-code"
               value={values.postcode}
               error={errors.postcode}

@@ -1,5 +1,6 @@
 "use client";
 
+import { ShoppingCartSimpleIcon } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-provider";
 import { announce } from "@/lib/announce";
@@ -57,11 +58,16 @@ export function QuickAdd({
       aria-label={
         soldOut ? `${name} is sold out` : `Add ${name}, ${label} to basket`
       }
-      className={`btn btn--primary min-h-11 flex-1 ${
-        compact ? "px-2 text-sm" : "px-4 text-sm"
+      className={`btn btn--primary w-full min-h-10 ${
+        compact ? "px-2 text-xs" : "px-3 text-sm"
       }`}
     >
-      {soldOut ? "Sold out" : added ? "Added" : compact ? "Add" : "Add to cart"}
+      <ShoppingCartSimpleIcon
+        size={compact ? 14 : 16}
+        weight="bold"
+        aria-hidden="true"
+      />
+      {soldOut ? "Sold Out" : added ? "Added" : "Add to Cart"}
     </button>
   );
 }

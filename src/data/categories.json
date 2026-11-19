@@ -1,19 +1,49 @@
 {
   "categories": [
     {
-      "id": "pantry",
-      "name": "Pantry",
-      "summary": "Dry goods, oils and preserves in quantities that last a month."
+      "id": "snacks",
+      "name": "Snacks & Munchies",
+      "summary": "Roasted, dried and better-for-you bites for the desk and the road."
     },
     {
-      "id": "drinks",
-      "name": "Drinks",
-      "summary": "Coffee, tea and ferments, roasted or brewed in small batches."
+      "id": "grains",
+      "name": "Grains & Cereals",
+      "summary": "Whole grains, millets and everyday staples from trusted farms."
     },
     {
-      "id": "fresh",
-      "name": "Fresh",
-      "summary": "Bread, cheese and produce from the fresh counter."
+      "id": "pulses",
+      "name": "Pulses & Legumes",
+      "summary": "Dals, beans and chickpeas, cleaned and packed in small batches."
+    },
+    {
+      "id": "oils",
+      "name": "Oils & Ghee",
+      "summary": "Cold-pressed oils and traditional A2 ghee."
+    },
+    {
+      "id": "sweeteners",
+      "name": "Sweeteners",
+      "summary": "Raw honey, jaggery and unrefined sugars."
+    },
+    {
+      "id": "breakfast",
+      "name": "Breakfast Foods",
+      "summary": "Oats, muesli and millet mixes to start the day."
+    },
+    {
+      "id": "spices",
+      "name": "Spices & Condiments",
+      "summary": "Single-origin spices, salts and everyday masalas."
+    },
+    {
+      "id": "beverages",
+      "name": "Beverages",
+      "summary": "Teas, coffees and traditional drinks."
+    },
+    {
+      "id": "combos",
+      "name": "Healthy Combos",
+      "summary": "Curated bundles for the pantry and the week."
     }
   ]
 }

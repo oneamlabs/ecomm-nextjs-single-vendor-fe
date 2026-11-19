@@ -24,8 +24,8 @@ export function BasketContents({ products }: { products: Product[] }) {
     return (
       <div className="mt-10">
         <EmptyState
-          title="The basket is empty"
-          body="Nothing has been added yet. The range is twelve items, most of them in two packs."
+          title="Your cart is empty"
+          body="Nothing has been added yet. Browse the organic range and add what you need."
           action={{ href: "/shop", label: "Shop the range" }}
         />
       </div>
@@ -112,7 +112,7 @@ export function BasketContents({ products }: { products: Product[] }) {
           onClick={clearCart}
           className="link-quiet mt-6 inline-flex min-h-11 items-center text-sm text-muted"
         >
-          Empty the basket
+          Empty the cart
         </button>
       </div>
 

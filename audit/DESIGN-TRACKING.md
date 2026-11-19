@@ -1,167 +1,136 @@
 # Design tracking
 
-Living record of the storefront's visual system: where each decision came from, what
-is built, and what was deliberately rejected. Update this when a pattern is added or
-removed; it is the single place that answers "why does it look like this".
+Living record of the storefront's visual system: where each decision came from, what is
+built, and what is deliberately not built. Update this when a pattern is added or removed.
 
-Last updated: homepage restyle pass (3rd reference, full-bleed hero).
+Last updated: OrganicKart marketplace homepage pass (full structure, Kraya brand).
 
 ---
 
 ## 1. References
 
-Three outside designs informed this. None were copied wholesale — Kraya keeps its own
-tokens, fonts, data model and content rules.
-
 | # | Reference | What it gave | Where it landed |
 | --- | --- | --- | --- |
-| 1 | Mitti (`localhost:3001`, sibling project) | Image-led density: photo tiles, card surfaces, tight radii, trust band, section actions | Applied broadly |
-| 2 | Internal audit + product work | Accessibility and contract fixes (44px controls, contrast, one live region) | Applied |
-| 3 | OrganicKart (multi-vendor Indian marketplace) | Full-bleed photographic hero, circular quick-jump chip strip | Applied |
+| 1 | Mitti (`localhost:3001`, sibling project) | Image-led density, card surfaces, tight radii, trust band, section actions | Applied broadly |
+| 2 | Internal audit and product work | Accessibility and contract fixes (44px controls, contrast, one live region) | Applied |
+| 3 | OrganicKart (multi-vendor Indian marketplace) | Search header, category bar, hero, circular category strip, trust band, vendors, trending tabs, farmer banner, diet grid, why-choose, newsletter, footer | Applied as the homepage structure |
 
-### Why reference 3 was adopted selectively
+The brand stays **Kraya**. The OrganicKart name is not used anywhere.
 
-OrganicKart is a **multi-vendor marketplace selling 10 categories of packaged food with
-ratings and MRP discounts**. Kraya is a **single-vendor weighed-goods shop with 3
-categories and no ratings**. Most of OrganicKart's layout exists to express things
-Kraya does not have, and building them would mean inventing data — which both
-`DESIGN.md` §8 and `DECISIONS.md` forbid.
+### What changed from the previous pass
+
+The previous pass adopted only the full-bleed hero and the circular quick-jump strip,
+because the catalogue was a single-vendor shop with three categories and no vendor,
+rating or discount data. That constraint was removed: the catalogue is now a multi-vendor
+demo with four vendors, nine categories, ratings, review counts and sample MRP discounts.
+The reference structure is therefore applied in full.
 
 ---
 
 ## 2. Applied from reference 3
 
-- **Full-bleed photographic hero.** The split hero (copy left, photo right) became one
-  full-width photo with the copy over a left-weighted scrim and the price board as the
-  right column. Tighter to the fold and closer to the reference's scale.
-- **Circular quick-jump strip.** A row of circular thumbnails directly under the
-  ticker, one per shelf, plus an "Everything" chip. Photographs come from each shelf's
-  own first product, so a chip cannot point at imagery the catalogue does not serve.
+- **Two-band header.** Search, deliver-to, account, wishlist and cart in the sticky top bar;
+  All Categories, category links and Become a Seller in the second bar.
+- **Cream hero.** Eyebrow, "Organic & Naturally Good", three proof points, two CTAs,
+  three dots and a photo with an organic seal.
+- **Circular category strip.** Nine categories plus New Arrivals, each using a local photo.
+- **Trust band.** Four service signals on a pale green band.
+- **Featured Vendors.** Four cards with banner, overlapping logo, location, rating and
+  store link.
+- **Trending Organic Products.** Five tabs and six product cards with discount badges,
+  hearts, star ratings, MRP strikethroughs and Add to Cart.
+- **Support Local Organic Farmers.** Dark green copy, a photograph and three benefits.
+- **Shop by Diet & Lifestyle.** Seven icon tiles linked to `/shop?diet=`.
+- **Why Choose Kraya.** Four outlined icon columns.
+- **Newsletter.** Inset pale green band with an honest demo status.
+- **Dark green five-column footer.**
 
-Measured: hero h1 **9.04:1**, hero lede **13.71:1**, hero eyebrow **12.26:1** over the
-photograph. Chip labels are `ink-2` on paper (11:1).
+### Adaptations, not copies
 
----
-
-## 3. Rejected from reference 3 — and why
-
-| Pattern | Reason |
+| Reference element | Kraya implementation |
 | --- | --- |
-| Vendor store cards, "Become a Seller" | Single-vendor shop. No vendor entity exists. |
-| Star ratings and review counts | No rating data in the catalogue. Inventing metrics is forbidden. |
-| MRP strikethrough + `%` off badges | No MRP or discount concept. Every price is the real price. |
-| Header search field | Deferred by decision (see `DECISIONS.md`), threshold recorded there. |
-| "Shop by Diet & Lifestyle" icon grid | 3 diet tags exist, not 7, and tags are filters not destinations. |
-| Newsletter capture | No backend to receive it; a form that silently drops input is worse than none. |
-| Category chip strip with 10 chips | Only 3 shelves exist. Row is 4 chips including "Everything". |
-| Mega-menu "All Categories" drawer | 3 categories do not need a drawer. |
-
-**The line:** layout patterns transfer freely. Anything requiring vendor, rating,
-discount or subscription data does not, because the data is absent rather than
-merely unstyled.
+| Product packshots | Local library photographs; the imagery is illustrative, not a packshot |
+| OrganicKart brand | Kraya leaf mark and wordmark |
+| Indian marketplace copy | Kept where it is structural (Pan-India Delivery, INR); brand copy stays Kraya |
+| Vendor names | Four sample vendors in the data, not invented live sellers |
+| Ratings and MRP | Sample values stored in the catalogue and labelled as demo data |
 
 ---
 
-## 4. Current homepage order
+## 3. Current homepage order
 
-1. Delivery strip (accent, scrolls away)
-2. Sticky header (flat, full-bleed)
-3. **Full-bleed hero** — photo, scrim, h1, lede, two CTAs, price board
-4. Facts ticker (pause control, hides under reduced motion)
-5. **Quick-jump strip** (circular shelf thumbnails)
-6. Trust band (4 service signals)
-7. Three shelves — photo-led category tiles, first tile double-width
-8. Highlights banner (manual, no autoplay)
-9. The range in packs (rail, 4 featured)
-10. How it is weighed (4 fact tiles)
-11. From the fresh shelf (lead card + 2)
-12. Pantry and drinks index (compact rows)
-13. Footer (flat, full-bleed)
+1. Sticky search header
+2. Category bar (desktop) and mobile menu
+3. Cream hero with proof points and photo
+4. Circular category strip
+5. Pale green trust band
+6. Featured Vendors
+7. Trending Organic Products with tabs
+8. Support Local Organic Farmers
+9. Shop by Diet & Lifestyle
+10. Why Choose Kraya
+11. Newsletter
+12. Flat dark green footer
 
-Verified one merchandising home per product (see `./M7-M8-PROPOSAL.md`).
+### Catalogue page order
 
----
+1. Catalogue hero with range title, proof points and a produce photograph
+2. Breadcrumb, page title, sort and grid/list toggle
+3. Category chip row (eight ranges)
+4. Sidebar: categories, price range, discount, vendor, dietary preference,
+   certification, availability, Clear All Filters
+5. Results: count, product grid or list, pagination
+6. Newsletter
+7. Footer
 
-## 5. Design tokens in force
-
-**Radius** — deliberately tight. Large radii on photographs read as bubbles.
-
-| Token | Value | Used for |
-| --- | --- | --- |
-| `--radius-sm` | 10px | Chrome controls, inner frames |
-| `--radius-md` | 14px | Photo wells, compact frames |
-| `--radius-lg` | 18px | Cards, panels, tiles |
-| `--radius-pill` | 999px | Content buttons only, never chrome |
-
-**Surface** — `.panel` (paper + shadow + hairline) and `.panel-quiet` (paper-2 +
-hairline). One definition so a panel is recognisable on every route.
-
-**Type** — Syne display, DM Sans body, IBM Plex Mono for figures. Floor of 15px for
-running text; 13px only for numeric counts.
-
-**Chrome** — flat full-bleed bands, squared controls, 2px accent underline for the
-current nav item pinned to the bar's bottom edge.
+The catalogue card carries the default pack size and the vendor in addition to the shared
+card anatomy. Twelve products show per page. The first row follows the curated catalogue
+order so the trending six lead the page.
 
 ---
 
-## 6. Open gaps
+## 4. Design tokens in force
 
-| Item | Status |
-| --- | --- |
-| Shop grid density | **Resolved — see §6.1.** |
-| "Featured vendors"-style block | Not applicable (single vendor). |
-| Header search | Deferred with a written threshold. |
-| Shop sidebar styling | Still the pre-restyle language; only the grid was carried over. |
+**Colour** — cream and white ground, one deep green action colour, pale green bands, amber
+stars, one dark forest footer. No second action colour.
 
-### 6.1 Grid density experiment
+**Radius** — tight. 8px controls and chrome, 12px cards and image wells, 16px panels and
+feature banners, pills only for tags.
 
-Ran 4, 5 and 6 columns by editing the source (a runtime class swap does nothing —
-Tailwind only emits classes it finds in a file). Measured card width, title lines,
-clipping and button fit at 1024 / 1280 / 1440 / 1600.
+**Surface** — white product cards with one hairline. No card inside a card.
 
-| Columns | Card width @1440 | Result |
-| --- | --- | --- |
-| 4 (original) | 226px | Fine, but airier than the reference. |
-| 5 | 187px | **Rejected.** 12 products leave 2 orphans in a third row, and at 1280 the cards drop to 155px. |
-| 6 | 157px | **Adopted at `2xl` only.** 12 ÷ 6 = exactly two rows. |
+**Type** — Fraunces display, DM Sans body. Body 16, meta 14, card title 16, section 24-32,
+page title 32-36, hero 40-60.
 
-Two real bugs surfaced while testing, both fixed:
-
-- **`QuickAdd` had `flex-1` but its parent was not a flex container**, so the add
-  button collapsed to content width and floated as a small blob with dead space
-  beside it. The parent is now `flex`.
-- The full label "Add to cart" forced a 108px button at 157px card width (69%). The
-  compact card now reads **"Add"**, which brings it to 85% of the card. The accessible
-  name is still `Add <product>, <pack> to basket`, so nothing is lost to a screen
-  reader.
-
-Final: `lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 2xl:gap-x-3`. At 1280 six
-columns wrapped "from £13.00" onto two lines and left the row ragged, which is why it
-is gated to `2xl` rather than `xl`.
+**Chrome** — flat full-bleed bands, squared controls, 2px green underline for the current
+nav item.
 
 ---
 
-## 7. Verification each pass
+## 5. Verification each pass
 
 ```
+npm run check:data
+npm run lint
 npm run typecheck
-npm run lint          # currently clean: 0 warnings, 0 errors
-npm run build         # / must stay statically prerendered
-npm run check:ui      # 5 routes x 2 viewports, checks overflow + h1 + images
+npm run build
+npm run check:ui
 npm run smoke
 ```
 
-Plus axe on every route (currently **0 violations**) and pixel-level contrast
-measurement for any text sitting on photography. A screenshot pass alone is not
-evidence — the earlier tile pass looked fine and measured 3.87:1.
+Measured at 1440 and 390: no horizontal overflow, no broken images, h1 at 60px desktop and
+40px phone on the home, and 33px desktop / 28px phone on content pages.
 
 ---
 
-## 8. Standing rules
+## 6. Standing rules
 
-- Every product has one card home on the homepage (`DECISIONS.md`).
+- The homepage follows the OrganicKart section order; the brand stays Kraya.
+- Card surfaces are flat: one white surface and one hairline.
 - Text over photography needs measurement, not an eyeball. Aim for 4.5:1 on small text.
-- No invented metrics, ratings, review counts or payment claims.
-- One action colour: tomato. Shelf tints are surfaces, not actions.
-- Reduced motion is honoured: no autoplay, ticker pauses, control hides.
+- Ratings, review counts, vendors and MRP are sample demo data; do not present them as live.
+- One action colour: deep green. Shelf tints are surfaces, not actions.
+- Reduced motion is honoured: no autoplay.
 - Chrome is a frame, not an object: flat, full-bleed, squared.
+- Every product card keeps the same anatomy: badge, heart, title, rating, price/MRP,
+  Add to Cart.

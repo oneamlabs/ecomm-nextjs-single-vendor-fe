@@ -1,183 +1,368 @@
 {
   "products": [
     {
-      "id": "olive-oil",
-      "name": "Olive oil, cold pressed",
-      "categoryId": "pantry",
-      "origin": "Kalamata, Greece",
-      "summary": "Pressed within a day of picking, peppery on the finish.",
-      "photo": "olives-harvest",
-      "photoAlt": "Hands sorting black olives on a harvest net",
+      "id": "organic-red-quinoa",
+      "name": "Organic Red Quinoa",
+      "categoryId": "grains",
+      "vendorId": "pahadi-organics",
+      "origin": "Uttarakhand, India",
+      "summary": "Whole red quinoa, rinsed and sun dried, with a nutty bite.",
+      "photo": "spices-dark",
+      "photoAlt": "A dark bowl of whole grains and seeds",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "low-gi", "vegan", "diabetic-friendly"],
+      "rating": 4.8,
+      "reviewCount": 642,
+      "mrpCents": 39900,
+      "badge": "Bestseller",
       "variants": [
-        { "id": "500ml", "label": "500 ml bottle", "priceCents": 1850, "netAmount": 500, "netUnit": "ml", "inStock": true },
-        { "id": "1l", "label": "1 litre tin", "priceCents": 3300, "netAmount": 1000, "netUnit": "ml", "inStock": true }
+        { "id": "500g", "label": "500 g pack", "priceCents": 31900, "netAmount": 500, "netUnit": "g", "inStock": true },
+        { "id": "1kg", "label": "1 kg pack", "priceCents": 59900, "netAmount": 1000, "netUnit": "g", "inStock": true }
       ]
     },
     {
-      "id": "wildflower-honey",
-      "name": "Raw wildflower honey",
-      "categoryId": "pantry",
-      "origin": "Somerset, England",
-      "summary": "Unfiltered, from hives set among hedgerow and clover.",
+      "id": "a2-desi-ghee",
+      "name": "A2 Desi Ghee",
+      "categoryId": "oils",
+      "vendorId": "desiroots",
+      "origin": "Rajasthan, India",
+      "summary": "Slow-churned from A2 cow milk, grainy and deeply aromatic.",
       "photo": "honeycomb-frame",
-      "photoAlt": "Hands holding up a wooden hive frame covered with bees",
+      "photoAlt": "Golden honeycomb in a wooden frame, warm in the light",
       "organic": true,
       "tags": ["gluten-free"],
+      "diets": ["gluten-free", "high-protein", "immunity-boosting", "kids-friendly"],
+      "rating": 4.9,
+      "reviewCount": 1200,
+      "mrpCents": 149900,
+      "badge": "Bestseller",
       "variants": [
-        { "id": "340g", "label": "340 g jar", "priceCents": 1200, "netAmount": 340, "netUnit": "g", "inStock": true },
-        { "id": "900g", "label": "900 g jar", "priceCents": 2800, "netAmount": 900, "netUnit": "g", "inStock": true }
+        { "id": "1l", "label": "1 L (Bilona)", "priceCents": 127400, "netAmount": 1000, "netUnit": "ml", "inStock": true },
+        { "id": "500ml", "label": "500 ml jar", "priceCents": 67400, "netAmount": 500, "netUnit": "ml", "inStock": true }
       ]
     },
     {
-      "id": "chilli-flakes",
-      "name": "Dried chilli flakes",
-      "categoryId": "pantry",
-      "origin": "Shan Hills, Myanmar",
-      "summary": "Sun dried, coarsely crushed, hot without bitterness.",
-      "photo": "chillies-market",
-      "photoAlt": "Bowls of fresh chilli peppers seen from above at a market",
-      "organic": true,
-      "tags": ["vegan", "gluten-free"],
-      "variants": [
-        { "id": "60g", "label": "60 g jar", "priceCents": 750, "netAmount": 60, "netUnit": "g", "inStock": true },
-        { "id": "150g", "label": "150 g jar", "priceCents": 1500, "netAmount": 150, "netUnit": "g", "inStock": true }
-      ]
-    },
-    {
-      "id": "dark-chocolate",
-      "name": "Dark chocolate, 72%",
-      "categoryId": "pantry",
-      "origin": "Ashanti, Ghana",
-      "summary": "Two ingredients: cocoa and cane sugar, stone ground.",
+      "id": "organic-jaggery-powder",
+      "name": "Organic Jaggery Powder",
+      "categoryId": "sweeteners",
+      "vendorId": "vindhya-naturals",
+      "origin": "Madhya Pradesh, India",
+      "summary": "Unrefined cane jaggery, ground fine and packed the same week.",
       "photo": "cacao-pod",
-      "photoAlt": "A yellow cacao pod hanging from a tree trunk in a dark forest",
+      "photoAlt": "A ripe cacao pod against dark green leaves",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan", "low-gi"],
+      "rating": 4.8,
+      "reviewCount": 789,
+      "mrpCents": 29900,
+      "badge": "Top Rated",
       "variants": [
-        { "id": "100g", "label": "100 g bar", "priceCents": 600, "netAmount": 100, "netUnit": "g", "inStock": true },
-        { "id": "300g", "label": "3 × 100 g", "priceCents": 1650, "netAmount": 300, "netUnit": "g", "inStock": true }
+        { "id": "1kg", "label": "1 kg (Powder)", "priceCents": 22400, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pack", "priceCents": 12400, "netAmount": 500, "netUnit": "g", "inStock": true }
       ]
     },
     {
-      "id": "sloe-preserve",
-      "name": "Sloe preserve",
-      "categoryId": "pantry",
-      "origin": "Herefordshire, England",
-      "summary": "Hand picked after the first frost, set with unrefined sugar.",
+      "id": "rolled-oats",
+      "name": "Rolled Oats",
+      "categoryId": "breakfast",
+      "vendorId": "greenharvest",
+      "origin": "Karnataka, India",
+      "summary": "Whole oats steamed and rolled thick, for a slower breakfast.",
+      "photo": "sourdough-loaf",
+      "photoAlt": "A round sourdough loaf with a dark scored crust",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["high-protein", "low-gi", "vegan", "diabetic-friendly", "kids-friendly"],
+      "rating": 4.7,
+      "reviewCount": 1100,
+      "mrpCents": 34900,
+      "variants": [
+        { "id": "1kg", "label": "1 kg (High Fiber)", "priceCents": 28600, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pack", "priceCents": 15600, "netAmount": 500, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "mixed-nuts",
+      "name": "Mixed Nuts",
+      "categoryId": "snacks",
+      "vendorId": "pahadi-organics",
+      "origin": "Uttarakhand, India",
+      "summary": "Almonds, cashews and walnuts, roasted and lightly salted.",
+      "photo": "coffee-green",
+      "photoAlt": "A close view of green coffee beans, rounded like nuts",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "vegan", "immunity-boosting"],
+      "rating": 4.8,
+      "reviewCount": 906,
+      "mrpCents": 49900,
+      "variants": [
+        { "id": "250g", "label": "250 g pouch", "priceCents": 39900, "netAmount": 250, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pouch", "priceCents": 74900, "netAmount": 500, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "cold-pressed-mustard-oil",
+      "name": "Cold Pressed Mustard Oil",
+      "categoryId": "oils",
+      "vendorId": "desiroots",
+      "origin": "Rajasthan, India",
+      "summary": "Pungent, cold-pressed mustard oil pressed in small lots.",
+      "photo": "olives-harvest",
+      "photoAlt": "Hands sorting a harvest of small dark olives",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan"],
+      "rating": 4.7,
+      "reviewCount": 628,
+      "mrpCents": 39900,
+      "variants": [
+        { "id": "1l", "label": "1 L (Wood Pressed)", "priceCents": 33900, "netAmount": 1000, "netUnit": "ml", "inStock": true },
+        { "id": "500ml", "label": "500 ml bottle", "priceCents": 17900, "netAmount": 500, "netUnit": "ml", "inStock": true }
+      ]
+    },
+    {
+      "id": "organic-masoor-dal",
+      "name": "Organic Masoor Dal",
+      "categoryId": "pulses",
+      "vendorId": "vindhya-naturals",
+      "origin": "Madhya Pradesh, India",
+      "summary": "Split red lentils, cleaned twice and packed without polish.",
       "photo": "sloe-berries",
-      "photoAlt": "Dusty blue sloe berries clustered on a blackthorn twig",
+      "photoAlt": "Dusty blue sloe berries clustered on a twig",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "vegan", "low-gi", "diabetic-friendly"],
+      "rating": 4.6,
+      "reviewCount": 388,
+      "mrpCents": 22500,
       "variants": [
-        { "id": "220g", "label": "220 g jar", "priceCents": 900, "netAmount": 220, "netUnit": "g", "inStock": true },
-        { "id": "400g", "label": "400 g jar", "priceCents": 1500, "netAmount": 400, "netUnit": "g", "inStock": true }
+        { "id": "1kg", "label": "1 kg pack", "priceCents": 17900, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pack", "priceCents": 9900, "netAmount": 500, "netUnit": "g", "inStock": true }
       ]
     },
     {
-      "id": "medium-roast-coffee",
-      "name": "Coffee, medium roast",
-      "categoryId": "drinks",
-      "origin": "Huila, Colombia",
-      "summary": "Roasted every Tuesday, rested four days before it ships.",
+      "id": "kabuli-chickpeas",
+      "name": "Kabuli Chickpeas",
+      "categoryId": "pulses",
+      "vendorId": "greenharvest",
+      "origin": "Karnataka, India",
+      "summary": "Large, pale chickpeas that hold their shape in a curry.",
+      "photo": "coffee-green",
+      "photoAlt": "A close view of green coffee beans",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "vegan", "low-gi"],
+      "rating": 4.7,
+      "reviewCount": 455,
+      "mrpCents": 24900,
+      "variants": [
+        { "id": "1kg", "label": "1 kg pack", "priceCents": 19900, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pack", "priceCents": 10900, "netAmount": 500, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "ragi-flour",
+      "name": "Ragi Flour",
+      "categoryId": "grains",
+      "vendorId": "vindhya-naturals",
+      "origin": "Madhya Pradesh, India",
+      "summary": "Stone-ground finger millet, sieved fine for rotis and porridge.",
+      "photo": "sourdough-starter",
+      "photoAlt": "A bubbling sourdough starter in a glass jar",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "low-gi", "vegan", "diabetic-friendly", "kids-friendly"],
+      "rating": 4.6,
+      "reviewCount": 298,
+      "mrpCents": 16900,
+      "variants": [
+        { "id": "1kg", "label": "1 kg pack", "priceCents": 12900, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pack", "priceCents": 6900, "netAmount": 500, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "himalayan-pink-salt",
+      "name": "Himalayan Pink Salt",
+      "categoryId": "spices",
+      "vendorId": "pahadi-organics",
+      "origin": "Uttarakhand, India",
+      "summary": "Coarse rock salt, hand mined and packed without additives.",
+      "photo": "spices-dark",
+      "photoAlt": "Dark whole spices in a close, textured arrangement",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan"],
+      "rating": 4.7,
+      "reviewCount": 410,
+      "mrpCents": 19900,
+      "variants": [
+        { "id": "500g", "label": "500 g jar", "priceCents": 14900, "netAmount": 500, "netUnit": "g", "inStock": true },
+        { "id": "1kg", "label": "1 kg jar", "priceCents": 25900, "netAmount": 1000, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "organic-turmeric-powder",
+      "name": "Organic Turmeric Powder",
+      "categoryId": "spices",
+      "vendorId": "vindhya-naturals",
+      "origin": "Madhya Pradesh, India",
+      "summary": "High-curcumin turmeric, dried and ground in the same week.",
+      "photo": "chillies-market",
+      "photoAlt": "Bright bowls of chillies and spice seen from above",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan", "immunity-boosting"],
+      "rating": 4.8,
+      "reviewCount": 534,
+      "mrpCents": 24900,
+      "badge": "Top Rated",
+      "variants": [
+        { "id": "250g", "label": "250 g jar", "priceCents": 18900, "netAmount": 250, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g jar", "priceCents": 34900, "netAmount": 500, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "wild-forest-honey",
+      "name": "Wild Forest Honey",
+      "categoryId": "sweeteners",
+      "vendorId": "pahadi-organics",
+      "origin": "Uttarakhand, India",
+      "summary": "Raw, unfiltered honey from hives set in the lower Himalaya.",
+      "photo": "honeycomb-frame",
+      "photoAlt": "A wooden hive frame covered with bees",
+      "organic": true,
+      "tags": ["gluten-free"],
+      "diets": ["gluten-free", "immunity-boosting", "kids-friendly"],
+      "rating": 4.9,
+      "reviewCount": 812,
+      "mrpCents": 54900,
+      "badge": "Bestseller",
+      "variants": [
+        { "id": "500g", "label": "500 g jar", "priceCents": 44900, "netAmount": 500, "netUnit": "g", "inStock": true },
+        { "id": "250g", "label": "250 g jar", "priceCents": 24900, "netAmount": 250, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "masala-chai",
+      "name": "Masala Chai",
+      "categoryId": "beverages",
+      "vendorId": "greenharvest",
+      "origin": "Assam, India",
+      "summary": "Assam leaf tea blended with cardamom, clove and ginger.",
       "photo": "coffee-roasted",
       "photoAlt": "Roasted coffee beans scattered on a dark surface",
       "organic": true,
-      "tags": ["vegan", "gluten-free", "caffeine"],
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan"],
+      "rating": 4.8,
+      "reviewCount": 721,
+      "mrpCents": 29900,
       "variants": [
-        { "id": "250g", "label": "250 g bag, whole bean", "priceCents": 1400, "netAmount": 250, "netUnit": "g", "inStock": true },
-        { "id": "1kg", "label": "1 kg bag, whole bean", "priceCents": 4800, "netAmount": 1000, "netUnit": "g", "inStock": true }
+        { "id": "250g", "label": "250 g pouch", "priceCents": 24900, "netAmount": 250, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g pouch", "priceCents": 44900, "netAmount": 500, "netUnit": "g", "inStock": true }
       ]
     },
     {
-      "id": "lemon-cordial",
-      "name": "Lemon cordial",
-      "categoryId": "drinks",
-      "origin": "Sicily, Italy",
-      "summary": "Lemons, sugar and water. Dilute one to four.",
+      "id": "filter-coffee",
+      "name": "Filter Coffee",
+      "categoryId": "beverages",
+      "vendorId": "greenharvest",
+      "origin": "Chikmagalur, India",
+      "summary": "Arabica and chicory, roasted dark for a South Indian filter.",
+      "photo": "coffee-roasted",
+      "photoAlt": "Roasted coffee beans ready for grinding",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan"],
+      "rating": 4.7,
+      "reviewCount": 663,
+      "mrpCents": 44900,
+      "variants": [
+        { "id": "500g", "label": "500 g pack", "priceCents": 37900, "netAmount": 500, "netUnit": "g", "inStock": true },
+        { "id": "250g", "label": "250 g pack", "priceCents": 20900, "netAmount": 250, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "amla-juice",
+      "name": "Amla Juice",
+      "categoryId": "beverages",
+      "vendorId": "desiroots",
+      "origin": "Rajasthan, India",
+      "summary": "Cold-pressed amla, bottled without added sugar.",
       "photo": "lemon-split",
       "photoAlt": "A whole lemon beside a halved lemon in hard light",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan", "immunity-boosting", "low-gi"],
+      "rating": 4.5,
+      "reviewCount": 245,
+      "mrpCents": 27900,
       "variants": [
-        { "id": "500ml", "label": "500 ml bottle", "priceCents": 1100, "netAmount": 500, "netUnit": "ml", "inStock": true },
-        { "id": "1l", "label": "1 litre bottle", "priceCents": 1900, "netAmount": 1000, "netUnit": "ml", "inStock": true }
+        { "id": "1l", "label": "1 L bottle", "priceCents": 21900, "netAmount": 1000, "netUnit": "ml", "inStock": true },
+        { "id": "500ml", "label": "500 ml bottle", "priceCents": 11900, "netAmount": 500, "netUnit": "ml", "inStock": true }
       ]
     },
     {
-      "id": "grape-verjus",
-      "name": "Verjus",
-      "categoryId": "drinks",
-      "origin": "Dry Creek Valley, California",
-      "summary": "Unripe grapes, pressed and bottled without alcohol.",
-      "photo": "grapes-zinfandel",
-      "photoAlt": "Ripe grapes hanging under red autumn vine leaves",
+      "id": "trail-mix",
+      "name": "Trail Mix",
+      "categoryId": "snacks",
+      "vendorId": "greenharvest",
+      "origin": "Karnataka, India",
+      "summary": "Nuts, seeds and dried fruit with no added sugar.",
+      "photo": "coffee-green",
+      "photoAlt": "A close view of green coffee beans and seeds",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "vegan", "immunity-boosting", "kids-friendly"],
+      "rating": 4.7,
+      "reviewCount": 512,
+      "mrpCents": 37900,
       "variants": [
-        { "id": "375ml", "label": "375 ml bottle", "priceCents": 1600, "netAmount": 375, "netUnit": "ml", "inStock": true },
-        { "id": "750ml", "label": "750 ml bottle", "priceCents": 2800, "netAmount": 750, "netUnit": "ml", "inStock": false }
+        { "id": "400g", "label": "400 g pouch", "priceCents": 29900, "netAmount": 400, "netUnit": "g", "inStock": true },
+        { "id": "200g", "label": "200 g pouch", "priceCents": 15900, "netAmount": 200, "netUnit": "g", "inStock": true }
       ]
     },
     {
-      "id": "lavender-tea",
-      "name": "Lavender tea",
-      "categoryId": "drinks",
-      "origin": "Hitchin, England",
-      "summary": "Dried flower heads, picked in July and stored in the dark.",
-      "photo": "lavender-field",
-      "photoAlt": "Rows of flowering lavender running toward the horizon",
+      "id": "breakfast-combo",
+      "name": "Breakfast Starter Combo",
+      "categoryId": "combos",
+      "vendorId": "greenharvest",
+      "origin": "Karnataka, India",
+      "summary": "Rolled oats, wild honey and trail mix in one morning bundle.",
+      "photo": "market-stall",
+      "photoAlt": "A sunlit market stall with crates of produce",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "high-protein", "vegan", "kids-friendly"],
+      "rating": 4.8,
+      "reviewCount": 340,
+      "mrpCents": 74900,
+      "badge": "New",
       "variants": [
-        { "id": "40g", "label": "40 g tin", "priceCents": 800, "netAmount": 40, "netUnit": "g", "inStock": true },
-        { "id": "100g", "label": "100 g tin", "priceCents": 1700, "netAmount": 100, "netUnit": "g", "inStock": true }
+        { "id": "combo", "label": "3-item combo", "priceCents": 59900, "netAmount": 1, "netUnit": "item", "inStock": true }
       ]
     },
     {
-      "id": "sourdough-loaf",
-      "name": "Sourdough loaf",
-      "categoryId": "fresh",
-      "origin": "Baked here, each morning",
-      "summary": "Three ingredients, eighteen hours, one long fermentation.",
-      "photo": "sourdough-loaf",
-      "photoAlt": "Round sourdough loaf with a dark scored crust on a wooden board",
-      "organic": true,
-      "tags": ["vegan"],
-      "variants": [
-        { "id": "800g", "label": "One loaf, 800 g", "priceCents": 850, "netAmount": 800, "netUnit": "g", "inStock": true },
-        { "id": "1600g", "label": "Two loaves, 1.6 kg", "priceCents": 1500, "netAmount": 1600, "netUnit": "g", "inStock": true }
-      ]
-    },
-    {
-      "id": "beaufort-cheese",
-      "name": "Beaufort cheese",
-      "categoryId": "fresh",
-      "origin": "Savoie, France",
-      "summary": "Raw cow's milk, aged nine months, firm and sweet.",
-      "photo": "cheese-beaufort",
-      "photoAlt": "A wheel of Beaufort cheese on a spruce board",
-      "organic": true,
-      "tags": ["gluten-free"],
-      "variants": [
-        { "id": "200g", "label": "200 g wedge", "priceCents": 1300, "netAmount": 200, "netUnit": "g", "inStock": true },
-        { "id": "500g", "label": "500 g wedge", "priceCents": 2900, "netAmount": 500, "netUnit": "g", "inStock": false }
-      ]
-    },
-    {
-      "id": "russet-apples",
-      "name": "Russet apples",
-      "categoryId": "fresh",
-      "origin": "Kent, England",
-      "summary": "Rough skinned, dense flesh, good in a pie and better raw.",
-      "photo": "apples-crate",
-      "photoAlt": "Green and red russet apples piled in a wooden crate",
+      "id": "immunity-combo",
+      "name": "Immunity Booster Combo",
+      "categoryId": "combos",
+      "vendorId": "pahadi-organics",
+      "origin": "Uttarakhand, India",
+      "summary": "Turmeric, forest honey and amla juice for the winter months.",
+      "photo": "market-stall",
+      "photoAlt": "Crates of produce under green market canopies",
       "organic": true,
       "tags": ["vegan", "gluten-free"],
+      "diets": ["gluten-free", "vegan", "immunity-boosting"],
+      "rating": 4.7,
+      "reviewCount": 287,
+      "mrpCents": 89900,
+      "badge": "New",
       "variants": [
-        { "id": "1kg", "label": "1 kg box", "priceCents": 450, "netAmount": 1000, "netUnit": "g", "inStock": true },
-        { "id": "3kg", "label": "3 kg box", "priceCents": 1200, "netAmount": 3000, "netUnit": "g", "inStock": true }
+        { "id": "combo", "label": "3-item combo", "priceCents": 69900, "netAmount": 1, "netUnit": "item", "inStock": true }
       ]
     }
   ]

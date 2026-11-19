@@ -56,6 +56,22 @@
       "license": "CC BY-SA 4.0",
       "source": "https://commons.wikimedia.org/wiki/File:Cooling_time_for_coffee.jpg"
     },
+    "coffee-green": {
+      "src": "/photos/coffee-green.jpg",
+      "width": 1280,
+      "height": 851,
+      "author": "DeaPeaJay",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Green_Bean_Coffee.jpg"
+    },
+    "spices-dark": {
+      "src": "/photos/spices-dark.jpg",
+      "width": 1280,
+      "height": 853,
+      "author": "Galeri ega",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Bumbu_dan_Rempah_-_rempah.jpg"
+    },
     "lemon-split": {
       "src": "/photos/lemon-split.jpg",
       "width": 1280,

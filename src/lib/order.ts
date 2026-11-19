@@ -1,12 +1,12 @@
 export const DELIVERY = {
-  freeThresholdCents: 4000,
-  feeCents: 350,
-  window: "Same day before 11:00, within eight miles",
+  freeThresholdCents: 99900,
+  feeCents: 4900,
+  window: "Delivered in 3 to 5 days across India",
 } as const;
 
 export const DELIVERY_SLOTS = [
-  { value: "morning", label: "Morning, 8:00 to 12:00" },
-  { value: "afternoon", label: "Afternoon, 12:00 to 17:00" },
+  { value: "morning", label: "Morning, 9:00 to 13:00" },
+  { value: "afternoon", label: "Afternoon, 13:00 to 18:00" },
 ] as const;
 
 export interface OrderTotals {

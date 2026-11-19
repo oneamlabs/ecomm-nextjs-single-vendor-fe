@@ -33,13 +33,13 @@ export function WishlistButton({
         saved ? "from" : "to"
       } the saved list`}
       onClick={() => toggleWishlist(productId)}
-      className={`btn grid min-h-11 w-11 place-items-center p-0 ${
-        saved ? "text-accent" : ""
+      className={`grid size-10 place-items-center rounded-full border border-rule bg-paper/95 shadow-card transition hover:border-sale hover:text-sale ${
+        saved ? "text-sale" : "text-ink-2"
       }`}
     >
       <HeartIcon
         aria-hidden="true"
-        size={20}
+        size={18}
         weight={saved ? "fill" : "regular"}
       />
     </button>

@@ -1,30 +1,47 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHeader } from "@/components/chrome/page-header";
-import { PageShell } from "@/components/layout/page-shell";
-import { ProductGrid } from "@/components/product/product-grid";
+import { CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { Newsletter } from "@/components/home/newsletter";
+import { CatalogueBrowser } from "@/components/shop/catalogue-browser";
+import { CatalogueHero } from "@/components/shop/catalogue-hero";
+import { CataloguePagination } from "@/components/shop/catalogue-pagination";
 import { ShopSidebar } from "@/components/shop/shop-sidebar";
-import { ShopToolbar } from "@/components/shop/shop-toolbar";
-import { getCategories, getProducts, sortProducts, toProductSort } from "@/lib/catalogue";
+import {
+  CERTIFICATIONS,
+  discountPercent,
+  getCategories,
+  getProductCertifications,
+  getProducts,
+  getVendors,
+  sortProducts,
+  toProductSort,
+} from "@/lib/catalogue";
+import { DIETS } from "@/lib/diets";
+import {
+  PAGE_SIZE,
+  PRICE_MAX_RUPEES,
+  PRICE_MIN_RUPEES,
+  type ShopQuery,
+} from "@/lib/shop-query";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Shop - Kraya",
+  title: "All Products - Kraya",
   description:
-    "Twelve provisions, filtered by shelf and by diet, with prices per pack and per 100 g or 100 ml.",
+    "Explore Kraya's complete range of organic, natural and chemical-free food from verified Indian producers.",
   alternates: { canonical: "/shop" },
   openGraph: {
     type: "website",
-    title: "Shop - Kraya",
+    title: "All Products - Kraya",
     description:
-      "Twelve provisions, filtered by shelf and by diet, with prices per pack and per 100 g or 100 ml.",
+      "Explore Kraya's complete range of organic, natural and chemical-free food from verified Indian producers.",
     url: "/shop",
     images: [
       {
-        url: "/photos/market-stall.jpg",
+        url: "/photos/apples-crate.jpg",
         width: 1280,
-        height: 961,
-        alt: "A sunlit market stall under green canopies, with crates of tomatoes, lemons and greens",
+        height: 853,
+        alt: "A crate of organically grown apples",
       },
     ],
   },
@@ -32,111 +49,188 @@ export const metadata: Metadata = {
 
 /**
  * Filters are read from the URL on the server, and the catalogue is local JSON,
- * so rendering blocks for microseconds. Opting out of instant-navigation
- * validation says so on the record, instead of wrapping the page in a Suspense
- * boundary that would flash a loading state for data already in memory.
+ * so rendering blocks for microseconds.
  */
 export const instant = false;
 
-const TAGS = ["vegan", "gluten-free", "organic"];
+const DISCOUNTS = [10, 20, 30, 40];
 
 export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
   const params = await searchParams;
+
   const categoryId = first(params.category);
   const selectedTags = toArray(params.tag);
+  const selectedDiets = toArray(params.diet);
+  const selectedVendors = toArray(params.vendor);
+  const selectedCertifications = toArray(params.certification);
+  const q = first(params.q);
   const sort = toProductSort(first(params.sort));
+  const discount = toDiscount(params.discount);
+  const stock = toStock(params.stock);
 
-  const products = sortProducts(
-    getProducts({ categoryId, tags: selectedTags }),
+  const rawMin = toNumber(params.min) ?? PRICE_MIN_RUPEES;
+  const rawMax = toNumber(params.max) ?? PRICE_MAX_RUPEES;
+  const minPrice = Math.max(PRICE_MIN_RUPEES, Math.min(rawMin, rawMax));
+  const maxPrice = Math.max(minPrice, Math.min(rawMax, PRICE_MAX_RUPEES));
+
+  const sorted = sortProducts(
+    getProducts({
+      categoryId,
+      tags: selectedTags,
+      diets: selectedDiets,
+      vendorIds: selectedVendors,
+      certifications: selectedCertifications,
+      minPriceCents: minPrice * 100,
+      maxPriceCents: maxPrice * 100,
+      minDiscount: discount,
+      stock,
+      q,
+    }),
     sort,
   );
+
+  const total = sorted.length;
+  const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const requestedPage = Math.max(1, Number(first(params.page)) || 1);
+  const page = Math.min(requestedPage, pageCount);
+  const pageProducts = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   const allProducts = getProducts();
   const categories = getCategories();
-  const activeCategory = categories.find((item) => item.id === categoryId);
+  const vendors = getVendors();
+
   const counts = {
     total: allProducts.length,
-    shelf: Object.fromEntries(
+    category: Object.fromEntries(
       categories.map((category) => [
         category.id,
         allProducts.filter((product) => product.categoryId === category.id).length,
       ]),
     ),
-    tag: Object.fromEntries(
-      TAGS.map((item) => [
-        item,
+    vendor: Object.fromEntries(
+      vendors.map((vendor) => [
+        vendor.id,
+        allProducts.filter((product) => product.vendorId === vendor.id).length,
+      ]),
+    ),
+    diet: Object.fromEntries(
+      DIETS.map((diet) => [
+        diet.id,
+        allProducts.filter((product) => product.diets?.includes(diet.id)).length,
+      ]),
+    ),
+    certification: Object.fromEntries(
+      CERTIFICATIONS.map((certification) => [
+        certification.id,
         allProducts.filter((product) =>
-          item === "organic" ? product.organic : product.tags.includes(item),
+          getProductCertifications(product).includes(certification.id),
         ).length,
       ]),
     ),
+    discount: Object.fromEntries(
+      DISCOUNTS.map((threshold) => [
+        threshold,
+        allProducts.filter((product) => {
+          const value = discountPercent(product);
+          return value !== undefined && value >= threshold;
+        }).length,
+      ]),
+    ),
+    stock: {
+      in: allProducts.filter((product) =>
+        product.variants.some((variant) => variant.inStock),
+      ).length,
+      out: allProducts.filter((product) =>
+        product.variants.every((variant) => !variant.inStock),
+      ).length,
+    },
   };
+
+  const query: ShopQuery = {
+    category: categoryId,
+    tags: selectedTags,
+    diets: selectedDiets,
+    vendors: selectedVendors,
+    certifications: selectedCertifications,
+    q,
+    sort,
+    min: minPrice,
+    max: maxPrice,
+    discount,
+    stock,
+    page,
+  };
+
   const itemListJsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "The range",
-    itemListElement: products.map((product, index) => ({
+    name: "All products",
+    itemListElement: pageProducts.map((product, index) => ({
       "@type": "ListItem",
-      position: index + 1,
+      position: (page - 1) * PAGE_SIZE + index + 1,
       name: product.name,
       url: `${SITE_URL}/shop/${product.id}`,
     })),
   };
 
   return (
-    <PageShell className="pb-[var(--section-gap)]">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
-      <PageHeader
-        title="The range"
-        lede={
-          activeCategory
-            ? activeCategory.summary
-            : "Everything we keep in stock, in the weights it comes in, priced per pack and per 100 g."
-        }
-      />
 
-      <div className="mt-8 grid gap-8 lg:mt-10 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[18rem_minmax(0,1fr)] xl:gap-14">
-        <ShopSidebar
-          categories={categories}
-          tags={TAGS}
-          filters={{ category: categoryId ?? "", tags: selectedTags, sort }}
-          counts={counts}
-        />
+      <CatalogueHero />
 
-        <div className="min-w-0">
-          <ShopToolbar
-            count={products.length}
-            category={activeCategory}
-            tags={selectedTags}
-            sort={sort}
-          />
-
-          {products.length === 0 ? (
-            <div className="mt-8 rounded-[var(--radius-lg)] bg-paper-2 p-8 md:p-12">
-              <h2 className="text-[length:var(--text-section-s)] font-bold">Nothing on this shelf</h2>
-              <p className="mt-3 max-w-[46ch] text-ink-2">
-                No items match that combination. Try the whole shelf.
-              </p>
-              <Link href="/shop" className="btn btn--primary mt-6">
-                Show the whole shelf
+      <div className="container">
+        <nav aria-label="Breadcrumb" className="mt-3">
+          <ol className="flex flex-wrap items-center gap-1 text-xs text-muted">
+            <li>
+              <Link href="/" className="transition hover:text-accent">
+                Home
               </Link>
-            </div>
-          ) : (
-            <div className="mt-6">
-              <h2 className="sr-only">Products</h2>
-              <ProductGrid
-                products={products}
-                priorityCount={4}
-                compact
-                className="lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 2xl:gap-x-3"
+            </li>
+            <li aria-hidden="true">
+              <CaretRightIcon size={11} weight="bold" />
+            </li>
+            <li aria-current="page" className="font-medium text-ink-2">
+              All Products
+            </li>
+          </ol>
+        </nav>
+
+        <div className="mt-4 pb-[var(--section-gap)]">
+          <CatalogueBrowser
+            products={pageProducts}
+            total={total}
+            page={page}
+            pageSize={PAGE_SIZE}
+            sort={sort}
+            query={query}
+            categories={categories}
+            sidebar={
+              <ShopSidebar
+                categories={categories}
+                vendors={vendors}
+                diets={DIETS}
+                certifications={CERTIFICATIONS}
+                filters={query}
+                counts={counts}
               />
-            </div>
-          )}
+            }
+            pagination={
+              <CataloguePagination
+                page={page}
+                pageCount={pageCount}
+                query={query}
+              />
+            }
+          />
         </div>
       </div>
-    </PageShell>
+
+      <Newsletter />
+    </>
   );
 }
 
@@ -148,4 +242,19 @@ function first(value: string | string[] | undefined): string | undefined {
 function toArray(value: string | string[] | undefined): string[] {
   if (!value) return [];
   return Array.isArray(value) ? value : [value];
+}
+
+function toNumber(value: string | string[] | undefined): number | undefined {
+  const raw = Number(first(value));
+  return Number.isFinite(raw) ? raw : undefined;
+}
+
+function toDiscount(value: string | string[] | undefined): number | undefined {
+  const raw = Number(first(value));
+  return DISCOUNTS.includes(raw) ? raw : undefined;
+}
+
+function toStock(value: string | string[] | undefined): "in" | "out" | undefined {
+  const raw = first(value);
+  return raw === "in" || raw === "out" ? raw : undefined;
 }

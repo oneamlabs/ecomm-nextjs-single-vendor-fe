@@ -17,7 +17,7 @@ export default function CheckoutPage() {
     <PageShell>
       <PageHeader
         title="Checkout"
-        lede="Where it goes and when it arrives. Two steps, no account."
+        lede="Where it goes and when it arrives. Delivered anywhere in India."
       />
       <CheckoutForm products={getProducts()} />
     </PageShell>

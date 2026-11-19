@@ -17,7 +17,7 @@ export const checkoutFields: CheckoutValues = {
 };
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const UK_POSTCODE = /^[A-Za-z]{1,2}\d[A-Za-z\d]?\s?\d[A-Za-z]{2}$/;
+const PIN_CODE = /^\d{6}$/;
 
 const FIELD_ORDER: (keyof CheckoutValues)[] = [
   "name",
@@ -37,10 +37,10 @@ export function validateCheckout(values: CheckoutValues): CheckoutErrors {
     errors.email = "Enter an email address in the form name@example.com.";
   }
   if (values.address.trim().length < 6) {
-    errors.address = "Enter the street and number, at least six characters.";
+    errors.address = "Enter the street and area, at least six characters.";
   }
-  if (!UK_POSTCODE.test(values.postcode.trim())) {
-    errors.postcode = "Enter a UK postcode, for example BS1 4QA.";
+  if (!PIN_CODE.test(values.postcode.trim())) {
+    errors.postcode = "Enter a 6-digit PIN code, for example 110001.";
   }
   if (!values.slot) {
     errors.slot = "Choose a delivery window.";

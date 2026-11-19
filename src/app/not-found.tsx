@@ -7,7 +7,7 @@ export default function NotFound() {
     <PageShell>
       <PageHeader
         title="No such page"
-        lede="That address does not belong to anything here. The range is twelve items, and it is one link away."
+        lede="That address does not belong to anything here. The whole range is one link away."
         actions={
           <>
             <Link href="/shop" className="btn btn--primary">
