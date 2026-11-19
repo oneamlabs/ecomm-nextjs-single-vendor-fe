@@ -58,10 +58,10 @@ export function QuickAdd({
         soldOut ? `${name} is sold out` : `Add ${name}, ${label} to basket`
       }
       className={`btn btn--primary min-h-11 flex-1 ${
-        compact ? "px-3 text-sm" : "px-4 text-sm"
+        compact ? "px-2 text-sm" : "px-4 text-sm"
       }`}
     >
-      {soldOut ? "Sold out" : added ? "Added" : "Add to cart"}
+      {soldOut ? "Sold out" : added ? "Added" : compact ? "Add" : "Add to cart"}
     </button>
   );
 }

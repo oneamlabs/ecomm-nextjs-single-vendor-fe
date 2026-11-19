@@ -108,10 +108,36 @@ current nav item pinned to the bar's bottom edge.
 
 | Item | Status |
 | --- | --- |
-| Shop grid density (Kraya 4 cols vs reference 6) | **Untested.** Cards carry 4 text lines; whether they survive 5–6 columns is unmeasured. Worth an experiment with measurements, revert if it fails. |
+| Shop grid density | **Resolved — see §6.1.** |
 | "Featured vendors"-style block | Not applicable (single vendor). |
 | Header search | Deferred with a written threshold. |
 | Shop sidebar styling | Still the pre-restyle language; only the grid was carried over. |
+
+### 6.1 Grid density experiment
+
+Ran 4, 5 and 6 columns by editing the source (a runtime class swap does nothing —
+Tailwind only emits classes it finds in a file). Measured card width, title lines,
+clipping and button fit at 1024 / 1280 / 1440 / 1600.
+
+| Columns | Card width @1440 | Result |
+| --- | --- | --- |
+| 4 (original) | 226px | Fine, but airier than the reference. |
+| 5 | 187px | **Rejected.** 12 products leave 2 orphans in a third row, and at 1280 the cards drop to 155px. |
+| 6 | 157px | **Adopted at `2xl` only.** 12 ÷ 6 = exactly two rows. |
+
+Two real bugs surfaced while testing, both fixed:
+
+- **`QuickAdd` had `flex-1` but its parent was not a flex container**, so the add
+  button collapsed to content width and floated as a small blob with dead space
+  beside it. The parent is now `flex`.
+- The full label "Add to cart" forced a 108px button at 157px card width (69%). The
+  compact card now reads **"Add"**, which brings it to 85% of the card. The accessible
+  name is still `Add <product>, <pack> to basket`, so nothing is lost to a screen
+  reader.
+
+Final: `lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 2xl:gap-x-3`. At 1280 six
+columns wrapped "from £13.00" onto two lines and left the row ragged, which is why it
+is gated to `2xl` rather than `xl`.
 
 ---
 

@@ -130,7 +130,7 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
                 products={products}
                 priorityCount={4}
                 compact
-                className="lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-6"
+                className="lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 2xl:gap-x-3"
               />
             </div>
           )}

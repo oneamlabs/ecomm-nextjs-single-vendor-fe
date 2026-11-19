@@ -114,7 +114,7 @@ export function ProductCard({
         )}
       </Link>
 
-      <div className={`mt-auto pt-3 ${compact ? "px-3 pb-3" : "px-4 pb-4"}`}>
+      <div className={`mt-auto flex pt-3 ${compact ? "px-3 pb-3" : "px-4 pb-4"}`}>
         <QuickAdd
           productId={product.id}
           variantId={defaultVariant.id}
