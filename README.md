@@ -19,7 +19,7 @@ Set `NEXT_PUBLIC_SITE_URL` to the deployed origin so canonical, Open Graph, JSON
 
 | Route | What it does |
 | --- | --- |
-| `/` | Market-ticket home: split photo-led hero with the live price ticket, shelf and product rails with Add to cart and the heart, three-slide image highlights banner, fact tiles, fresh feature, and the pantry/drinks shelf index |
+| `/` | Full-bleed photographic hero with the live price ticket, circular shelf shortcut strip, trust band, photo-led shelf tiles, three-slide highlights banner, featured rail, fact tiles, fresh feature, and the pantry/drinks shelf index |
 | `/shop` | Sticky sidebar with shelf and diet filters and counts, URL-backed; sort in the results toolbar |
 | `/shop/[id]` | Gallery, pack and quantity, live price and rate, provision sheet |
 | `/basket` | Weight variant per line, quantity, subtotal, delivery, total |
@@ -64,15 +64,17 @@ scripts/            data check, photo fetch, smoke and layout inspection
 
 ## Design system
 
-The full system is documented in `DESIGN.md`. Short version:
+The full system is documented in `DESIGN.md`. Where each decision came from, what was
+borrowed from outside references and what was rejected, is in
+[`audit/DESIGN-TRACKING.md`](./audit/DESIGN-TRACKING.md). Short version:
 
 - Idea: a market stall's price tickets, with the pack price you can change yourself.
 - Ground: cool white. Ink: near-black navy. Action: one deeper tomato accent. Shelf fields: pale citrus, cobalt and tomato tints.
 - Faces: Syne for the home display only; DM Sans for content and functional type; IBM Plex Mono for money.
 - Type: content pages use a 40px page title, 24px sections, 17px body and 15px metadata; the display scale belongs to the home. `DESIGN.md` section 2 is the binding SOP.
-- Geometry: pills for controls, 32px panels, 16px fields. Flat cards, no card inside a card.
-- Layout: `PageShell`, `Section`, `SectionHeader`, `PageHeader` on every content route. The delivery strip scrolls away; the solid sticky bar is 64 px on small screens and 76 px on desktop, with the shop links behind a `Menu` disclosure on mobile.
-- Motion: CSS-only entrance, a price figure that rises on change, one facts ticker with a Pause/Play control, a manual image highlights banner, scroll-snap carousels, hover lift. Reduced motion disables all of it.
+- Geometry: tight radii — 18px cards and panels, 14px photo wells, 10px fields and chrome. Pills are for content buttons only, never chrome. Flat cards, no card inside a card.
+- Layout: `PageShell`, `Section`, `SectionHeader`, `PageHeader` on every content route. Header and footer are flat full-bleed bands; the delivery strip scrolls away and the bar sticks. Shop filters sit behind `Filters` on mobile.
+- Motion: CSS-only entrance, a price figure that rises on change, one facts ticker with a Pause/Play control that hides under reduced motion, a manual image highlights banner (never autoplay), scroll-snap carousels, hover lift.
 - Variants: cards print their pack weights; the product page reprices price and rate on selection; sold-out packs are disabled.
 - Quick actions: every card has Add to cart and a heart. Both persist in `localStorage`; the Saved link carries a count and `/wishlist` lists what is kept.
 

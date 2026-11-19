@@ -8,6 +8,7 @@ import { FreshShelfCard } from "@/components/product/fresh-shelf-card";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductPhoto } from "@/components/product/product-photo";
 import { CategoryTile } from "@/components/shop/category-tile";
+import { QuickJumpStrip } from "@/components/shop/quick-jump-strip";
 import { TrustBand } from "@/components/market/trust-band";
 import { Carousel } from "@/components/ui/carousel";
 import { getCategories, getPhoto, getProduct, getProducts } from "@/lib/catalogue";
@@ -129,44 +130,60 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(STORE_JSON_LD) }}
       />
-      <section className="bg-shelf-pantry">
-        <div className="container pb-10 pt-7 md:pt-9">
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-stretch lg:gap-10">
-            <div className="enter lg:col-span-6 lg:flex lg:flex-col lg:justify-center">
-              <p className="flex items-center gap-2 text-sm font-semibold text-ink-2">
+      <section className="relative isolate overflow-hidden bg-ink">
+        <ProductPhoto
+          photoKey="market-stall"
+          alt="A sunlit market stall under green canopies, with crates of tomatoes, lemons and greens"
+          sizes="100vw"
+          priority
+          className="absolute inset-0 h-full w-full rounded-none shadow-none"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-ink/95 via-ink/75 to-ink/25"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent"
+        />
+
+        <div className="container relative py-14 md:py-20 lg:py-24">
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+            <div className="enter text-paper lg:col-span-7">
+              <p className="flex items-center gap-2 text-sm font-semibold text-paper/85">
                 <span className="h-2 w-2 rounded-full bg-accent" />
                 Bristol provisions, by weight.
               </p>
-              <h1 className="mt-4 text-[length:var(--text-display)]">
+              <h1 className="mt-4 text-[length:var(--text-display)] text-paper">
                 The price is the weight.
               </h1>
-              <p className="lead mt-6 text-ink-2">
+              <p className="lead mt-6 max-w-[46ch] text-paper/85">
                 Twelve organic provisions, weighed and labelled on Row Street.
               </p>
-              <div className="mt-7">
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link href="/shop" className="btn btn--primary">
                   Shop the range
+                </Link>
+                <Link
+                  href="#weighed"
+                  className="btn border-paper/40 bg-transparent text-paper hover:border-paper hover:bg-paper/10"
+                >
+                  How it is weighed
                 </Link>
               </div>
             </div>
 
-            <div className="enter enter-2 relative lg:col-span-6">
-              <div className="enter enter-3 relative z-10 mt-2 lg:absolute lg:bottom-6 lg:left-6 lg:mt-0 lg:w-[300px] xl:w-[330px]">
-                <PriceBoard product={oliveOil} />
-              </div>
-              <ProductPhoto
-                photoKey="market-stall"
-                alt="A sunlit market stall under green canopies, with crates of tomatoes, lemons and greens"
-                sizes="(min-width: 64rem) 48vw, 100vw"
-                priority
-                className="aspect-[4/3] rounded-[var(--radius-lg)] lg:aspect-auto lg:h-full"
-              />
+            <div className="enter enter-2 lg:col-span-5">
+              <PriceBoard product={oliveOil} />
             </div>
           </div>
         </div>
       </section>
 
       <FactsTicker />
+
+      <QuickJumpStrip shelves={shelves} />
 
       <Section>
         <TrustBand />
