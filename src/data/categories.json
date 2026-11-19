@@ -1,0 +1,19 @@
+{
+  "categories": [
+    {
+      "id": "pantry",
+      "name": "Pantry",
+      "summary": "Dry goods, oils and preserves in quantities that last a month."
+    },
+    {
+      "id": "drinks",
+      "name": "Drinks",
+      "summary": "Coffee, tea and ferments, roasted or brewed in small batches."
+    },
+    {
+      "id": "fresh",
+      "name": "Fresh",
+      "summary": "Bread, cheese and produce from the fresh counter."
+    }
+  ]
+}

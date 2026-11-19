@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - puppeteer-core@25.18.1

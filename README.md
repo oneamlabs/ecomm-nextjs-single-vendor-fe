@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Kraya
 
-## Getting Started
+A demo storefront for a small organic provisions shop in Bristol. Twelve products across three shelves, each with weight variants, per-pack prices and a per-100 g or per-100 ml rate. The basket persists across reloads; checkout validates honestly and states that no order was placed.
 
-First, run the development server:
+Built with Next.js 16 App Router, React 19 and Tailwind 4. No backend, no payment, no accounts.
+
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set `NEXT_PUBLIC_SITE_URL` to the deployed origin so canonical, Open Graph, JSON-LD and sitemap URLs are absolute. It defaults to `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | What it does |
+| --- | --- |
+| `/` | Market-ticket home: split photo-led hero with the live price ticket, shelf and product rails with Add to cart and the heart, three-slide image highlights banner, fact tiles, fresh feature, and the pantry/drinks shelf index |
+| `/shop` | Sticky sidebar with shelf and diet filters and counts, URL-backed; sort in the results toolbar |
+| `/shop/[id]` | Gallery, pack and quantity, live price and rate, provision sheet |
+| `/basket` | Weight variant per line, quantity, subtotal, delivery, total |
+| `/wishlist` | Saved products, with the same Add to cart and heart |
+| `/checkout` | Address and delivery validation, summary, honest no-order state |
+| `/credits` | Library photograph authors and licences |
+| `/shop/does-not-exist` | 404 |
 
-## Learn More
+## Data
 
-To learn more about Next.js, take a look at the following resources:
+`src/data/*.json` is shaped like an API response and read through `src/lib/catalogue.ts`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```json
+{
+  "id": "olive-oil",
+  "name": "Olive oil, cold pressed",
+  "categoryId": "pantry",
+  "origin": "Kalamata, Greece",
+  "photo": "olives-harvest",
+  "organic": true,
+  "tags": ["vegan", "gluten-free"],
+  "variants": [
+    { "id": "500ml", "label": "500 ml bottle", "priceCents": 1850, "netAmount": 500, "netUnit": "ml", "inStock": true }
+  ]
+}
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Money is always integer cents. Every variant carries its own price and weight. Server pages call `getProducts`, `getProduct`, `getCategory` and friends; client leaves receive products as props, and the cart/wishlist stores hold only shape-validated lines and ids. `src/lib/photos.ts` holds the small photo metadata used by `next/image`. Replacing JSON with `fetch()` changes one module.
 
-## Deploy on Vercel
+`npm run check:data` validates the catalogue before every build: unique ids, known categories and photos, positive integer prices and weights, and at least one in-stock variant.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/            routes, tokens, base styles
+src/components/     chrome, layout shells, product, cart, checkout, market, ui
+src/lib/            catalogue, photos, money, cart store, checkout validation, order totals
+src/data/           products, categories, photo credits
+public/photos/      local library photographs
+scripts/            data check, photo fetch, smoke and layout inspection
+```
+
+## Design system
+
+The full system is documented in `DESIGN.md`. Short version:
+
+- Idea: a market stall's price tickets, with the pack price you can change yourself.
+- Ground: cool white. Ink: near-black navy. Action: one deeper tomato accent. Shelf fields: pale citrus, cobalt and tomato tints.
+- Faces: Syne for the home display only; DM Sans for content and functional type; IBM Plex Mono for money.
+- Type: content pages use a 40px page title, 24px sections, 17px body and 15px metadata; the display scale belongs to the home. `DESIGN.md` section 2 is the binding SOP.
+- Geometry: pills for controls, 32px panels, 16px fields. Flat cards, no card inside a card.
+- Layout: `PageShell`, `Section`, `SectionHeader`, `PageHeader` on every content route. The delivery strip scrolls away; the solid sticky bar is 64 px on small screens and 76 px on desktop, with the shop links behind a `Menu` disclosure on mobile.
+- Motion: CSS-only entrance, a price figure that rises on change, one facts ticker with a Pause/Play control, a manual image highlights banner, scroll-snap carousels, hover lift. Reduced motion disables all of it.
+- Variants: cards print their pack weights; the product page reprices price and rate on selection; sold-out packs are disabled.
+- Quick actions: every card has Add to cart and a heart. Both persist in `localStorage`; the Saved link carries a count and `/wishlist` lists what is kept.
+
+## SEO
+
+Canonical URLs, Open Graph and Twitter cards, Store/Product/ItemList JSON-LD, `/sitemap.xml` and `/robots.txt` are generated from the catalogue. Basket, checkout and wishlist are `noindex`.
+
+## Checks
+
+```bash
+npm run lint        # oxlint
+npm run typecheck   # tsc --noEmit
+npm run build       # data check + next build
+npm run smoke       # route status and h1s, against a running server
+npm run check:ui    # layout facts and screenshots (puppeteer-core)
+```
+
+The UI checks also cover an axe pass on the main routes and a 320px overflow pass. Typography and layout review against `DESIGN.md` is part of the same check.
+
+## Demo limits
+
+No payment, tax, order submission, accounts or search. Prices are sample data. Checkout validates like a real form and then says plainly that nothing was sent.

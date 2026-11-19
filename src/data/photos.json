@@ -1,0 +1,124 @@
+{
+  "photos": {
+    "market-stall": {
+      "src": "/photos/market-stall.jpg",
+      "width": 1280,
+      "height": 961,
+      "author": "Touam (Hervé Agnoux)",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Matin_ensoleill%C3%A9_au_march%C3%A9_de_la_Terrasse.jpg"
+    },
+    "olives-harvest": {
+      "src": "/photos/olives-harvest.jpg",
+      "width": 1280,
+      "height": 960,
+      "author": "Anna.Massini",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Tradizioni_familiari_Raccolta_olive_wlk_olive_in_cassetta.jpg"
+    },
+    "honeycomb-frame": {
+      "src": "/photos/honeycomb-frame.jpg",
+      "width": 1280,
+      "height": 853,
+      "author": "Øyvind Holmstad",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Honey_comb_frame_2017.jpg"
+    },
+    "chillies-market": {
+      "src": "/photos/chillies-market.jpg",
+      "width": 1280,
+      "height": 1015,
+      "author": "Wilfredor",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Capsicum_baccatum_in_Sa%C3%BAde_flea_market,_S%C3%A3o_Paulo,_Brazil.jpg"
+    },
+    "sloe-berries": {
+      "src": "/photos/sloe-berries.jpg",
+      "width": 1280,
+      "height": 960,
+      "author": "Martin Olsson",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Closeup_of_blackthorn_aka_sloe_aka_prunus_spinosa_sweden_20050924.jpg"
+    },
+    "coffee-roasted": {
+      "src": "/photos/coffee-roasted.jpg",
+      "width": 1280,
+      "height": 853,
+      "author": "A S M Jobaer",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Roasted_coffee_beans_on_the_surface._01.jpg"
+    },
+    "coffee-cooling": {
+      "src": "/photos/coffee-cooling.jpg",
+      "width": 1280,
+      "height": 898,
+      "author": "Jameswasswa",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Cooling_time_for_coffee.jpg"
+    },
+    "lemon-split": {
+      "src": "/photos/lemon-split.jpg",
+      "width": 1280,
+      "height": 853,
+      "author": "Ivar Leidus",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Lemon_-_whole_and_split.jpg"
+    },
+    "grapes-zinfandel": {
+      "src": "/photos/grapes-zinfandel.jpg",
+      "width": 1280,
+      "height": 1792,
+      "author": "Frank Schulenburg",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Ripe_Zinfandel_grapes_in_Dry_Creek_Valley-8958.jpg"
+    },
+    "lavender-field": {
+      "src": "/photos/lavender-field.jpg",
+      "width": 1280,
+      "height": 751,
+      "author": "DeFacto",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Hitchin_lavender_fields.jpg"
+    },
+    "sourdough-loaf": {
+      "src": "/photos/sourdough-loaf.jpg",
+      "width": 1280,
+      "height": 854,
+      "author": "Virtual-Pano",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:6312_sourdough_bread.jpg"
+    },
+    "sourdough-starter": {
+      "src": "/photos/sourdough-starter.jpg",
+      "width": 1280,
+      "height": 1742,
+      "author": "Janus Sandsgaard",
+      "license": "CC BY 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Sourdough.jpg"
+    },
+    "cheese-beaufort": {
+      "src": "/photos/cheese-beaufort.jpg",
+      "width": 1280,
+      "height": 719,
+      "author": "Ibex73",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Wheels_of_Beaufort_cheese,_France_(1).jpg"
+    },
+    "apples-crate": {
+      "src": "/photos/apples-crate.jpg",
+      "width": 1280,
+      "height": 853,
+      "author": "Anne Dirkse",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Mixed_Apples_for_Cider_Pressing.jpg"
+    },
+    "cacao-pod": {
+      "src": "/photos/cacao-pod.jpg",
+      "width": 1280,
+      "height": 1917,
+      "author": "Flocci Nivis",
+      "license": "CC BY 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:20260317_Theobroma_cacao_01.jpg"
+    }
+  }
+}

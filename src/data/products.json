@@ -1,0 +1,184 @@
+{
+  "products": [
+    {
+      "id": "olive-oil",
+      "name": "Olive oil, cold pressed",
+      "categoryId": "pantry",
+      "origin": "Kalamata, Greece",
+      "summary": "Pressed within a day of picking, peppery on the finish.",
+      "photo": "olives-harvest",
+      "photoAlt": "Hands sorting black olives on a harvest net",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "500ml", "label": "500 ml bottle", "priceCents": 1850, "netAmount": 500, "netUnit": "ml", "inStock": true },
+        { "id": "1l", "label": "1 litre tin", "priceCents": 3300, "netAmount": 1000, "netUnit": "ml", "inStock": true }
+      ]
+    },
+    {
+      "id": "wildflower-honey",
+      "name": "Raw wildflower honey",
+      "categoryId": "pantry",
+      "origin": "Somerset, England",
+      "summary": "Unfiltered, from hives set among hedgerow and clover.",
+      "photo": "honeycomb-frame",
+      "photoAlt": "Hands holding up a wooden hive frame covered with bees",
+      "organic": true,
+      "tags": ["gluten-free"],
+      "variants": [
+        { "id": "340g", "label": "340 g jar", "priceCents": 1200, "netAmount": 340, "netUnit": "g", "inStock": true },
+        { "id": "900g", "label": "900 g jar", "priceCents": 2800, "netAmount": 900, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "chilli-flakes",
+      "name": "Dried chilli flakes",
+      "categoryId": "pantry",
+      "origin": "Shan Hills, Myanmar",
+      "summary": "Sun dried, coarsely crushed, hot without bitterness.",
+      "photo": "chillies-market",
+      "photoAlt": "Bowls of fresh chilli peppers seen from above at a market",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "60g", "label": "60 g jar", "priceCents": 750, "netAmount": 60, "netUnit": "g", "inStock": true },
+        { "id": "150g", "label": "150 g jar", "priceCents": 1500, "netAmount": 150, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "dark-chocolate",
+      "name": "Dark chocolate, 72%",
+      "categoryId": "pantry",
+      "origin": "Ashanti, Ghana",
+      "summary": "Two ingredients: cocoa and cane sugar, stone ground.",
+      "photo": "cacao-pod",
+      "photoAlt": "A yellow cacao pod hanging from a tree trunk in a dark forest",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "100g", "label": "100 g bar", "priceCents": 600, "netAmount": 100, "netUnit": "g", "inStock": true },
+        { "id": "300g", "label": "3 × 100 g", "priceCents": 1650, "netAmount": 300, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "sloe-preserve",
+      "name": "Sloe preserve",
+      "categoryId": "pantry",
+      "origin": "Herefordshire, England",
+      "summary": "Hand picked after the first frost, set with unrefined sugar.",
+      "photo": "sloe-berries",
+      "photoAlt": "Dusty blue sloe berries clustered on a blackthorn twig",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "220g", "label": "220 g jar", "priceCents": 900, "netAmount": 220, "netUnit": "g", "inStock": true },
+        { "id": "400g", "label": "400 g jar", "priceCents": 1500, "netAmount": 400, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "medium-roast-coffee",
+      "name": "Coffee, medium roast",
+      "categoryId": "drinks",
+      "origin": "Huila, Colombia",
+      "summary": "Roasted every Tuesday, rested four days before it ships.",
+      "photo": "coffee-roasted",
+      "photoAlt": "Roasted coffee beans scattered on a dark surface",
+      "organic": true,
+      "tags": ["vegan", "gluten-free", "caffeine"],
+      "variants": [
+        { "id": "250g", "label": "250 g bag, whole bean", "priceCents": 1400, "netAmount": 250, "netUnit": "g", "inStock": true },
+        { "id": "1kg", "label": "1 kg bag, whole bean", "priceCents": 4800, "netAmount": 1000, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "lemon-cordial",
+      "name": "Lemon cordial",
+      "categoryId": "drinks",
+      "origin": "Sicily, Italy",
+      "summary": "Lemons, sugar and water. Dilute one to four.",
+      "photo": "lemon-split",
+      "photoAlt": "A whole lemon beside a halved lemon in hard light",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "500ml", "label": "500 ml bottle", "priceCents": 1100, "netAmount": 500, "netUnit": "ml", "inStock": true },
+        { "id": "1l", "label": "1 litre bottle", "priceCents": 1900, "netAmount": 1000, "netUnit": "ml", "inStock": true }
+      ]
+    },
+    {
+      "id": "grape-verjus",
+      "name": "Verjus",
+      "categoryId": "drinks",
+      "origin": "Dry Creek Valley, California",
+      "summary": "Unripe grapes, pressed and bottled without alcohol.",
+      "photo": "grapes-zinfandel",
+      "photoAlt": "Ripe grapes hanging under red autumn vine leaves",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "375ml", "label": "375 ml bottle", "priceCents": 1600, "netAmount": 375, "netUnit": "ml", "inStock": true },
+        { "id": "750ml", "label": "750 ml bottle", "priceCents": 2800, "netAmount": 750, "netUnit": "ml", "inStock": false }
+      ]
+    },
+    {
+      "id": "lavender-tea",
+      "name": "Lavender tea",
+      "categoryId": "drinks",
+      "origin": "Hitchin, England",
+      "summary": "Dried flower heads, picked in July and stored in the dark.",
+      "photo": "lavender-field",
+      "photoAlt": "Rows of flowering lavender running toward the horizon",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "40g", "label": "40 g tin", "priceCents": 800, "netAmount": 40, "netUnit": "g", "inStock": true },
+        { "id": "100g", "label": "100 g tin", "priceCents": 1700, "netAmount": 100, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "sourdough-loaf",
+      "name": "Sourdough loaf",
+      "categoryId": "fresh",
+      "origin": "Baked here, each morning",
+      "summary": "Three ingredients, eighteen hours, one long fermentation.",
+      "photo": "sourdough-loaf",
+      "photoAlt": "Round sourdough loaf with a dark scored crust on a wooden board",
+      "organic": true,
+      "tags": ["vegan"],
+      "variants": [
+        { "id": "800g", "label": "One loaf, 800 g", "priceCents": 850, "netAmount": 800, "netUnit": "g", "inStock": true },
+        { "id": "1600g", "label": "Two loaves, 1.6 kg", "priceCents": 1500, "netAmount": 1600, "netUnit": "g", "inStock": true }
+      ]
+    },
+    {
+      "id": "beaufort-cheese",
+      "name": "Beaufort cheese",
+      "categoryId": "fresh",
+      "origin": "Savoie, France",
+      "summary": "Raw cow's milk, aged nine months, firm and sweet.",
+      "photo": "cheese-beaufort",
+      "photoAlt": "A wheel of Beaufort cheese on a spruce board",
+      "organic": true,
+      "tags": ["gluten-free"],
+      "variants": [
+        { "id": "200g", "label": "200 g wedge", "priceCents": 1300, "netAmount": 200, "netUnit": "g", "inStock": true },
+        { "id": "500g", "label": "500 g wedge", "priceCents": 2900, "netAmount": 500, "netUnit": "g", "inStock": false }
+      ]
+    },
+    {
+      "id": "russet-apples",
+      "name": "Russet apples",
+      "categoryId": "fresh",
+      "origin": "Kent, England",
+      "summary": "Rough skinned, dense flesh, good in a pie and better raw.",
+      "photo": "apples-crate",
+      "photoAlt": "Green and red russet apples piled in a wooden crate",
+      "organic": true,
+      "tags": ["vegan", "gluten-free"],
+      "variants": [
+        { "id": "1kg", "label": "1 kg box", "priceCents": 450, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "3kg", "label": "3 kg box", "priceCents": 1200, "netAmount": 3000, "netUnit": "g", "inStock": true }
+      ]
+    }
+  ]
+}
