@@ -47,9 +47,9 @@
   --font-body: var(--font-dm-sans), ui-sans-serif, sans-serif;
   --font-outlier: var(--font-plex-mono), ui-monospace, monospace;
 
-  --radius-sm: 16px;
-  --radius-md: 24px;
-  --radius-lg: 32px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
   --radius-pill: 999px;
 
   --shadow-lift: 0 30px 80px oklch(21% 0.035 165 / 0.16);

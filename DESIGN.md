@@ -61,8 +61,9 @@ The home highlight banner may use 36-60. The footer wordmark may use 40-72. Noth
 ## 3. Geometry
 
 - Pills for buttons, chips and tags.
-- 32px for panels and image cards.
-- 16px for inputs and inner photo frames.
+- 18px for panels and image cards (`--radius-lg`). Large radii on photographs read
+  as bubbles rather than frames, so the scale stays tight.
+- 14px for compact frames and controls; 10px for inputs and inner photo frames.
 - Cards are flat: a card contains a photo and text, never another card.
 - Control boundaries use `--color-rule-strong`; decoration uses the hairline rule.
 

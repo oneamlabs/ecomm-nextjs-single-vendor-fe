@@ -6,6 +6,8 @@ import { PriceBoard } from "@/components/market/price-board";
 import { CompactProductCard } from "@/components/product/compact-product-card";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductPhoto } from "@/components/product/product-photo";
+import { CategoryTile } from "@/components/shop/category-tile";
+import { TrustBand } from "@/components/market/trust-band";
 import { Carousel } from "@/components/ui/carousel";
 import { getCategories, getPhoto, getProduct, getProducts } from "@/lib/catalogue";
 import { formatPrice } from "@/lib/money";
@@ -23,24 +25,6 @@ const FEATURED_PRODUCTS = [
   "lemon-cordial",
   "dark-chocolate",
 ];
-
-const CATEGORY_META: Record<string, { photo: string; alt: string; tone: string }> = {
-  pantry: {
-    photo: "cacao-pod",
-    alt: "A yellow cacao pod hanging from a tree trunk",
-    tone: "shelf-pantry",
-  },
-  drinks: {
-    photo: "coffee-roasted",
-    alt: "Roasted coffee beans spread across a dark surface",
-    tone: "shelf-drinks",
-  },
-  fresh: {
-    photo: "sourdough-loaf",
-    alt: "A round sourdough loaf with a scored crust",
-    tone: "shelf-fresh",
-  },
-};
 
 const SHOP_FACTS = [
   {
@@ -128,16 +112,19 @@ export default function HomePage() {
   );
   const featuredIds = new Set(FEATURED_PRODUCTS);
   const oliveOil = getProduct("olive-oil")!;
-  const categories = getCategories();
-  // The index carries only what the featured rail does not already show, so no
-  // product is merchandised twice. Olive oil stays here as well as in the hero
-  // ticket, which is a price readout rather than a product card.
-  const shelves = categories.map((category) => ({
-    category,
-    products: getProducts({ categoryId: category.id }).filter(
-      (product) => !featuredIds.has(product.id),
-    ),
-  }));
+
+  const shelves = getCategories().map((category) => {
+    const allProducts = getProducts({ categoryId: category.id });
+
+    // The index carries only what the featured rail does not already show, so no
+    // product is merchandised twice. Olive oil stays here as well as in the hero
+    // ticket, which is a price readout rather than a product card.
+    return {
+      category,
+      allProducts,
+      products: allProducts.filter((product) => !featuredIds.has(product.id)),
+    };
+  });
   const fresh = getProducts({ categoryId: "fresh" });
   const [freshLead, ...freshRest] = fresh;
 
@@ -187,50 +174,30 @@ export default function HomePage() {
       <FactsTicker />
 
       <Section>
-        <SectionHeader title="Three shelves, one price list" lede="Sorted by shelf." />
+        <TrustBand />
+      </Section>
 
-        <div className="mt-8">
-          <Carousel label="Three shelves" controlsClassName="lg:hidden">
-            {categories.map((category) => {
-              const meta = CATEGORY_META[category.id];
-              const count = getProducts({ categoryId: category.id }).length;
+      <Section>
+        <SectionHeader
+          title="Three shelves, one price list"
+          lede="Sorted by shelf. Every one weighed and labelled here."
+          action={{ href: "/shop", label: "Shop the range" }}
+        />
 
-              return (
-                <Link
-                  key={category.id}
-                  href={`/shop?category=${category.id}`}
-                  className={`group lift flex w-[82%] flex-col overflow-hidden rounded-[var(--radius-lg)] text-ink sm:w-[52%] lg:w-[31.5%] ${
-                    meta?.tone ?? "bg-paper-2"
-                  }`}
-                >
-                  {meta && (
-                    <ProductPhoto
-                      photoKey={meta.photo}
-                      alt={meta.alt}
-                      sizes="(min-width: 64rem) 38vw, 82vw"
-                      className="aspect-[16/9] rounded-none shadow-none"
-                    />
-                  )}
-
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="text-[length:var(--text-title)] font-bold">{category.name}</h3>
-                      <span className="num text-sm font-semibold text-ink-2">
-                        {count} {count === 1 ? "item" : "items"}
-                      </span>
-                    </div>
-                    <p className="mt-2 max-w-[34ch] text-sm text-ink-2">
-                      {category.summary}
-                    </p>
-                    <span className="mt-auto pt-5 text-sm font-semibold">
-                      Browse {category.name.toLowerCase()}
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </Carousel>
-        </div>
+        <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+          {shelves.map(({ category, allProducts }, index) => (
+            <li
+              key={category.id}
+              className={index === 0 ? "sm:col-span-2 lg:col-span-2" : ""}
+            >
+              <CategoryTile
+                category={category}
+                products={allProducts}
+                size={index === 0 ? "large" : "small"}
+              />
+            </li>
+          ))}
+        </ul>
       </Section>
 
       <Section>
@@ -255,7 +222,10 @@ export default function HomePage() {
       </Section>
 
       <Section id="weighed">
-        <SectionHeader title="How it is weighed" />
+        <SectionHeader
+          title="How it is weighed"
+          lede="Four things that decide whether an order arrives right."
+        />
 
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           {SHOP_FACTS.map((fact) => (
@@ -271,7 +241,10 @@ export default function HomePage() {
       </Section>
 
       <Section>
-        <SectionHeader title="From the fresh shelf" />
+        <SectionHeader
+          title="From the fresh shelf"
+          action={{ href: "/shop?category=fresh", label: "Shop fresh" }}
+        />
 
         <div className="mt-8 grid gap-4 md:grid-cols-12">
           {freshLead && (
@@ -326,31 +299,38 @@ export default function HomePage() {
         />
 
         <div className="mt-8 grid gap-10 md:grid-cols-2">
-          {shelves
-            .filter(({ category }) => category.id !== "fresh")
-            .map(({ category, products }) => (
-            <section key={category.id} aria-labelledby={`shelf-${category.id}`} className="min-w-0">
-              <div className="flex items-baseline justify-between gap-3 border-b border-rule pb-3">
-                <h3 id={`shelf-${category.id}`} className="text-[length:var(--text-title)] font-bold">
-                  {category.name}
-                </h3>
-                <Link
-                  href={`/shop?category=${category.id}`}
-                  aria-label={`Browse ${category.name.toLowerCase()}`}
-                  className="link-quiet inline-flex min-h-11 min-w-11 items-center justify-end text-sm font-semibold"
-                >
-                  Browse
-                </Link>
-              </div>
-              <ul className="mt-1 divide-y divide-rule-2">
-                {products.map((product) => (
-                  <li key={product.id}>
-                    <CompactProductCard product={product} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+          {shelves.map(({ category, products }) => {
+            if (category.id === "fresh") return null;
+            if (products.length === 0) return null;
+
+            return (
+              <section
+                key={category.id}
+                aria-labelledby={`shelf-${category.id}`}
+                className="min-w-0"
+              >
+                <div className="flex items-baseline justify-between gap-3 border-b border-rule pb-3">
+                  <h3 id={`shelf-${category.id}`} className="text-[length:var(--text-title)] font-bold">
+                    {category.name}
+                  </h3>
+                  <Link
+                    href={`/shop?category=${category.id}`}
+                    aria-label={`Browse ${category.name.toLowerCase()}`}
+                    className="link-quiet inline-flex min-h-11 min-w-11 items-center justify-end text-sm font-semibold"
+                  >
+                    Browse
+                  </Link>
+                </div>
+                <ul className="mt-1 divide-y divide-rule-2">
+                  {products.map((product) => (
+                    <li key={product.id}>
+                      <CompactProductCard product={product} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            );
+          })}
         </div>
       </Section>
     </>
