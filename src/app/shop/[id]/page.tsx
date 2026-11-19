@@ -186,12 +186,14 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
         </div>
       </div>
 
-      <section className="mt-14 border-t border-rule pt-8">
-        <div className="grid gap-8 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <h2 className="tag">The provision</h2>
-            <p className="mt-4 text-[length:var(--text-lead)] leading-snug text-ink">{product.summary}</p>
-            <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+      <section className="mt-[var(--section-gap-s)]">
+        <div className="grid gap-4 md:grid-cols-12">
+          <div className="panel-quiet p-6 md:col-span-5">
+            <h2 className="text-sm font-semibold text-ink">The provision</h2>
+            <p className="mt-3 text-[length:var(--text-lead)] leading-snug text-ink">
+              {product.summary}
+            </p>
+            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
               <div>
                 <dt className="text-muted">Origin</dt>
                 <dd className="mt-0.5">{product.origin}</dd>
@@ -207,29 +209,27 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
             </dl>
           </div>
 
-          <div className="md:col-span-3">
-            <h2 className="tag">Packs</h2>
-            <ul className="mt-4 space-y-2 text-sm">
+          <div className="panel-quiet p-6 md:col-span-3">
+            <h2 className="text-sm font-semibold text-ink">Packs</h2>
+            <ul className="mt-3 divide-y divide-rule-2 text-sm">
               {product.variants.map((variant) => (
-                <li key={variant.id} className="flex justify-between gap-4">
+                <li key={variant.id} className="flex justify-between gap-4 py-2 first:pt-0">
                   <span>{variant.label}</span>
-                  <span className="num">
-                    {variant.inStock
-                      ? formatPrice(variant.priceCents)
-                      : "Sold out"}
+                  <span className="num shrink-0">
+                    {variant.inStock ? formatPrice(variant.priceCents) : "Sold out"}
                   </span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="md:col-span-4">
-            <h2 className="tag">Delivery and returns</h2>
-            <div className="mt-4 space-y-2 text-sm leading-relaxed text-ink-2">
-              <p>Free delivery over £40; £3.50 under £40.</p>
-              <p>Order by 11:00 for same-day within eight miles.</p>
-              <p>Replaced if it arrives wrong.</p>
-            </div>
+          <div className="panel-quiet p-6 md:col-span-4">
+            <h2 className="text-sm font-semibold text-ink">Delivery and returns</h2>
+            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-ink-2">
+              <li>Free delivery over £40; £3.50 under £40.</li>
+              <li>Order by 11:00 for same-day within eight miles.</li>
+              <li>Replaced if it arrives wrong.</li>
+            </ul>
           </div>
         </div>
       </section>

@@ -4,15 +4,14 @@ import { FactsTicker } from "@/components/market/facts-ticker";
 import { HighlightBanner } from "@/components/market/highlight-banner";
 import { PriceBoard } from "@/components/market/price-board";
 import { CompactProductCard } from "@/components/product/compact-product-card";
+import { FreshShelfCard } from "@/components/product/fresh-shelf-card";
 import { ProductCard } from "@/components/product/product-card";
 import { ProductPhoto } from "@/components/product/product-photo";
 import { CategoryTile } from "@/components/shop/category-tile";
 import { TrustBand } from "@/components/market/trust-band";
 import { Carousel } from "@/components/ui/carousel";
 import { getCategories, getPhoto, getProduct, getProducts } from "@/lib/catalogue";
-import { formatPrice } from "@/lib/money";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
-import type { Product } from "@/lib/types";
 
 /**
  * The large cards in "The range in packs". These four pantry and drinks
@@ -101,10 +100,6 @@ const BANNER_SLIDES = [
     href: "/shop?category=fresh",
   },
 ];
-
-function lowestPrice(product: Product) {
-  return Math.min(...product.variants.map((variant) => variant.priceCents));
-}
 
 export default function HomePage() {
   const featured = FEATURED_PRODUCTS.map(getProduct).filter(
@@ -247,47 +242,9 @@ export default function HomePage() {
         />
 
         <div className="mt-8 grid gap-4 md:grid-cols-12">
-          {freshLead && (
-            <Link
-              href={`/shop/${freshLead.id}`}
-              className="group lift flex flex-col overflow-hidden rounded-[var(--radius-lg)] bg-shelf-fresh text-ink md:col-span-6"
-            >
-              <ProductPhoto
-                photoKey={freshLead.photo}
-                alt={freshLead.photoAlt}
-                sizes="(min-width: 64rem) 50vw, 100vw"
-                className="aspect-[16/10] rounded-none shadow-none"
-              />
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="text-[length:var(--text-title)] font-bold">{freshLead.name}</h3>
-                <p className="mt-1 text-sm">{freshLead.origin}</p>
-                <p className="num mt-auto pt-4 text-sm font-semibold">
-                  from {formatPrice(lowestPrice(freshLead))}
-                </p>
-              </div>
-            </Link>
-          )}
-
+          {freshLead && <FreshShelfCard product={freshLead} lead />}
           {freshRest.map((product) => (
-            <Link
-              key={product.id}
-              href={`/shop/${product.id}`}
-              className="group lift flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] bg-paper-2 md:col-span-3"
-            >
-              <ProductPhoto
-                photoKey={product.photo}
-                alt={product.photoAlt}
-                sizes="(min-width: 64rem) 24vw, 100vw"
-                className="aspect-square rounded-none shadow-none"
-              />
-              <div className="flex flex-1 flex-col p-4">
-                <h3 className="font-body text-lg font-bold">{product.name}</h3>
-                <p className="mt-1 text-sm text-muted">{product.origin}</p>
-                <p className="num mt-auto pt-4 text-sm font-semibold">
-                  from {formatPrice(lowestPrice(product))}
-                </p>
-              </div>
-            </Link>
+            <FreshShelfCard key={product.id} product={product} />
           ))}
         </div>
       </Section>

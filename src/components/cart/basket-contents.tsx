@@ -72,7 +72,7 @@ export function BasketContents({ products }: { products: Product[] }) {
                   </p>
                 </div>
 
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+                <div className="mt-4 flex flex-wrap items-center gap-4">
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
@@ -117,7 +117,7 @@ export function BasketContents({ products }: { products: Product[] }) {
       </div>
 
       <aside className="md:col-span-4">
-        <div className="rounded-[var(--radius-lg)] bg-paper-2 p-6">
+        <div className="panel-quiet p-6">
           <h2 className="font-body text-xl font-semibold leading-tight tracking-normal">
             Order summary
           </h2>

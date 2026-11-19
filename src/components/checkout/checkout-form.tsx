@@ -61,7 +61,7 @@ export function CheckoutForm({ products }: { products: Product[] }) {
 
   if (submitted) {
     return (
-      <div className="mt-10 max-w-[54ch] rounded-[var(--radius-lg)] bg-paper-2 p-8">
+      <div className="panel-quiet mt-10 max-w-[54ch] p-8">
         <h2 className="text-[length:var(--text-section-s)] font-bold">No order was placed</h2>
         <p className="mt-4 text-ink-2">
           The form checked out, but this demo has no backend, so nothing was charged and nothing
@@ -196,7 +196,7 @@ export function CheckoutForm({ products }: { products: Product[] }) {
       </div>
 
       <aside className="md:col-span-5">
-        <div className="rounded-[var(--radius-lg)] bg-paper-2 p-6">
+        <div className="panel-quiet p-6">
           <h2 className="font-body text-xl font-semibold leading-tight tracking-normal">
             What you are ordering
           </h2>

@@ -8,7 +8,7 @@ interface EmptyStateProps {
 
 export function EmptyState({ title, body, action }: EmptyStateProps) {
   return (
-    <div className="rounded-[var(--radius-lg)] bg-paper-2 p-8 md:p-12">
+    <div className="panel-quiet p-8 md:p-12">
       <h2 className="text-[length:var(--text-section-s)] font-bold">{title}</h2>
       <p className="mt-3 max-w-[46ch] text-ink-2">{body}</p>
       {action && (
