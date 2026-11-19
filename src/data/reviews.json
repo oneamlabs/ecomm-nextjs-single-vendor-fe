@@ -1,0 +1,20 @@
+{
+  "reviews": {
+    "organic-red-quinoa": [
+      {
+        "name": "Ananya S.",
+        "rating": 5,
+        "date": "Nov 15, 2026",
+        "text": "Great quality quinoa! Cooks well and tastes really fresh.",
+        "verified": true
+      },
+      {
+        "name": "Rohit K.",
+        "rating": 5,
+        "date": "Nov 10, 2026",
+        "text": "Pure and organic. Perfect for my daily diet. Highly recommended!",
+        "verified": true
+      }
+    ]
+  }
+}

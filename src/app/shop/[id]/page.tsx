@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PageShell } from "@/components/layout/page-shell";
-import { ProductGrid } from "@/components/product/product-grid";
+import { CaretRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { ComboPromo } from "@/components/product/combo-promo";
+import { ProductBuyBox } from "@/components/product/product-buy-box";
 import { ProductGallery } from "@/components/product/product-gallery";
-import { Rating } from "@/components/product/rating";
-import { VariantPicker } from "@/components/product/variant-picker";
+import { ProductHighlights } from "@/components/product/product-highlights";
+import { ProductTabs } from "@/components/product/product-tabs";
+import { RelatedProducts } from "@/components/product/related-products";
+import { ReviewsSection } from "@/components/product/reviews-section";
+import { SellerBenefits, SellerCard } from "@/components/product/seller-card";
 import {
   getCategory,
   getPhoto,
@@ -13,8 +17,8 @@ import {
   getProducts,
   getVendor,
 } from "@/lib/catalogue";
-import { dietLabel } from "@/lib/diets";
-import { formatPrice } from "@/lib/money";
+import { getProductDetail } from "@/lib/product-details";
+import { getReviews } from "@/lib/reviews";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -27,6 +31,25 @@ export function generateStaticParams() {
  * instant-navigation validation makes that explicit.
  */
 export const instant = false;
+
+const CONTEXT_PHOTOS: Record<string, { alt: string; label: string }> = {
+  "market-stall": {
+    alt: "A sunlit market stall under green canopies, with crates of produce",
+    label: "At the market",
+  },
+  "apples-crate": {
+    alt: "A crate of freshly harvested apples",
+    label: "From the farm",
+  },
+  "olives-harvest": {
+    alt: "Hands sorting a harvest of small dark olives",
+    label: "At harvest",
+  },
+  "sourdough-starter": {
+    alt: "A bubbling sourdough starter in a glass jar",
+    label: "In the kitchen",
+  },
+};
 
 export async function generateMetadata(props: PageProps<"/shop/[id]">): Promise<Metadata> {
   const { id } = await props.params;
@@ -69,43 +92,42 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
 
   const category = getCategory(product.categoryId);
   const vendor = getVendor(product.vendorId);
-  const related = getProducts({ categoryId: product.categoryId })
-    .filter((item) => item.id !== product.id)
-    .slice(0, 3);
   const photo = getPhoto(product.photo);
+  const detail = getProductDetail(product, vendor);
+  const reviews = getReviews(product.id);
+
+  const sameCategory = getProducts({ categoryId: product.categoryId }).filter(
+    (item) => item.id !== product.id,
+  );
+  const otherProducts = getProducts().filter(
+    (item) => item.id !== product.id && item.categoryId !== product.categoryId,
+  );
+  const related = [...sameCategory, ...otherProducts].slice(0, 4);
+
+  const contextKeys = ["market-stall", "apples-crate", "olives-harvest"].filter(
+    (key) => key !== product.photo,
+  );
   const gallery = [
-    { key: product.photo, alt: product.photoAlt, label: product.name },
-    product.photo === "coffee-roasted"
-      ? {
-          key: "coffee-cooling",
-          alt: "Roasted coffee beans cooling after roasting",
-          label: "After roasting",
-        }
-      : product.photo === "sourdough-loaf"
-        ? {
-            key: "sourdough-starter",
-            alt: "A sourdough starter in a jar",
-            label: "The starter",
-          }
-        : {
-            key: "market-stall",
-            alt: "A sunlit market stall under green canopies, with crates of produce",
-            label: "In context",
-          },
+    {
+      key: product.photo,
+      alt: product.photoAlt,
+      label: product.name,
+    },
+    ...contextKeys.slice(0, 3).map((key) => ({
+      key,
+      alt: CONTEXT_PHOTOS[key]?.alt ?? "",
+      label: CONTEXT_PHOTOS[key]?.label ?? "In context",
+    })),
   ];
+
   const prices = product.variants.map((variant) => variant.priceCents / 100);
-  const labels = uniqueLabels([
-    ...(product.organic ? ["Organic"] : []),
-    ...product.tags.map(tagLabel),
-    ...(product.diets ?? []).map(dietLabel),
-  ]);
   const productJsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Product",
         name: product.name,
-        description: product.summary,
+        description: detail.longDescription,
         image: `${SITE_URL}${photo.src}`,
         sku: product.id,
         category: category?.name,
@@ -113,6 +135,14 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
         additionalProperty: product.organic
           ? [{ "@type": "PropertyValue", name: "Organic", value: "true" }]
           : undefined,
+        aggregateRating:
+          product.rating !== undefined && product.reviewCount !== undefined
+            ? {
+                "@type": "AggregateRating",
+                ratingValue: product.rating,
+                reviewCount: product.reviewCount,
+              }
+            : undefined,
         offers: {
           "@type": "AggregateOffer",
           priceCurrency: "INR",
@@ -131,13 +161,13 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
           {
             "@type": "ListItem",
             position: 1,
-            name: "Shop",
-            item: `${SITE_URL}/shop`,
+            name: "Home",
+            item: SITE_URL,
           },
           {
             "@type": "ListItem",
             position: 2,
-            name: category?.name ?? "Range",
+            name: category?.name ?? "All Products",
             item: `${SITE_URL}/shop?category=${product.categoryId}`,
           },
           {
@@ -152,132 +182,89 @@ export default async function ProductPage(props: PageProps<"/shop/[id]">) {
   };
 
   return (
-    <PageShell className="pb-[var(--section-gap)]">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
       />
-      <nav aria-label="Breadcrumb" className="text-sm text-muted">
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <li>
-            <Link href="/shop" className="link-quiet inline-flex min-h-6 items-center">
-              Shop
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link
-              href={`/shop?category=${product.categoryId}`}
-              className="link-quiet inline-flex min-h-6 items-center"
-            >
-              {category?.name ?? "Range"}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-ink-2">
-            {product.name}
-          </li>
-        </ol>
-      </nav>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-16">
-        <div className="lg:sticky lg:top-28 lg:self-start">
-          <ProductGallery images={gallery} />
+      <div className="container pb-[var(--section-gap)] pt-4">
+        <nav aria-label="Breadcrumb">
+          <ol className="flex flex-wrap items-center gap-1 text-xs text-muted">
+            <li>
+              <Link href="/" className="transition hover:text-accent">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true">
+              <CaretRightIcon size={11} weight="bold" />
+            </li>
+            {category && (
+              <>
+                <li>
+                  <Link
+                    href={`/shop?category=${category.id}`}
+                    className="transition hover:text-accent"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+                <li aria-hidden="true">
+                  <CaretRightIcon size={11} weight="bold" />
+                </li>
+              </>
+            )}
+            <li aria-current="page" className="font-medium text-ink-2">
+              {product.name}
+            </li>
+          </ol>
+        </nav>
+
+        <div className="mt-4 grid gap-6 lg:grid-cols-2 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.15fr)_minmax(0,0.75fr)]">
+          <div className="min-w-0">
+            <ProductGallery images={gallery} />
+          </div>
+
+          <div className="min-w-0">
+            <ProductBuyBox product={product} detail={detail} />
+          </div>
+
+          <div className="flex flex-col gap-4 lg:col-span-2 lg:flex-row xl:col-span-1 xl:flex-col">
+            {vendor && (
+              <div className="flex-1 space-y-4">
+                <SellerCard vendor={vendor} />
+                <SellerBenefits />
+              </div>
+            )}
+            <div className="lg:w-80 xl:w-auto">
+              <ComboPromo />
+            </div>
+          </div>
         </div>
 
-        <div className="min-w-0">
-          {category && <p className="tag">{category.name}</p>}
-          <p className="mt-3 text-sm text-muted">{product.origin}</p>
-          <h1 className="mt-2 text-[length:var(--text-page-title)]">{product.name}</h1>
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-            <Rating rating={product.rating} reviewCount={product.reviewCount} />
-            {vendor && (
-              <Link
-                href={`/shop?vendor=${vendor.id}`}
-                className="link-quiet text-xs font-semibold text-accent"
-              >
-                Sold by {vendor.name}
-              </Link>
-            )}
-          </div>
-          <p className="lead mt-4 max-w-[44ch] text-ink-2">{product.summary}</p>
-          <p className="mt-3 text-sm text-muted">{labels.join(" · ")}</p>
+        <div className="mt-5">
+          <ProductHighlights highlights={detail.highlights} />
+        </div>
 
-          <VariantPicker product={product} />
+        <div className="mt-6">
+          <ProductTabs
+            product={product}
+            detail={detail}
+            vendor={vendor}
+            reviews={reviews}
+          />
+        </div>
+
+        <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+          <ReviewsSection
+            productName={product.name}
+            rating={product.rating ?? 0}
+            reviewCount={product.reviewCount ?? 0}
+            reviews={reviews}
+          />
+          <RelatedProducts products={related} />
         </div>
       </div>
-
-      <section className="mt-[var(--section-gap-s)]">
-        <div className="grid gap-4 md:grid-cols-12">
-          <div className="panel-quiet p-6 md:col-span-5">
-            <h2 className="text-sm font-semibold text-ink">The provision</h2>
-            <p className="mt-3 text-[length:var(--text-lead)] leading-snug text-ink">
-              {product.summary}
-            </p>
-            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
-              <div>
-                <dt className="text-muted">Origin</dt>
-                <dd className="mt-0.5">{product.origin}</dd>
-              </div>
-              <div>
-                <dt className="text-muted">Shelf</dt>
-                <dd className="mt-0.5">{category?.name}</dd>
-              </div>
-              <div className="col-span-2">
-                <dt className="text-muted">Suitable for</dt>
-                <dd className="mt-0.5">{labels.join(" · ")}</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="panel-quiet p-6 md:col-span-3">
-            <h2 className="text-sm font-semibold text-ink">Packs</h2>
-            <ul className="mt-3 divide-y divide-rule-2 text-sm">
-              {product.variants.map((variant) => (
-                <li key={variant.id} className="flex justify-between gap-4 py-2 first:pt-0">
-                  <span>{variant.label}</span>
-                  <span className="num shrink-0">
-                    {variant.inStock ? formatPrice(variant.priceCents) : "Sold out"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="panel-quiet p-6 md:col-span-4">
-            <h2 className="text-sm font-semibold text-ink">Delivery and returns</h2>
-            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-ink-2">
-              <li>Free delivery over ₹999; ₹49 under ₹999.</li>
-              <li>Delivered in 3 to 5 days across India.</li>
-              <li>Replaced if it arrives wrong.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {related.length > 0 && (
-        <section className="mt-[var(--section-gap)]">
-          <h2 className="text-[length:var(--text-section-s)]">Also on this shelf</h2>
-          <div className="mt-8">
-            <ProductGrid products={related} compact />
-          </div>
-        </section>
-      )}
-    </PageShell>
+    </>
   );
-}
-
-function tagLabel(tag: string) {
-  return dietLabel(tag);
-}
-
-function uniqueLabels(values: string[]) {
-  const seen = new Set<string>();
-
-  return values.filter((value) => {
-    const key = value.toLowerCase().replace(/[^a-z]/g, "");
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
 }

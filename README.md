@@ -25,11 +25,11 @@ sitemap URLs are absolute. It defaults to `http://localhost:3000`.
 | --- | --- |
 | `/` | Marketplace homepage: search header, category bar, cream hero, circular category strip, trust band, featured vendors, trending products with tabs, farmer banner, diet grid, why-choose band, newsletter and dark green footer |
 | `/shop` | Catalogue: cream hero, breadcrumb, category chips, sort and grid/list toggle, sidebar filters (category, price, discount, vendor, diet, certification, availability), four-up product grid and pagination |
-| `/shop/[id]` | Gallery, pack and quantity, live price and rate, vendor, rating and provision sheet |
+| `/shop/[id]` | Gallery with arrows and dots, pack and quantity buy box, seller panel, five highlights, tabbed description/nutrition/ingredients/how-to-use/reviews/seller info, customer reviews and related products |
 | `/vendors` | The verified sellers behind the catalogue |
 | `/sell` | How a producer would apply to sell |
 | `/policies` | Shipping, returns, privacy and terms |
-| `/basket` | Pack per line, quantity, subtotal, delivery, total |
+| `/basket` | Cart lines with pack, vendor, discount tag, quantity stepper, Save for Later and Remove; Select All and Remove Selected; item total, discount, delivery, collapsible coupon field and trust strip; suggestions and an assurance band |
 | `/wishlist` | Saved products, with the same Add to Cart and heart |
 | `/checkout` | Address and delivery validation, summary, honest no-order state |
 | `/credits` | Library photograph authors and licences |
@@ -60,11 +60,14 @@ sitemap URLs are absolute. It defaults to `http://localhost:3000`.
 }
 ```
 
-Money is always integer paise and formatted once at render as INR. Ratings, review counts
-and MRP are sample marketplace data. Server pages call `getProducts`, `getProduct`,
-`getCategory`, `getVendors` and friends; client leaves receive products as props, and the
-cart/wishlist stores hold only shape-validated lines and ids. `src/lib/photos.ts` holds the
-small photo metadata used by `next/image`.
+Money is always integer paise and formatted once at render as INR. Ratings, review counts,
+MRP, reviews and delivery dates are sample marketplace data. `src/data/product-details.json`
+holds the long description, highlights, features, nutrition, ingredients and usage for a
+product; products without a record get generated fallback copy. `src/data/reviews.json`
+holds sample reviews. Server pages call `getProducts`, `getProduct`, `getCategory`,
+`getVendors` and friends; client leaves receive products as props, and the cart/wishlist
+stores hold only shape-validated lines and ids. `src/lib/photos.ts` holds the small photo
+metadata used by `next/image`.
 
 `npm run check:data` validates the catalogue before every build: unique ids, known
 categories, vendors and photos, valid ratings and MRP, positive integer prices and weights,

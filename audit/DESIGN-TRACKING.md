@@ -87,6 +87,21 @@ The catalogue card carries the default pack size and the vendor in addition to t
 card anatomy. Twelve products show per page. The first row follows the curated catalogue
 order so the trending six lead the page.
 
+### Product page order
+
+1. Breadcrumb
+2. Three-column buy area: gallery; buy box; seller, benefits and combo promo
+3. Five-item highlight strip
+4. Tabbed card: Description, Nutrition Facts, Ingredients, How to Use, Reviews, Seller Info
+5. Customer Reviews beside You May Also Like
+6. Footer
+
+The gallery has vertical thumbnails, arrows, dots and a video placeholder that states the
+video is not part of the demo. Pack buttons print their own MRP; the buy box shows stock
+and a sold count where sample data exists. Reviews, the delivery window and nutrition are
+sample data. Products without a `product-details.json` record receive generated fallback
+description, features, nutrition and usage copy.
+
 ---
 
 ## 4. Design tokens in force

@@ -60,9 +60,20 @@ decision to defer search until forty SKUs.
 rating, price with strikethrough MRP and a full-width Add to Cart. The same card is used on
 the home, shop, saved list and related rails.
 
-**Product detail.** A 4:5 gallery with vertical thumbnails and per-image credit; a buy box
-with pack buttons, price/rate, vendor, rating, stock, quantity and delivery; a provision
-sheet below. No oversized display headings on the page.
+**Product detail.** A three-column buy area at xl: gallery with thumbnails, arrows and dots;
+a buy box with per-pack MRP, quantity, stock, Add to Cart and Buy Now; and a seller panel
+with delivery, returns and payment benefits plus a combo promo. A five-item highlight strip,
+a tabbed information card, customer reviews and a paged related-products view follow. Long
+copy, nutrition, ingredients and usage come from `product-details.json`; products without a
+record use generated fallback copy. Reviews and delivery dates are sample data.
+
+**Cart.** The basket page is a two-column cart: one white line card with selection boxes,
+photo, badge, vendor, pack and unit rate, price with MRP and discount tag, a quantity
+stepper, Save for Later and Remove, plus Select All and Remove Selected. The summary panel
+shows item total, item discount, subtotal, delivery, the total and a collapsible coupon
+field that states plainly that no demo coupon applies. Save for Later reuses the wishlist
+store. Suggestions and a pale green assurance band close the page. Selection drives
+Remove Selected only; totals cover the whole cart, so the checkout contract is unchanged.
 
 **Photography.** Local library photographs in full colour, credited on `/credits`. No AI or
 invented imagery. The library is illustrative: a product photo is a real food photograph,

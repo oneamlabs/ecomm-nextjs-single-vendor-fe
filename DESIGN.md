@@ -115,15 +115,31 @@ default pack size and the vendor to the shared card anatomy. List view switches 
 horizontal row with the same actions.
 
 ### Product
-A gallery with a 4:5 main image, vertical thumbnails, a counter and per-image credit; a buy
-box with pack buttons, price, unit rate, stock, quantity, Add to Cart, heart and vendor;
-a full-width provision sheet (provision, packs, delivery/returns); related products.
+A breadcrumb, then three columns at xl: a 4:5 gallery with vertical thumbnails, arrows and
+dots; a buy box with badge, title, summary, rating and sold count, price/MRP/discount,
+per-pack buttons, quantity, stock, Add to Cart and Buy Now; and a right column with the
+seller card, delivery/returns/payment benefits and a combo promo. A five-item highlight
+strip follows, then a tabbed card (Description, Nutrition Facts, Ingredients, How to Use,
+Reviews, Seller Info) with the long description and four feature notes beside a photograph.
+Customer Reviews sits beside You May Also Like, with the rating summary, breakdown bars,
+sample reviews, a review form and a paged two-card related view.
 
-### Vendors, sell, policies, cart, checkout, saved, credits, account
+### Cart
+A breadcrumb, then a cart glyph beside the page title, the total item count and a Continue
+Shopping button. The line card is one white surface: a selection checkbox, a square photo,
+the name with its badge taken from the catalogue, the vendor, the pack with its unit rate,
+price, strikethrough MRP and discount tag, and the line total. Quantity stepper, Save for
+Later and Remove sit on a second row. The card footer holds Select All and Remove Selected.
+The right column is the Order Summary: item total, item discount, subtotal, delivery with a
+free-delivery note, the total, a collapsible Apply Coupon field that honestly rejects demo
+codes, Proceed to Checkout and a three-item trust strip. You May Also Like follows, then a
+pale green assurance band.
+
+### Vendors, sell, policies, checkout, saved, credits, account
 Same shell and page title. Vendors lists the verified producers; sell explains the demo
-application flow; policies states shipping, returns, privacy and terms; cart lines carry the
-pack and rate; checkout validates and states that no order is placed; saved uses the same
-card actions; credits lists photograph authors and licences.
+application flow; policies states shipping, returns, privacy and terms; checkout validates
+and states that no order is placed; saved uses the same card actions; credits lists
+photograph authors and licences.
 
 ## 6. Motion
 

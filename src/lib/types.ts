@@ -4,6 +4,7 @@ export interface Variant {
   id: string;
   label: string;
   priceCents: number;
+  mrpCents?: number;
   netAmount: number;
   netUnit: NetUnit;
   inStock: boolean;

@@ -1,0 +1,49 @@
+{
+  "details": {
+    "organic-red-quinoa": {
+      "soldCount": 2400,
+      "stockLeft": 48,
+      "longDescription": "Organic quinoa is a nutrient-dense, gluten-free whole grain known for its high-quality plant protein, fiber, and essential minerals. Sourced from certified organic farms, it is naturally processed without any chemicals or additives, making it a healthy and versatile choice for everyday meals.",
+      "highlights": [
+        "100% Organic",
+        "Gluten Free",
+        "High Protein",
+        "No Additives",
+        "Vegan Friendly"
+      ],
+      "features": [
+        {
+          "title": "Rich in complete plant protein",
+          "line": "Contains all 9 essential amino acids."
+        },
+        {
+          "title": "High in fiber & minerals",
+          "line": "Supports heart and gut health."
+        },
+        {
+          "title": "Gluten-free & easy to digest",
+          "line": "A great alternative to refined grains."
+        },
+        {
+          "title": "Versatile & easy to cook",
+          "line": "Use in salads, bowls, pulao, or as a rice substitute."
+        }
+      ],
+      "nutrition": [
+        { "label": "Energy", "value": "368 kcal" },
+        { "label": "Protein", "value": "14.1 g" },
+        { "label": "Carbohydrates", "value": "64.2 g" },
+        { "label": "Total Fat", "value": "6.1 g" },
+        { "label": "Dietary Fibre", "value": "7.0 g" },
+        { "label": "Sugars", "value": "0 g" },
+        { "label": "Sodium", "value": "5 mg" }
+      ],
+      "ingredients": "100% organic whole grain quinoa.",
+      "howToUse": [
+        "Rinse 1 cup of quinoa under cold running water.",
+        "Simmer with 2 cups of water for about 15 minutes.",
+        "Fluff with a fork and serve warm in bowls, salads or pulao."
+      ]
+    }
+  }
+}

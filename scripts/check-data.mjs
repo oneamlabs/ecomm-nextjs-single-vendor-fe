@@ -87,6 +87,12 @@ for (const product of products) {
     if (!Number.isInteger(variant.priceCents) || variant.priceCents <= 0) {
       problems.push(`${at}: priceCents must be a positive integer`);
     }
+    if (
+      variant.mrpCents !== undefined &&
+      (!Number.isInteger(variant.mrpCents) || variant.mrpCents <= variant.priceCents)
+    ) {
+      problems.push(`${at}: mrpCents must be an integer above priceCents`);
+    }
     if (!Number.isInteger(variant.netAmount) || variant.netAmount <= 0) {
       problems.push(`${at}: netAmount must be a positive integer`);
     }

@@ -124,6 +124,20 @@ export function defaultVariant(product: Product): Variant {
   return product.variants.find((variant) => variant.inStock) ?? product.variants[0];
 }
 
+export function variantMrpCents(
+  product: Product,
+  variant: Variant,
+): number | undefined {
+  if (variant.mrpCents !== undefined) return variant.mrpCents;
+
+  if (product.mrpCents === undefined) return undefined;
+
+  const base = defaultVariant(product);
+  if (variant.id === base.id) return product.mrpCents;
+
+  return Math.round((product.mrpCents * variant.priceCents) / base.priceCents / 100) * 100;
+}
+
 export function discountPercent(product: Product): number | undefined {
   if (!product.mrpCents) return undefined;
   const price = defaultVariant(product).priceCents;

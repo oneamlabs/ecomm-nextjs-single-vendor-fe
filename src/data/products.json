@@ -17,8 +17,9 @@
       "mrpCents": 39900,
       "badge": "Bestseller",
       "variants": [
-        { "id": "500g", "label": "500 g pack", "priceCents": 31900, "netAmount": 500, "netUnit": "g", "inStock": true },
-        { "id": "1kg", "label": "1 kg pack", "priceCents": 59900, "netAmount": 1000, "netUnit": "g", "inStock": true }
+        { "id": "500g", "label": "500 g", "priceCents": 31900, "mrpCents": 39900, "netAmount": 500, "netUnit": "g", "inStock": true },
+        { "id": "1kg", "label": "1 kg", "priceCents": 59900, "mrpCents": 74900, "netAmount": 1000, "netUnit": "g", "inStock": true },
+        { "id": "2kg", "label": "2 kg", "priceCents": 114900, "mrpCents": 149900, "netAmount": 2000, "netUnit": "g", "inStock": true }
       ]
     },
     {

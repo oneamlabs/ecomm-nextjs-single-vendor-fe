@@ -62,3 +62,9 @@ export function toggleWishlist(productId: string) {
   }
   commit([...ids, productId]);
 }
+
+export function saveToWishlist(productId: string) {
+  ensureLoaded();
+  if (ids.includes(productId)) return;
+  commit([...ids, productId]);
+}
