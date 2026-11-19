@@ -2,8 +2,14 @@ import "server-only";
 
 import { create, type AxiosAdapter } from "axios";
 import { createApi } from "./client";
-import { ENDPOINTS, productIdFromPath } from "./endpoints";
-import { listProducts, readCategories, readProduct, readVendors } from "./mock-backend";
+import { ENDPOINTS, productIdFromDetailPath, productIdFromPath } from "./endpoints";
+import {
+  listProducts,
+  readCategories,
+  readProduct,
+  readProductDetail,
+  readVendors,
+} from "./mock-backend";
 import { errorResponse, notFound } from "./responses";
 
 /**
@@ -47,6 +53,18 @@ const inProcessAdapter: AxiosAdapter = async (config) => {
       pageSize: toNumber(params.get("pageSize")),
     });
     return respond(result);
+  }
+
+  // Check the `/detail` suffix first: the plain id matcher rejects nested paths,
+  // so the order only matters for clarity, but it keeps the intent obvious.
+  const detailId = productIdFromDetailPath(pathname);
+  if (detailId) {
+    const bundle = readProductDetail(detailId);
+    if (!bundle) {
+      const body = await notFound(`No product with id "${detailId}".`).json();
+      throw adapterError(config, 404, body);
+    }
+    return respond(bundle);
   }
 
   const productId = productIdFromPath(pathname);

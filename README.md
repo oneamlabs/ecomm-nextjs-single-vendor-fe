@@ -44,8 +44,9 @@ query logic.
 
 | Endpoint | Returns |
 | --- | --- |
-| `GET /api/products` | `{ items, total, page, pageSize, pageCount }`. Accepts `category`, `q`, `tag[]`, `diet[]`, `vendor[]`, `certification[]`, `min`, `max`, `discount`, `stock`, `sort`, `page`, `pageSize` |
+| `GET /api/products` | `{ items, total, page, pageSize, pageCount, facets }`. Accepts `category`, `q`, `tag[]`, `diet[]`, `vendor[]`, `certification[]`, `min`, `max`, `discount`, `stock`, `sort`, `page`, `pageSize`. `facets` are whole-catalogue counts for the sidebar |
 | `GET /api/products/[id]` | One product, or `404` |
+| `GET /api/products/[id]/detail` | `{ product, detail, reviews, category, vendor, related }` — the whole product page in one call |
 | `GET /api/categories` | `{ items }` |
 | `GET /api/vendors` | `{ items }` |
 
@@ -63,6 +64,12 @@ unknown `sort`, non-integer or negative numerics, `min` above `max`, and `stock`
 `server.ts` answers in-process so Server Components and `next build` never fetch their own
 HTTP server. Point `server.ts` at a real base URL and delete the adapter when a backend
 exists.
+
+**Every page and component reads through this client.** No route imports
+`src/lib/catalogue.ts` directly; the only consumers of the data layer are the route
+handlers and the mock backend behind them. That means the JSON files are a single
+implementation detail: replacing them with a real backend changes `mock-backend.ts` and
+`server.ts`, and nothing else.
 
 ## Data
 

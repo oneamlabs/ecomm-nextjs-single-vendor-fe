@@ -10,19 +10,14 @@ import { ProductTabs } from "@/components/product/product-tabs";
 import { RelatedProducts } from "@/components/product/related-products";
 import { ReviewsSection } from "@/components/product/reviews-section";
 import { SellerBenefits, SellerCard } from "@/components/product/seller-card";
-import {
-  getCategory,
-  getPhoto,
-  getProduct,
-  getProducts,
-  getVendor,
-} from "@/lib/catalogue";
-import { getProductDetail } from "@/lib/product-details";
-import { getReviews } from "@/lib/reviews";
+import { serverApi } from "@/lib/api";
+import { getPhoto } from "@/lib/photos";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
-export function generateStaticParams() {
-  return getProducts().map((product) => ({ id: product.id }));
+export async function generateStaticParams() {
+  // Ids only, one maximum-page call: this runs at build time to prerender.
+  const { items } = await serverApi.listProducts({ pageSize: 48 });
+  return items.map((product) => ({ id: product.id }));
 }
 
 /**
@@ -53,9 +48,10 @@ const CONTEXT_PHOTOS: Record<string, { alt: string; label: string }> = {
 
 export async function generateMetadata(props: PageProps<"/shop/[id]">): Promise<Metadata> {
   const { id } = await props.params;
-  const product = getProduct(id);
-  if (!product) return { title: "Item not found - Kraya" };
+  const bundle = await serverApi.getProductDetail(id).catch(() => undefined);
+  if (!bundle) return { title: "Item not found - Kraya" };
 
+  const { product } = bundle;
   const photo = getPhoto(product.photo);
 
   return {
@@ -87,22 +83,11 @@ export async function generateMetadata(props: PageProps<"/shop/[id]">): Promise<
 
 export default async function ProductPage(props: PageProps<"/shop/[id]">) {
   const { id } = await props.params;
-  const product = getProduct(id);
-  if (!product) notFound();
+  const bundle = await serverApi.getProductDetail(id).catch(() => undefined);
+  if (!bundle) notFound();
 
-  const category = getCategory(product.categoryId);
-  const vendor = getVendor(product.vendorId);
+  const { product, detail, reviews, category, vendor, related } = bundle;
   const photo = getPhoto(product.photo);
-  const detail = getProductDetail(product, vendor);
-  const reviews = getReviews(product.id);
-
-  const sameCategory = getProducts({ categoryId: product.categoryId }).filter(
-    (item) => item.id !== product.id,
-  );
-  const otherProducts = getProducts().filter(
-    (item) => item.id !== product.id && item.categoryId !== product.categoryId,
-  );
-  const related = [...sameCategory, ...otherProducts].slice(0, 4);
 
   const contextKeys = ["market-stall", "apples-crate", "olives-harvest"].filter(
     (key) => key !== product.photo,

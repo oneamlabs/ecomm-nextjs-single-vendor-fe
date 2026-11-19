@@ -1,6 +1,18 @@
-import type { Category, Product, Vendor } from "@/lib/types";
+import type {
+  Category,
+  Product,
+  ProductDetail,
+  ProductReview,
+  Vendor,
+} from "@/lib/types";
 
-export type { Category, Product, Vendor } from "@/lib/types";
+export type {
+  Category,
+  Product,
+  ProductDetail,
+  ProductReview,
+  Vendor,
+} from "@/lib/types";
 
 /**
  * The HTTP contract. These are the shapes the route handlers return and the
@@ -32,7 +44,35 @@ export interface ProductListQuery {
   pageSize?: number;
 }
 
-export type ProductListResponse = Paginated<Product>;
+export type ProductListResponse = Paginated<Product> & {
+  /**
+   * Counts across the whole catalogue, not the filtered page. The sidebar shows
+   * these next to each option so a shopper can see what a filter would add.
+   */
+  facets: ProductFacets;
+};
+
+export interface ProductFacets {
+  total: number;
+  category: Record<string, number>;
+  vendor: Record<string, number>;
+  diet: Record<string, number>;
+  certification: Record<string, number>;
+  discount: Record<string, number>;
+  stock: { in: number; out: number };
+}
+
+/** Everything a product page needs, so it is one request rather than three. */
+export interface ProductDetailResponse {
+  product: Product;
+  detail: ProductDetail;
+  reviews: ProductReview[];
+  category?: Category;
+  vendor?: Vendor;
+  /** Same-category first, then the rest, excluding this product. */
+  related: Product[];
+}
+
 export type CategoryListResponse = { items: Category[] };
 export type VendorListResponse = { items: Vendor[] };
 

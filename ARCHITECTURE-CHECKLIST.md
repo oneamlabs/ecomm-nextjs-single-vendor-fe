@@ -5,7 +5,7 @@ against this repository. Each item states what the brief asks for, what the audi
 and what was actually done. Boxes are ticked only where the change is in the tree and the
 listed check passes.
 
-Last updated: architecture pass 2 (API layer).
+Last updated: architecture pass 3 (API migration complete).
 
 ---
 
@@ -77,8 +77,15 @@ behavior and explain conflicts rather than perform a migration, so:
       Evidence: `browser.ts` and `server.ts` share it.
 - [x] **Server components never self-fetch over HTTP.** The server instance resolves the
       same paths in-process, so `next build` prerenders without a listening origin and a
-      wrong base URL cannot call an unrelated server on the same port. `/vendors` now
-      renders through `serverApi.getVendors()`.
+      wrong base URL cannot call an unrelated server on the same port.
+- [x] **The API is the only path to data.** Home, shop, product, basket, checkout,
+      wishlist, sitemap, `generateStaticParams` and the site header all read through
+      `serverApi`. Verified: grepping `src/app` for `@/lib/catalogue|reviews|product-details`
+      returns nothing; only the route handlers and the mock backend reach the DAL.
+- [x] **One call per page, not one per section.** `/api/products` returns facets for the
+      sidebar; `/api/products/[id]/detail` returns the record, long copy, reviews, category,
+      vendor and related rail. Evidence: `/shop` made the old local facet computation
+      dead code, and the detail endpoint returned `reviews=2 related=4` live.
 
 ## 2. State ownership
 
@@ -159,11 +166,12 @@ All run against this tree, in this order:
 | `npm run check:data` | Data check passed: 18 products, 9 categories, 4 vendors, 17 photos |
 | `npm run typecheck` | clean |
 | `npm run lint` | 0 warnings, 0 errors |
-| `npm test` | 44 pass, 0 fail |
-| `npm run build` | compiled, 37 pages generated, `/api` routes listed |
+| `npm test` | 46 pass, 0 fail |
+| `npm run build` | compiled, 37 pages generated, 18 product routes prerendered |
 | `npm run smoke` (production server) | all routes 200, 404 on the unknown product |
-| `npm run check:ui` (production server) | 12 route/viewport pairs clean, no overflow, no broken images |
-| API spot checks (curl) | pagination, filtering, sorting, detail, 400 and 404 envelopes correct |
+| `npm run check:ui` (production server) | 12 route/viewport pairs clean; heights and h1 sizes identical to before the migration |
+| API spot checks (curl) | pagination, filtering, sorting, detail bundle, 400 and 404 envelopes correct |
+| Page spot checks | all 10 migrated routes 200; sitemap 24 URLs |
 
 Bundle check: `organic-red-quinoa`, `Uttarakhand, India` and `Grains & Cereals` do not
 appear in `.next/static/chunks`; `Pahadi Organics` does, which is intended (small public

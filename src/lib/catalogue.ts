@@ -4,6 +4,7 @@ import categoriesJson from "@/data/categories.json";
 import productsJson from "@/data/products.json";
 import type { Category, Product, Variant } from "./types";
 import { discountPercent, lowestPriceCents } from "./variant";
+import { getProductCertifications } from "./certifications";
 
 /**
  * The data access layer for the catalogue. This module is server-only: it holds
@@ -23,12 +24,7 @@ export {
   lowestPriceCents,
   variantMrpCents,
 } from "./variant";
-
-export const CERTIFICATIONS = [
-  { id: "organic-india", label: "Organic India" },
-  { id: "usda-organic", label: "USDA Organic" },
-  { id: "fssai", label: "FSSAI" },
-] as const;
+export { CERTIFICATIONS } from "./certifications";
 
 export function getCategories(): Category[] {
   return categories;
@@ -121,19 +117,6 @@ export function getVariants(): Variant[] {
 
 export function findVariant(productId: string, variantId: string): Variant | undefined {
   return getProduct(productId)?.variants.find((variant) => variant.id === variantId);
-}
-
-/**
- * Sample certification records for the demo catalogue. Every product is an
- * Organic India and FSSAI listing; the hill and Karnataka vendors also carry a
- * USDA Organic record.
- */
-export function getProductCertifications(product: Product): string[] {
-  const list = ["organic-india", "fssai"];
-  if (product.vendorId === "pahadi-organics" || product.vendorId === "greenharvest") {
-    list.push("usda-organic");
-  }
-  return list;
 }
 
 export type ProductSort = "popular" | "price" | "price-desc" | "name";

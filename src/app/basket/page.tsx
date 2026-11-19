@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/layout/page-shell";
 import { BasketContents } from "@/components/cart/basket-contents";
 import { CartAssurance } from "@/components/cart/cart-assurance";
-import { getProducts } from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Cart - Kraya",
@@ -12,10 +12,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function BasketPage() {
+export default async function BasketPage() {
+  const { items: products } = await serverApi.listProducts({ pageSize: 48 });
+
   return (
     <PageShell>
-      <BasketContents products={getProducts()} />
+      <BasketContents products={products} />
       <CartAssurance />
     </PageShell>
   );

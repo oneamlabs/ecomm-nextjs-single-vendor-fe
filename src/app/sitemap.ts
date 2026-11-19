@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
-import { getProducts } from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
 import { SITE_URL } from "@/lib/site";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
+  // One call, maximum page size, just for the ids that belong in the sitemap.
+  const { items } = await serverApi.listProducts({ pageSize: 48 });
 
   return [
     {
@@ -42,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
-    ...getProducts().map((product) => ({
+    ...items.map((product) => ({
       url: `${SITE_URL}/shop/${product.id}`,
       lastModified,
       changeFrequency: "weekly" as const,

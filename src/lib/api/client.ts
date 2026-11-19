@@ -5,6 +5,7 @@ import {
   type ApiErrorBody,
   type CategoryListResponse,
   type Product,
+  type ProductDetailResponse,
   type ProductListQuery,
   type ProductListResponse,
   type VendorListResponse,
@@ -26,6 +27,13 @@ export function createApi(instance: AxiosInstance) {
     async getProduct(id: string): Promise<Product> {
       return request<Product>(() =>
         instance.get(ENDPOINTS.products.detail(id)),
+      );
+    },
+
+    /** The product page bundle: record, long copy and reviews. */
+    async getProductDetail(id: string): Promise<ProductDetailResponse> {
+      return request<ProductDetailResponse>(() =>
+        instance.get(ENDPOINTS.products.full(id)),
       );
     },
 

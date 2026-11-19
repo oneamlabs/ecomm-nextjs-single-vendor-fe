@@ -11,6 +11,8 @@ export type {
   ApiErrorCode,
   CategoryListResponse,
   Paginated,
+  ProductDetailResponse,
+  ProductFacets,
   ProductListQuery,
   ProductListResponse,
   VendorListResponse,

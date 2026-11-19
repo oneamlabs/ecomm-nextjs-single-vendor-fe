@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/chrome/page-header";
 import { PageShell } from "@/components/layout/page-shell";
 import { CheckoutForm } from "@/components/checkout/checkout-form";
-import { getProducts } from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Checkout - Kraya",
@@ -12,14 +12,16 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default function CheckoutPage() {
+export default async function CheckoutPage() {
+  const { items: products } = await serverApi.listProducts({ pageSize: 48 });
+
   return (
     <PageShell>
       <PageHeader
         title="Checkout"
         lede="Where it goes and when it arrives. Delivered anywhere in India."
       />
-      <CheckoutForm products={getProducts()} />
+      <CheckoutForm products={products} />
     </PageShell>
   );
 }

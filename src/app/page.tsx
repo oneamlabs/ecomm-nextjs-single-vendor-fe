@@ -8,11 +8,7 @@ import { TrendingProducts } from "@/components/home/trending-products";
 import { TrustBand } from "@/components/home/trust-band";
 import { VendorShowcase } from "@/components/home/vendor-showcase";
 import { WhyChoose } from "@/components/home/why-choose";
-import {
-  getCategories,
-  getProducts,
-  getVendors,
-} from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const STORE_JSON_LD = {
@@ -25,10 +21,13 @@ const STORE_JSON_LD = {
   areaServed: "IN",
 };
 
-export default function HomePage() {
-  const categories = getCategories();
-  const vendors = getVendors();
-  const products = getProducts();
+export default async function HomePage() {
+  const [{ items: categories }, { items: vendors }, { items: products }] =
+    await Promise.all([
+      serverApi.getCategories(),
+      serverApi.getVendors(),
+      serverApi.listProducts({ pageSize: 48 }),
+    ]);
 
   return (
     <>

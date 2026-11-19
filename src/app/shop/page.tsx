@@ -6,22 +6,10 @@ import { CatalogueBrowser } from "@/components/shop/catalogue-browser";
 import { CatalogueHero } from "@/components/shop/catalogue-hero";
 import { CataloguePagination } from "@/components/shop/catalogue-pagination";
 import { ShopSidebar } from "@/components/shop/shop-sidebar";
-import {
-  CERTIFICATIONS,
-  discountPercent,
-  getCategories,
-  getProductCertifications,
-  getProducts,
-  getVendors,
-  sortProducts,
-} from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
+import { CERTIFICATIONS } from "@/lib/certifications";
 import { DIETS } from "@/lib/diets";
-import {
-  DISCOUNT_THRESHOLDS,
-  PAGE_SIZE,
-  parseShopParams,
-  type ShopQuery,
-} from "@/lib/shop-query";
+import { PAGE_SIZE, parseShopParams, type ShopQuery } from "@/lib/shop-query";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -52,8 +40,6 @@ export const metadata: Metadata = {
  */
 export const instant = false;
 
-const DISCOUNTS = [...DISCOUNT_THRESHOLDS];
-
 export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
   const raw = await searchParams;
   const params = parseShopParams(raw);
@@ -71,77 +57,28 @@ export default async function ShopPage({ searchParams }: PageProps<"/shop">) {
   const minPrice = params.min;
   const maxPrice = params.max;
 
-  const sorted = sortProducts(
-    getProducts({
-      categoryId,
-      tags: selectedTags,
-      diets: selectedDiets,
-      vendorIds: selectedVendors,
-      certifications: selectedCertifications,
-      minPriceCents: minPrice * 100,
-      maxPriceCents: maxPrice * 100,
-      minDiscount: discount,
-      stock,
+  const [list, { items: categories }, { items: vendors }] = await Promise.all([
+    serverApi.listProducts({
+      category: categoryId,
       q,
+      tag: selectedTags,
+      diet: selectedDiets,
+      vendor: selectedVendors,
+      certification: selectedCertifications,
+      min: minPrice,
+      max: maxPrice,
+      discount,
+      stock,
+      sort,
+      page: params.page,
+      pageSize: PAGE_SIZE,
     }),
-    sort,
-  );
+    serverApi.getCategories(),
+    serverApi.getVendors(),
+  ]);
 
-  const total = sorted.length;
-  const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const page = Math.min(params.page, pageCount);
-  const pageProducts = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-
-  const allProducts = getProducts();
-  const categories = getCategories();
-  const vendors = getVendors();
-
-  const counts = {
-    total: allProducts.length,
-    category: Object.fromEntries(
-      categories.map((category) => [
-        category.id,
-        allProducts.filter((product) => product.categoryId === category.id).length,
-      ]),
-    ),
-    vendor: Object.fromEntries(
-      vendors.map((vendor) => [
-        vendor.id,
-        allProducts.filter((product) => product.vendorId === vendor.id).length,
-      ]),
-    ),
-    diet: Object.fromEntries(
-      DIETS.map((diet) => [
-        diet.id,
-        allProducts.filter((product) => product.diets?.includes(diet.id)).length,
-      ]),
-    ),
-    certification: Object.fromEntries(
-      CERTIFICATIONS.map((certification) => [
-        certification.id,
-        allProducts.filter((product) =>
-          getProductCertifications(product).includes(certification.id),
-        ).length,
-      ]),
-    ),
-    discount: Object.fromEntries(
-      DISCOUNTS.map((threshold) => [
-        threshold,
-        allProducts.filter((product) => {
-          const value = discountPercent(product);
-          return value !== undefined && value >= threshold;
-        }).length,
-      ]),
-    ),
-    stock: {
-      in: allProducts.filter((product) =>
-        product.variants.some((variant) => variant.inStock),
-      ).length,
-      out: allProducts.filter((product) =>
-        product.variants.every((variant) => !variant.inStock),
-      ).length,
-    },
-  };
+  const { items: pageProducts, total, pageCount, page } = list;
+  const counts = list.facets;
 
   const query: ShopQuery = {
     category: categoryId,

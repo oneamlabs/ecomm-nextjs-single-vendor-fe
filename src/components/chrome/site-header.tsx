@@ -1,6 +1,7 @@
-import { getCategories } from "@/lib/catalogue";
+import { serverApi } from "@/lib/api";
 import { HeaderClient } from "./header-client";
 
-export function SiteHeader() {
-  return <HeaderClient categories={getCategories()} />;
+export async function SiteHeader() {
+  const { items: categories } = await serverApi.getCategories();
+  return <HeaderClient categories={categories} />;
 }

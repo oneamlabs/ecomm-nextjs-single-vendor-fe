@@ -31,6 +31,13 @@ because a Server Component fetching its own route handler needs an absolute orig
 does not exist during `next build`, and a wrong base URL silently calls whatever else is on
 that port. Swapping to a real backend means deleting that adapter and setting a base URL.
 
+**The API is the only way in.** Every page and server component reads through `serverApi`;
+no route imports the catalogue, reviews or product-details modules directly. Those three
+modules are reached only by the route handlers and the mock backend behind them, so the JSON
+files are an implementation detail of one file. `productIdFromPath` and the `/detail` route
+keep the plain record and the page bundle separate: the product page asks once for the
+record, long copy, reviews, category, vendor and related rail, rather than four calls.
+
 **One validated parser for URL state.** `/shop` filters, sort and page stay in the URL and
 are parsed by a single zod schema in `src/lib/shop-query.ts`. Every value is bounded and
 defaulted: an unknown sort falls back to popular, a bad discount or stock value is dropped,

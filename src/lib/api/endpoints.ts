@@ -9,6 +9,8 @@ export const ENDPOINTS = {
   products: {
     list: `${BASE}/products`,
     detail: (id: string) => `${BASE}/products/${encodeURIComponent(id)}`,
+    /** The product page bundle: record, long copy and reviews. */
+    full: (id: string) => `${BASE}/products/${encodeURIComponent(id)}/detail`,
   },
   categories: {
     list: `${BASE}/categories`,
@@ -28,6 +30,18 @@ export function productIdFromPath(pathname: string): string | undefined {
   if (!pathname.startsWith(prefix)) return undefined;
 
   const rest = pathname.slice(prefix.length);
+  if (!rest || rest.includes("/")) return undefined;
+
+  return decodeURIComponent(rest);
+}
+
+/** Read the product id out of a `/detail` path, and nothing else. */
+export function productIdFromDetailPath(pathname: string): string | undefined {
+  const prefix = `${ENDPOINTS.products.list}/`;
+  const suffix = "/detail";
+  if (!pathname.startsWith(prefix) || !pathname.endsWith(suffix)) return undefined;
+
+  const rest = pathname.slice(prefix.length, pathname.length - suffix.length);
   if (!rest || rest.includes("/")) return undefined;
 
   return decodeURIComponent(rest);
