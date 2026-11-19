@@ -26,7 +26,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
         <div className="hidden shrink-0 flex-col gap-2 sm:flex">
           {images.map((image, index) => (
             <button
-              key={`${image.key}-thumb-${index}`}
+              key={image.key}
               type="button"
               onClick={() => setActive(index)}
               aria-pressed={index === active}
@@ -64,7 +64,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
       <div className="mt-2 flex gap-2 sm:hidden">
         {images.map((image, index) => (
           <button
-            key={`${image.key}-mobile-${index}`}
+            key={image.key}
             type="button"
             onClick={() => setActive(index)}
             aria-pressed={index === active}

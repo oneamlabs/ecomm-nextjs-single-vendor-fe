@@ -58,12 +58,12 @@ export function SiteHeader() {
 
       <header className="sticky top-0 z-[var(--z-sticky-nav)] border-b border-rule bg-paper">
         <div className="container">
-          <div className="flex h-16 items-center gap-2 md:h-[var(--nav-height)] md:gap-4">
+          <div className="flex h-16 items-center gap-2 md:h-[var(--nav-height)] md:gap-6">
             <Link
               href="/"
               aria-label="Kraya, home"
               onClick={() => setMenuOpenFor(null)}
-              className="inline-flex min-h-11 items-center font-display text-base font-bold tracking-[-0.03em] md:text-lg"
+              className="inline-flex min-h-11 items-center font-display text-lg font-bold tracking-[-0.03em] md:text-xl"
             >
               Kraya
             </Link>
@@ -80,7 +80,7 @@ export function SiteHeader() {
               <Link
                 href="/basket"
                 onClick={() => setMenuOpenFor(null)}
-                className="btn min-h-11 gap-2 px-2.5 text-sm md:px-4"
+                className="btn btn--flat min-h-11 gap-2 px-3 text-sm md:px-4"
               >
                 Basket
                 <CartCount />
@@ -91,7 +91,7 @@ export function SiteHeader() {
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
                 onClick={() => setMenuOpenFor(menuOpen ? null : pathname)}
-                className="btn min-h-11 px-2.5 text-sm md:hidden"
+                className="btn btn--flat min-h-11 px-3 text-sm md:hidden"
               >
                 {menuOpen ? "Close" : "Menu"}
               </button>

@@ -89,6 +89,21 @@
     transform: none;
   }
 
+  /* Chrome uses squared controls: a pill inside a full-bleed flat bar reads as
+     a floating object, which is the opposite of what the header is doing. */
+  .btn--flat {
+    border-radius: var(--radius-sm);
+  }
+
+  .btn--flat:hover {
+    transform: none;
+  }
+
+  .btn--flat:active {
+    transform: none;
+    background: var(--color-paper-2);
+  }
+
   .btn--primary {
     background: var(--color-accent);
     border-color: var(--color-accent);

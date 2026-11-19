@@ -73,6 +73,9 @@ The home highlight banner may use 36-60. The footer wordmark may use 40-72. Noth
 - `PageHeader`: page title at `--text-page-title`, one lede, optional actions.
 - `Section` and `SectionHeader`: home rhythm and section heading at `--text-section`.
 - The delivery strip scrolls away; the header bar is sticky. On small screens the nav sits behind `Menu`; the shop filters sit behind `Filters`.
+- Header and footer are **flat, full-bleed bands**: background runs edge to edge, no radius, no shadow, content inside the shared container. A rounded floating panel in the chrome reads as an object on the page rather than the page's own edge.
+- Chrome controls are squared (`--radius-sm`), never pills. Pill controls belong to content, not to the bars that frame it.
+- Nav uses a 2px underline for the current page, pinned to the bar's bottom edge, so the state reads against the bar rather than floating mid-row.
 
 ## 5. Pages
 

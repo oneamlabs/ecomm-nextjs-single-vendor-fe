@@ -49,8 +49,10 @@ export function NavList({
                 href={link.href}
                 onClick={onNavigate}
                 aria-current={active ? "page" : undefined}
-                className={`flex min-h-11 items-center justify-between rounded-[var(--radius-pill)] px-3 py-2.5 ${
-                  active ? "bg-paper-2 text-ink" : "text-ink-2 hover:bg-paper-2"
+                className={`flex min-h-11 items-center justify-between border-l-2 px-3 py-2.5 ${
+                  active
+                    ? "border-accent font-semibold text-ink"
+                    : "border-transparent text-ink-2 hover:border-rule-strong hover:text-ink"
                 }`}
               >
                 <span>{link.label}</span>
@@ -65,8 +67,10 @@ export function NavList({
             <Link
               href={link.href}
               aria-current={active ? "page" : undefined}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-[var(--radius-pill)] px-3.5 py-2 transition-colors duration-200 hover:bg-paper-2 ${
-                active ? "bg-paper-2 text-ink" : "text-ink-2"
+              className={`inline-flex h-[var(--nav-height)] items-center gap-1.5 border-b-2 px-2.5 text-sm transition-colors duration-200 ${
+                active
+                  ? "border-accent text-ink"
+                  : "border-transparent text-ink-2 hover:border-rule-strong hover:text-ink"
               }`}
             >
               {link.label}
