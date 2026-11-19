@@ -33,7 +33,12 @@ sitemap URLs are absolute. It defaults to `http://localhost:3000`.
 | `/wishlist` | Saved products, with the same Add to Cart and heart |
 | `/checkout` | Address and delivery validation, summary, honest no-order state |
 | `/credits` | Library photograph authors and licences |
-| `/account` | Honest account placeholder for the demo |
+| `/account` | Account overview: order and address counts, total spent, recent orders |
+| `/account/orders` | Every order, with product names, pack sizes, status and total |
+| `/account/addresses` | Saved addresses, with the default marked |
+| `/account/profile` | Name, email, phone, city and member-since date |
+| `/account/sign-in` | Sign-in form, pre-filled with the demo account |
+| `/account/sign-up` | Create a demo account, with matching-password validation |
 | `/shop/does-not-exist` | 404 |
 
 ## API
@@ -49,6 +54,11 @@ query logic.
 | `GET /api/products/[id]/detail` | `{ product, detail, reviews, category, vendor, related }` — the whole product page in one call |
 | `GET /api/categories` | `{ items }` |
 | `GET /api/vendors` | `{ items }` |
+| `POST /api/auth/sign-in` | Sets the session cookie. Rejects a wrong password with `401` |
+| `POST /api/auth/sign-up` | Creates an in-memory demo account and signs it in |
+| `POST /api/auth/sign-out` | Clears the session cookie |
+| `GET /api/auth/session` | `{ profile }` when signed in, `null` when not |
+| `GET /api/account` | `{ profile, addresses, orders, isDemoSignup }`, or `401` |
 
 Invalid input is rejected with a `400`, not silently corrected, so a typo is visible:
 unknown `sort`, non-integer or negative numerics, `min` above `max`, and `stock` outside
@@ -179,13 +189,58 @@ npm test            # node:test unit suite
 npm run build       # data check + next build
 npm run smoke       # route status and h1s, against a running server
 npm run check:ui    # layout facts and screenshots (puppeteer-core)
+npm run check:a11y  # axe-core, WCAG 2.1 A/AA, 9 routes x 2 viewports
 ```
 
 The UI checks cover overflow and broken images on the main routes, plus a 320px pass.
 Typography and layout review against `DESIGN.md` is part of the same check.
 
+## Accessibility
+
+`npm run check:a11y` runs axe-core over nine routes at 1440 and 390 against WCAG 2.1 A and
+AA, and exits non-zero on any critical or serious violation. Current state: **zero
+violations** on all 18 route/viewport pairs. Text contrast is measured separately by
+resolving `oklch` through a canvas pixel readback, since axe cannot parse `oklch`; the
+lowest sampled ratio is 4.91:1 against a 4.5:1 requirement.
+
+Two limitations are recorded rather than hidden:
+
+- axe reports a few `incomplete` items because the colour tokens are `oklch`. Those were
+  checked by hand: every `aria-labelledby` target exists, and sampled contrast passes.
+- Primary actions are 44px; secondary and chrome controls are 36-40px. That meets the
+  WCAG 2.2 AA target size (24px) but not the 44px AAA target. `DESIGN.md` previously
+  claimed 44px throughout and now states the measured sizes.
+
+## Accounts
+
+There is a customer account flow, and it is a **mock**. The sign-in form is pre-filled with
+`meera@example.com` / `kraya-demo`, so signing in is one click. `src/data/customers.json`
+seeds three customers with addresses and order history.
+
+Four account pages share one shell, provided by a **route-group layout**
+(`src/app/account/(dashboard)/layout.tsx`): a sidebar with the account's name and email,
+links to Overview, Orders, Addresses and Profile, and sign-out. The group keeps the URL
+clean, so `/account` is still `/account`; sign-in and sign-up sit outside it and keep their
+own layout. Pages own only their section, and `readAccountOrNull` is wrapped in
+`React.cache` so the layout and the page share one session read per request.
+
+They are real routes, not anchors, so each section is linkable and the sidebar marks the
+current page with `aria-current`. On a phone the rail becomes a horizontally scrollable
+strip. Order lines resolve product and pack names from the catalogue rather than showing raw
+ids. The layout renders the sign-in prompt when there is no session.
+
+What is real: an httpOnly, SameSite=Lax cookie; server-side session reads; a sign-out that
+clears it; field-level validation; and no session token in `localStorage`. What is not: any
+password hashing, a session store, email verification, or persistence beyond the running
+server process. A customer registered at sign-up exists until the server restarts.
+
+This is deliberately called a mock everywhere it surfaces, rather than dressed up as
+authentication. Replacing it means rewriting `src/lib/auth/`; nothing above that module
+assumes the demo behaviour.
+
 ## Demo limits
 
-No payment, tax, order submission, accounts or seller onboarding. Prices, vendors,
-ratings and discounts are sample data. Checkout validates like a real form and then says
-plainly that nothing was sent.
+No payment, tax, order submission or seller onboarding, and no real authentication: the
+account flow is a labelled mock that forgets new customers when the server restarts. Prices,
+vendors, ratings and discounts are sample data. Checkout validates like a real form and then
+says plainly that nothing was sent.

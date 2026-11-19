@@ -20,6 +20,8 @@ export type {
  * layer types so a real backend can change without rewriting components.
  */
 
+import type { CustomerProfile } from "@/lib/auth/types";
+
 export interface Paginated<T> {
   items: T[];
   total: number;
@@ -76,6 +78,30 @@ export interface ProductDetailResponse {
 export type CategoryListResponse = { items: Category[] };
 export type VendorListResponse = { items: Vendor[] };
 
+export type {
+  AccountResponse,
+  Address,
+  CustomerProfile,
+  Order,
+  OrderStatus,
+  SignInValues,
+  SignUpValues,
+} from "@/lib/auth/types";
+
+/** What a successful sign-in or sign-up returns. */
+export interface SessionResponse {
+  profile: CustomerProfile;
+}
+
+/** Field-level errors, keyed by form field, for the auth forms. */
+export interface AuthErrorBody {
+  error: {
+    code: ApiErrorCode;
+    message: string;
+    fields?: Record<string, string>;
+  };
+}
+
 /**
  * Every failure leaves the API in this shape, so the client has one error type
  * to handle rather than guessing from status codes and HTML error pages.
@@ -89,6 +115,7 @@ export interface ApiErrorBody {
 
 export type ApiErrorCode =
   | "bad_request"
+  | "unauthenticated"
   | "not_found"
   | "internal_error"
   | "network_error"
@@ -98,11 +125,19 @@ export type ApiErrorCode =
 export class ApiError extends Error {
   readonly code: ApiErrorCode;
   readonly status: number;
+  /** Field-level messages from a rejected form, when the server sent them. */
+  readonly fields: Record<string, string>;
 
-  constructor(code: ApiErrorCode, message: string, status = 0) {
+  constructor(
+    code: ApiErrorCode,
+    message: string,
+    status = 0,
+    fields: Record<string, string> = {},
+  ) {
     super(message);
     this.name = "ApiError";
     this.code = code;
     this.status = status;
+    this.fields = fields;
   }
 }

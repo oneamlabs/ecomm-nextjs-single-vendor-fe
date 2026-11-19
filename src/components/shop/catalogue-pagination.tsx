@@ -33,10 +33,10 @@ export function CataloguePagination({
           Prev
         </Link>
       ) : (
-        <span className="btn btn--ghost h-9 min-h-9 cursor-not-allowed px-3 text-xs opacity-45">
+        <DisabledPageControl>
           <CaretLeftIcon size={14} weight="bold" aria-hidden="true" />
           Prev
-        </span>
+        </DisabledPageControl>
       )}
 
       {pages.map((entry) =>
@@ -70,12 +70,33 @@ export function CataloguePagination({
           <CaretRightIcon size={14} weight="bold" aria-hidden="true" />
         </Link>
       ) : (
-        <span className="btn btn--ghost h-9 min-h-9 cursor-not-allowed px-3 text-xs opacity-45">
+        <DisabledPageControl>
           Next
           <CaretRightIcon size={14} weight="bold" aria-hidden="true" />
-        </span>
+        </DisabledPageControl>
       )}
     </nav>
+  );
+}
+
+/**
+ * A disabled page control is a `<span>`, not a link, so it cannot be reached by
+ * keyboard or announced as actionable. It keeps the full muted text colour
+ * rather than fading it: contrast must still pass at 4.5:1, and a disabled
+ * control a user cannot read is worse than one that looks slightly bright.
+ */
+function DisabledPageControl({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <span
+      aria-disabled="true"
+      className="inline-flex h-9 min-h-9 items-center gap-1 rounded-[var(--radius-sm)] border border-rule bg-paper px-3 text-xs font-semibold text-muted"
+    >
+      {children}
+    </span>
   );
 }
 

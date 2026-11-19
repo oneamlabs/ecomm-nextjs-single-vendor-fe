@@ -1,6 +1,8 @@
 import "server-only";
 
 import { create, type AxiosAdapter } from "axios";
+import { getCustomerById, readAccount } from "@/lib/auth/customers";
+import { readSession } from "@/lib/auth/session";
 import { createApi } from "./client";
 import { ENDPOINTS, productIdFromDetailPath, productIdFromPath } from "./endpoints";
 import {
@@ -79,6 +81,24 @@ const inProcessAdapter: AxiosAdapter = async (config) => {
 
   if (pathname === ENDPOINTS.categories.list) return respond(readCategories());
   if (pathname === ENDPOINTS.vendors.list) return respond(readVendors());
+
+  // The account and session reads are used by Server Components, so they must
+  // resolve in-process. Mutations (sign-in, sign-up, sign-out) are browser-only:
+  // they set cookies, which only a real request can do.
+  if (pathname === ENDPOINTS.account.summary) {
+    const session = await readSession();
+    if (!session) throw adapterError(config, 401, { error: { code: "unauthenticated", message: "Sign in to view your account." } });
+
+    const customer = getCustomerById(session.id);
+    if (!customer) throw adapterError(config, 401, { error: { code: "unauthenticated", message: "That session is no longer valid." } });
+
+    return respond(readAccount(customer));
+  }
+
+  if (pathname === ENDPOINTS.auth.session) {
+    const session = await readSession();
+    return respond(session ? { profile: { id: session.id, name: session.name, email: session.email } } : null);
+  }
 
   const body = await errorResponse("not_found", "Unknown API route.").json();
   throw adapterError(config, 404, body);

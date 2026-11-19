@@ -54,7 +54,7 @@ export function SiteFooter() {
       <div className="container py-12 md:py-16">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           <div className="sm:col-span-2 lg:col-span-4">
-            <Link href="/" className="inline-flex items-center gap-2" aria-label="Kraya, home">
+            <Link href="/" className="inline-flex items-center gap-2">
               <span className="grid size-10 place-items-center rounded-full bg-paper/10 text-paper">
                 <LeafIcon size={24} weight="fill" aria-hidden="true" />
               </span>

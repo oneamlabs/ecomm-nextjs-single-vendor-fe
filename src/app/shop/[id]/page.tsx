@@ -10,7 +10,7 @@ import { ProductTabs } from "@/components/product/product-tabs";
 import { RelatedProducts } from "@/components/product/related-products";
 import { ReviewsSection } from "@/components/product/reviews-section";
 import { SellerBenefits, SellerCard } from "@/components/product/seller-card";
-import { serverApi } from "@/lib/api";
+import { isMissingResource, serverApi } from "@/lib/api";
 import { getPhoto } from "@/lib/photos";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -48,7 +48,13 @@ const CONTEXT_PHOTOS: Record<string, { alt: string; label: string }> = {
 
 export async function generateMetadata(props: PageProps<"/shop/[id]">): Promise<Metadata> {
   const { id } = await props.params;
-  const bundle = await serverApi.getProductDetail(id).catch(() => undefined);
+
+  // Only "missing" becomes a 404 for crawlers. Any other failure must surface
+  // as an error rather than silently claiming the product does not exist.
+  const bundle = await serverApi.getProductDetail(id).catch((error: unknown) => {
+    if (isMissingResource(error)) return undefined;
+    throw error;
+  });
   if (!bundle) return { title: "Item not found - Kraya" };
 
   const { product } = bundle;
@@ -83,7 +89,15 @@ export async function generateMetadata(props: PageProps<"/shop/[id]">): Promise<
 
 export default async function ProductPage(props: PageProps<"/shop/[id]">) {
   const { id } = await props.params;
-  const bundle = await serverApi.getProductDetail(id).catch(() => undefined);
+
+  // `notFound()` works by throwing, so it must not run inside this handler.
+  // The handler only answers "missing?" and rethrows everything else, which
+  // climbs to the error boundary instead of becoming a 404.
+  const bundle = await serverApi.getProductDetail(id).catch((error: unknown) => {
+    if (isMissingResource(error)) return undefined;
+    throw error;
+  });
+
   if (!bundle) notFound();
 
   const { product, detail, reviews, category, vendor, related } = bundle;

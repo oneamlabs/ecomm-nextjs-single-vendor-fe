@@ -56,7 +56,11 @@ export function QuickAdd({
       onClick={add}
       disabled={soldOut}
       aria-label={
-        soldOut ? `${name} is sold out` : `Add ${name}, ${label} to basket`
+        soldOut
+          ? `Sold Out: ${name}, ${label}`
+          : added
+            ? `Added: ${name}, ${label}`
+            : `Add to Cart: ${name}, ${label}`
       }
       className={`btn btn--primary w-full min-h-10 ${
         compact ? "px-2 text-xs" : "px-3 text-sm"

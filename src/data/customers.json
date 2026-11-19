@@ -1,0 +1,117 @@
+{
+  "customers": [
+    {
+      "id": "cus-meera",
+      "name": "Meera Patel",
+      "email": "meera@example.com",
+      "demoPassword": "kraya-demo",
+      "phone": "+91 98765 43210",
+      "city": "Dehradun",
+      "memberSince": "2024-03-11",
+      "addresses": [
+        {
+          "id": "addr-home",
+          "label": "Home",
+          "line": "12 Hill Road, Rajpur",
+          "city": "Dehradun",
+          "state": "Uttarakhand",
+          "postcode": "248001",
+          "isDefault": true
+        },
+        {
+          "id": "addr-work",
+          "label": "Work",
+          "line": "4 Clock Tower, Paltan Bazaar",
+          "city": "Dehradun",
+          "state": "Uttarakhand",
+          "postcode": "248001",
+          "isDefault": false
+        }
+      ],
+      "orders": [
+        {
+          "id": "KRY-1042",
+          "placedAt": "2026-11-02",
+          "status": "delivered",
+          "totalCents": 181700,
+          "items": [
+            { "productId": "organic-red-quinoa", "variantId": "500g", "quantity": 1 },
+            { "productId": "a2-desi-ghee", "variantId": "1l", "quantity": 1 },
+            { "productId": "organic-jaggery-powder", "variantId": "1kg", "quantity": 1 }
+          ]
+        },
+        {
+          "id": "KRY-1031",
+          "placedAt": "2026-10-18",
+          "status": "delivered",
+          "totalCents": 61300,
+          "items": [
+            { "productId": "rolled-oats", "variantId": "1kg", "quantity": 2 }
+          ]
+        },
+        {
+          "id": "KRY-1058",
+          "placedAt": "2026-11-16",
+          "status": "shipped",
+          "totalCents": 94700,
+          "items": [
+            { "productId": "wild-forest-honey", "variantId": "500g", "quantity": 2 },
+            { "productId": "organic-turmeric-powder", "variantId": "250g", "quantity": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cus-arjun",
+      "name": "Arjun Nair",
+      "email": "arjun@example.com",
+      "demoPassword": "kraya-demo",
+      "phone": "+91 90000 12345",
+      "city": "Bengaluru",
+      "memberSince": "2025-01-22",
+      "addresses": [
+        {
+          "id": "addr-home",
+          "label": "Home",
+          "line": "18 Indiranagar 2nd Stage",
+          "city": "Bengaluru",
+          "state": "Karnataka",
+          "postcode": "560038",
+          "isDefault": true
+        }
+      ],
+      "orders": [
+        {
+          "id": "KRY-0987",
+          "placedAt": "2026-09-29",
+          "status": "delivered",
+          "totalCents": 48800,
+          "items": [
+            { "productId": "filter-coffee", "variantId": "500g", "quantity": 1 },
+            { "productId": "mixed-nuts", "variantId": "250g", "quantity": 1 }
+          ]
+        },
+        {
+          "id": "KRY-1061",
+          "placedAt": "2026-11-17",
+          "status": "processing",
+          "totalCents": 89700,
+          "items": [
+            { "productId": "breakfast-combo", "variantId": "combo", "quantity": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cus-kavya",
+      "name": "Kavya Iyer",
+      "email": "kavya@example.com",
+      "demoPassword": "kraya-demo",
+      "phone": "+91 91234 56789",
+      "city": "Chennai",
+      "memberSince": "2026-06-04",
+      "addresses": [],
+      "orders": []
+    }
+  ]
+}

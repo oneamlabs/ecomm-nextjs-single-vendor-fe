@@ -10,7 +10,6 @@ import {
   MagnifyingGlassIcon,
   MapPinIcon,
   ShoppingCartIcon,
-  UserIcon,
   XIcon,
 } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
@@ -30,9 +29,11 @@ const PRIMARY_LINKS = [
 
 interface HeaderClientProps {
   categories: Category[];
+  /** Server-rendered and streamed inside its own Suspense boundary. */
+  account?: React.ReactNode;
 }
 
-export function HeaderClient({ categories }: HeaderClientProps) {
+export function HeaderClient({ categories, account }: HeaderClientProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
@@ -63,11 +64,7 @@ export function HeaderClient({ categories }: HeaderClientProps) {
     <header>
       <div className="sticky top-0 z-[var(--z-sticky-nav)] border-b border-rule bg-paper/95 backdrop-blur">
         <div className="container flex h-[72px] items-center gap-3 lg:gap-6">
-          <Link
-            href="/"
-            aria-label="Kraya, home"
-            className="flex shrink-0 items-center gap-2"
-          >
+          <Link href="/" className="flex shrink-0 items-center gap-2">
             <span className="grid size-10 place-items-center rounded-full bg-accent-soft text-accent">
               <LeafIcon size={24} weight="fill" aria-hidden="true" />
             </span>
@@ -116,11 +113,7 @@ export function HeaderClient({ categories }: HeaderClientProps) {
               href="/account"
               className="hidden items-center gap-1.5 rounded-[var(--radius-sm)] px-2 py-1 text-xs text-ink-2 transition hover:bg-accent-soft hover:text-ink md:flex"
             >
-              <UserIcon size={20} aria-hidden="true" />
-              <span className="flex flex-col leading-tight">
-                <span className="text-[10px] text-muted">Account</span>
-                <span className="font-semibold text-ink">Sign In / Register</span>
-              </span>
+              {account}
             </Link>
 
             <Link
@@ -314,7 +307,7 @@ export function HeaderClient({ categories }: HeaderClientProps) {
               onClick={() => setMenuOpen(false)}
               className="btn btn--ghost flex-1 text-xs"
             >
-              Sign In
+              Account
             </Link>
             <Link
               href="/sell"

@@ -38,6 +38,12 @@ files are an implementation detail of one file. `productIdFromPath` and the `/de
 keep the plain record and the page bundle separate: the product page asks once for the
 record, long copy, reviews, category, vendor and related rail, rather than four calls.
 
+**Missing is not the same as failed.** `isMissingResource` in `src/lib/api/errors.ts`
+separates a `not_found` from every other failure. The product page sends only the former to
+`notFound()`; an outage, timeout, bad request or 5xx is rethrown so it reaches the error
+boundary. This matters because `notFound()` works by throwing, so carelessly catching an
+error and then calling it would render a reassuring "no such page" over a real failure.
+
 **One validated parser for URL state.** `/shop` filters, sort and page stay in the URL and
 are parsed by a single zod schema in `src/lib/shop-query.ts`. Every value is bounded and
 defaulted: an unknown sort falls back to popular, a bad discount or stock value is dropped,
@@ -66,6 +72,24 @@ copy and focus-first-invalid behavior.
 was placed. No fake success states, no invented reviews or metrics beyond the sample
 ratings and counts in the catalogue. Because there is no server, the JSON catalogue stands
 in for the backend contract, and no client-computed total is treated as authoritative.
+
+**Demo accounts are a mock, labelled as one.** `src/data/customers.json` seeds three
+customers with addresses and order history; `src/lib/auth/` reads them and issues an httpOnly
+session cookie. This is explicitly *not* authentication: there is no password hashing, no
+server-side session store and no email verification, and the sign-in form is pre-filled with
+the demo account (`src/lib/auth/demo.ts`) so the flow is one click. `tests/auth.test.ts`
+fails if that pre-filled pair drifts from the seeded records.
+
+The cookie payload is sealed with a non-cryptographic digest so a hand-edited cookie fails
+closed. It is deliberately not presented as an HMAC. Sessions are read only on the server
+(`/api/account`, `/api/auth/session`); no token is written to `localStorage`, and `/account`
+is `instant = false` because it reads runtime session state.
+
+Accounts created at sign-up are held in a `globalThis` registry, not a module-level `Map`:
+Next bundles each route and page separately, so a module-scoped map is duplicated and the
+new customer would be invisible to the `/account` page. Even so, they live for one server
+process: a restart forgets them. Replacing this with real auth means deleting `src/lib/auth/`
+behind its existing interface.
 
 **Error and loading boundaries.** `src/app/error.tsx` states a failure plainly and offers
 one retry through Next 16's `retry()`; `/shop` and `/shop/[id]` each have a `loading.tsx`

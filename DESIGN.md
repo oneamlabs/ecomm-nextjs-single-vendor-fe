@@ -60,8 +60,12 @@ body face; the serif display voice belongs to the home and to section headings.
 6. Display tracking applies only to display sizes. Functional headings use normal tracking.
 7. Line height: display 1.02-1.08, headings 1.2-1.3, body 1.55.
 8. Measure: 44-70 characters; the PDP summary is capped at 44ch.
-9. Accessibility: WCAG 1.4.4 at 200% zoom, 1.4.12 text spacing, 4.5:1 text contrast, 44px
-   controls. No tracked-capital labels except the home eyebrow.
+9. Accessibility: WCAG 1.4.4 at 200% zoom, 1.4.12 text spacing, 4.5:1 text contrast.
+   Primary actions are 44px. Secondary and chrome controls are 36-40px, which meets the
+   WCAG 2.2 AA target size (2.5.8, 24px) but not the 44px AAA target (2.5.5). Do not
+   describe the system as 44px throughout: it is measured on `/`, `/shop`, the product
+   page, `/basket` and `/checkout` by `npm run check:a11y`. No tracked-capital labels
+   except the home eyebrow.
 10. Every size above comes from a token. If a new role is needed, add a token and a row
     here first.
 

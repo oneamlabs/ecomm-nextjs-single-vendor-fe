@@ -6,6 +6,7 @@ import "server-only";
  */
 export { serverApi, type Api as ServerApi } from "./server";
 export { ApiError } from "./types";
+export { isMissingResource } from "./errors";
 export type {
   ApiErrorBody,
   ApiErrorCode,

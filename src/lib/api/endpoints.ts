@@ -18,6 +18,15 @@ export const ENDPOINTS = {
   vendors: {
     list: `${BASE}/vendors`,
   },
+  auth: {
+    signIn: `${BASE}/auth/sign-in`,
+    signUp: `${BASE}/auth/sign-up`,
+    signOut: `${BASE}/auth/sign-out`,
+    session: `${BASE}/auth/session`,
+  },
+  account: {
+    summary: `${BASE}/account`,
+  },
 } as const;
 
 /**

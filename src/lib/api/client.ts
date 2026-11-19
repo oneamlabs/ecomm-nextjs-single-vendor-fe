@@ -2,12 +2,16 @@ import type { AxiosInstance } from "axios";
 import { ENDPOINTS } from "./endpoints";
 import {
   ApiError,
+  type AccountResponse,
   type ApiErrorBody,
   type CategoryListResponse,
   type Product,
   type ProductDetailResponse,
   type ProductListQuery,
   type ProductListResponse,
+  type SessionResponse,
+  type SignInValues,
+  type SignUpValues,
   type VendorListResponse,
 } from "./types";
 
@@ -47,6 +51,33 @@ export function createApi(instance: AxiosInstance) {
       return request<VendorListResponse>(() =>
         instance.get(ENDPOINTS.vendors.list),
       );
+    },
+
+    async signIn(values: SignInValues): Promise<SessionResponse> {
+      return request<SessionResponse>(() =>
+        instance.post(ENDPOINTS.auth.signIn, values),
+      );
+    },
+
+    async signUp(values: SignUpValues): Promise<SessionResponse> {
+      return request<SessionResponse>(() =>
+        instance.post(ENDPOINTS.auth.signUp, values),
+      );
+    },
+
+    async signOut(): Promise<void> {
+      await request<unknown>(() => instance.post(ENDPOINTS.auth.signOut));
+    },
+
+    /** The current session, or `null` when signed out. */
+    async getSession(): Promise<SessionResponse | null> {
+      return request<SessionResponse | null>(() =>
+        instance.get(ENDPOINTS.auth.session),
+      );
+    },
+
+    async getAccount(): Promise<AccountResponse> {
+      return request<AccountResponse>(() => instance.get(ENDPOINTS.account.summary));
     },
   };
 }
@@ -105,12 +136,22 @@ function toApiError(error: unknown): ApiError {
   }
 
   const status = candidate.response?.status ?? 0;
-  const body = candidate.response?.data as ApiErrorBody | undefined;
+  const body = candidate.response?.data as
+    | (ApiErrorBody & { error?: { fields?: Record<string, string> } })
+    | undefined;
 
   if (body?.error?.code && body.error.message) {
-    return new ApiError(body.error.code, body.error.message, status);
+    return new ApiError(
+      body.error.code,
+      body.error.message,
+      status,
+      body.error.fields ?? {},
+    );
   }
 
+  if (status === 401) {
+    return new ApiError("unauthenticated", "Please sign in to continue.", 401);
+  }
   if (status === 404) {
     return new ApiError("not_found", "That resource was not found.", 404);
   }

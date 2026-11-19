@@ -82,6 +82,12 @@ behavior and explain conflicts rather than perform a migration, so:
       wishlist, sitemap, `generateStaticParams` and the site header all read through
       `serverApi`. Verified: grepping `src/app` for `@/lib/catalogue|reviews|product-details`
       returns nothing; only the route handlers and the mock backend reach the DAL.
+- [x] **Missing is not the same as failed.** `isMissingResource` gates `notFound()`; every
+      other API failure is rethrown to the error boundary.
+      Evidence: `tests/api-errors.test.ts`; a temporary probe throwing inside
+      `readProductDetail` made `next build` fail with "Error occurred prerendering page
+      /shop/organic-red-quinoa" instead of emitting a 404. After removing the probe,
+      `/shop/does-not-exist` returns a real 404 and the real product returns 200.
 - [x] **One call per page, not one per section.** `/api/products` returns facets for the
       sidebar; `/api/products/[id]/detail` returns the record, long copy, reviews, category,
       vendor and related rail. Evidence: `/shop` made the old local facet computation
@@ -128,6 +134,17 @@ behavior and explain conflicts rather than perform a migration, so:
 - [x] **31 tests across four files** (now 44 across five): cart store, saved list,
       shop-query, checkout, and the API endpoint paths. Every case names what it protects.
 
+- [x] **Accessibility measured, not asserted (brief §12).** `npm run check:a11y` runs
+      axe-core (WCAG 2.1 A/AA) on 9 routes x 2 viewports and fails on critical or serious
+      findings. Three real violations were found and fixed: the logo link's `aria-label` did
+      not contain its visible text, the Add to Cart label omitted "Add to Cart", and the
+      disabled pagination control was 2.32:1. Contrast is separately measured by resolving
+      `oklch` through canvas pixel readback (axe cannot parse it): lowest 4.91:1 vs 4.5:1.
+      Result: **0 violations, 18/18 clean.**
+- [x] **Corrected over-claimed docs.** `DESIGN.md` said "44px controls"; measured primary
+      actions are 44px but secondary/chrome controls are 36-40px. That passes WCAG 2.2 AA
+      target size (24px) but not the 44px AAA target, and the doc now says so.
+
 ## 6. Documentation
 
 - [x] `DECISIONS.md` records the server-only data layer, the validated URL parser, the
@@ -136,17 +153,56 @@ behavior and explain conflicts rather than perform a migration, so:
       folder and `npm test`.
 - [x] This checklist.
 
+## 7. Customer accounts (mock)
+
+- [x] **Sign-in, sign-up and dashboard.** `/account/sign-in`, `/account/sign-up` and
+      `/account`. Forms validate with zod, surface field errors from the server, and the
+      sign-in form is pre-filled from `src/lib/auth/demo.ts` so the demo is one click.
+- [x] **Mock data.** `src/data/customers.json` seeds three customers with addresses and
+      order history; a test fails if the pre-filled credentials drift from it.
+- [x] **Session is server-only.** httpOnly, SameSite=Lax cookie; no token in `localStorage`;
+      a sealed payload that fails closed if edited.
+- [x] **Labelled as a mock, not authentication.** No password hashing, no session store, no
+      email verification, and new accounts do not survive a restart. Recorded in the UI copy,
+      `README.md` and `DECISIONS.md`.
+- [x] **Two real bugs found while verifying.** `/account` could not prerender because it
+      reads the cookie, so it is `instant = false` and the header reads the session behind a
+      `<Suspense>` boundary; and a module-level `Map` of signed-up users was duplicated per
+      bundle, so a new account was invisible to the page. It now uses a `globalThis` registry.
+- [x] **Verified end to end in a browser.** Signed-out prompt; wrong password rejected with
+      no cookie; one-click sign-in sets an httpOnly cookie and renders orders and addresses;
+      the header shows the signed-in name; sign-out clears the cookie; sign-up lands on an
+      empty dashboard with the demo notice; duplicate email and mismatched passwords both
+      rejected.
+- [x] **Dedicated account pages, not anchors.** `/account`, `/account/orders`,
+      `/account/addresses` and `/account/profile`, under one route-group layout
+      (`src/app/account/(dashboard)/layout.tsx`) that owns the sidebar, the session read and
+      the signed-out fallback. The sidebar is real navigation driven by `usePathname`, so
+      `aria-current="page"` is correct on every route, back/forward works, and each section is
+      linkable. It collapses to a scrollable strip on a phone. Order lines resolve product and
+      pack names from the catalogue.
+      Evidence: browser run showed the right `h1`, the right `aria-current`, working sidebar
+      clicks, and all four pages falling back to the sign-in prompt when signed out.
+- [x] **One layout, not a shell per page.** `AccountShell` was deleted; the layout replaced
+      it. Sign-in and sign-up stay outside the group, so they have no sidebar.
+      `readAccountOrNull` is wrapped in `React.cache`, so the layout and the page share one
+      session read per request instead of two.
+- [x] **Leftover fixed.** The mobile menu said "Your account" while signed out; it now reads
+      "Account" like the desktop rail.
+- [x] **Accessibility re-run** across 24 route/viewport pairs including the three new
+      account routes: 0 violations.
+
 ---
 
 ## Deferred (recorded, not dropped)
 
 In scope for a real deployment, impossible to build honestly against the current repo.
 
+- [ ] **Real authentication (Better Auth or Clerk).** The mock in §7 must be replaced before
+      any real customer data exists. The current flow has no password hashing and no store.
 - [ ] **TanStack Query for seller/admin screens.** Blocked: no portal and no remote API.
 - [ ] **nuqs for catalogue state.** `searchParams` plus one validated parser already gives
       shareable state; revisit if client transition ergonomics become a problem.
-- [ ] **Authentication (Better Auth or Clerk).** Blocked: no backend identity. Choose one
-      owner only when auth is real.
 - [ ] **Seller portal: product CRUD, inventory, vendor orders.** Needs a backend.
 - [ ] **Admin portal: vendor/product moderation, order oversight.** Needs a backend.
 - [ ] **Guest cart merge on login.** Needs a documented backend merge endpoint.
@@ -166,12 +222,13 @@ All run against this tree, in this order:
 | `npm run check:data` | Data check passed: 18 products, 9 categories, 4 vendors, 17 photos |
 | `npm run typecheck` | clean |
 | `npm run lint` | 0 warnings, 0 errors |
-| `npm test` | 46 pass, 0 fail |
+| `npm test` | 49 pass, 0 fail |
 | `npm run build` | compiled, 37 pages generated, 18 product routes prerendered |
 | `npm run smoke` (production server) | all routes 200, 404 on the unknown product |
 | `npm run check:ui` (production server) | 12 route/viewport pairs clean; heights and h1 sizes identical to before the migration |
 | API spot checks (curl) | pagination, filtering, sorting, detail bundle, 400 and 404 envelopes correct |
-| Page spot checks | all 10 migrated routes 200; sitemap 24 URLs |
+| Page spot checks | real product 200, unknown product 404, `/shop` 200, detail 404 on unknown |
+| `npm run check:a11y` (production server) | 0 violations on 18/18 route/viewport pairs; lowest contrast 4.91:1 |
 
 Bundle check: `organic-red-quinoa`, `Uttarakhand, India` and `Grains & Cereals` do not
 appear in `.next/static/chunks`; `Pahadi Organics` does, which is intended (small public
